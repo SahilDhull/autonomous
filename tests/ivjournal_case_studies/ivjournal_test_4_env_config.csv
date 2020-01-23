@@ -1,0 +1,2 @@
+config_index,exp_short_name,exp_config_folder,exp_config_folder_is_absolute,world_file_folder,world_file_folder_is_absolute,world_file_name,is_save_trajectory_files,traj_log_folder,traj_log_folder_is_absolute,is_save_exp_results_file,exp_results_folder,exp_results_folder_is_absolute
+0,ivjournal_test_4,exp_config,FALSE,../../Webots_Projects/worlds,FALSE,ivjournal_test_4.wbt,FALSE,RESULTS/trajectory_log,FALSE,FALSE,RESULTS/test_results,FALSE

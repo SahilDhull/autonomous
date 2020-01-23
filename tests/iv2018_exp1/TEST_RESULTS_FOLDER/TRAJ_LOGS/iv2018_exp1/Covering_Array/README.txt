@@ -1,0 +1,1 @@
+Covering Array trajectory logs will come here!

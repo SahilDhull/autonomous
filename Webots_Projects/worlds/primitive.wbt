@@ -1,0 +1,26 @@
+#VRML_SIM V8.6 utf8
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.011489127 -0.99989006 0.0093742439 1.3688577
+  position -11.655385 3.8826516 5.431565
+}
+BmwX5 {
+  controller "vehicle_controller"
+  controllerArgs "trial_controller Bmw 0.1"
+  sensorsSlotTop [
+    Camera {
+      width 1284
+      height 384
+    }
+  ]
+}
+DirectionalLight {
+  direction 0 -1 0
+}
+RectangleArena {
+  translation 0 0 -0.59
+  floorSize 10 10
+}
+Background {
+}

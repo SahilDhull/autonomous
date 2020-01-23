@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.4
+protoFileHash: d5f5ad2dbd9ceb8711f90dfe6210b557
+containsDevices: 0
+baseType: Robot
+slotType: 
+parameters: translation,rotation,color,plate,engineSound,name,controller,controllerArgs,synchronization,sensorsSlotFront,sensorsSlotRear,sensorsSlotTop,sensorsSlotCenter,frontSpotLights
+tags: static
+license: 
+licenseUrl: 
+documentationUrl: 
+info: Model\sof\san\sToyota\sPrius\scar\susing\sthe\sCar\sproto\sas\sa\sbase.\nThe\scontactMaterial\sof\sthe\swheels\sis\s"ToyotaPriusWheels"\nSponsored\sby\sthe\sCTI\sproject\sRO2IVSim\s(http://transport.epfl.ch/simulator-for-mobile-robots-and-intelligent-vehicles)\n

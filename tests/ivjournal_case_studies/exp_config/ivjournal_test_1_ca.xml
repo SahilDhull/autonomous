@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="ivjournal_test_1">
+  <Parameters>
+    <Parameter id="0" name="ego_init_speed_m_s" type="0">
+      <values>
+        <value>10</value>
+        <value>15</value>
+        <value>20</value>
+        <value>25</value>
+        <value>30</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="1" name="ego_lateral_position" type="0">
+      <values>
+        <value>-75</value>
+        <value>-50</value>
+        <value>-25</value>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="pedestrian_1_speed" type="0">
+      <values>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+        <value>6</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="3" name="agent_1_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="agent_1_color_r" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="agent_1_color_g" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="agent_1_color_b" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_shirt_color_r" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_shirt_color_g" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_shirt_color_b" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_pants_color_r" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_pants_color_g" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="pedestrian_1_pants_color_b" type="0">
+      <values>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations>
+    <Relation Strength="2" Default="false">
+      <Parameter name="agent_1_color_r">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="agent_1_color_g">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="agent_1_color_b">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_shirt_color_r">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_shirt_color_g">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_shirt_color_b">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_pants_color_r">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_pants_color_g">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_pants_color_b">
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+        <value>100</value>
+      </Parameter>
+    </Relation>
+    <Relation Strength="3" Default="false">
+      <Parameter name="ego_init_speed_m_s">
+        <value>10</value>
+        <value>15</value>
+        <value>20</value>
+        <value>25</value>
+        <value>30</value>
+      </Parameter>
+      <Parameter name="ego_lateral_position">
+        <value>-75</value>
+        <value>-50</value>
+        <value>-25</value>
+        <value>0</value>
+        <value>25</value>
+        <value>50</value>
+        <value>75</value>
+      </Parameter>
+      <Parameter name="pedestrian_1_speed">
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+        <value>6</value>
+      </Parameter>
+      <Parameter name="agent_1_model">
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </Parameter>
+    </Relation>
+  </Relations>
+  <Constraints />
+</System>
+

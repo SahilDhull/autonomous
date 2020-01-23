@@ -1,0 +1,83 @@
+#VRML_SIM R2018a utf8
+#tags: static
+# Turn Left Lane Marking 3 x 3 meters
+# Elevation 10 cm
+
+PROTO turnleftlane [
+  field SFVec3f    translation      0 0 0
+  field SFRotation rotation         0 1 0 0
+  field SFString   name             "Turn Left Lane Marking"
+  field SFVec2f    size             2 2
+  field SFInt32    textureFiltering 4
+]
+{ %{
+    local size = fields.size.value
+    if size.x <= 0 or size.y <= 0 then
+      io.stderr:write("Both components of 'size' must be strictly positive\n")
+      size = fields.size.defaultValue
+    end
+  }%
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
+    recognitionColors [ 0.96 0.82 0.05 ]
+    children [
+      DEF ZEBRA_TRANS Transform {
+        translation 0 -0.1 0
+        rotation 0 0 1 1.5708
+        children [
+          Shape {
+            appearance Appearance {
+              material Material {
+              }
+              texture ImageTexture {
+                url [
+                  "textures/turnleftlane.jpg"
+                ]
+                filtering IS textureFiltering
+              }
+              textureTransform TextureTransform {
+                rotation 1.5708
+              }
+            }
+            geometry TexturedBox {
+              size 0.4 %{= size.x }% %{= size.y }%
+              front FALSE
+              back FALSE
+              left FALSE
+            }
+            castShadows FALSE
+          }
+        ]
+      }
+      DEF RAMP1_TRANS Transform {
+        translation 0 -0.2535 %{= size.y / 2 }%
+        rotation 1 0 0 0.7854
+        children [
+          DEF RAMP_SHAPE Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.2 0.2 0.2
+              }
+            }
+            geometry Box {
+              size %{= size.x }% 0.5 0.5
+            }
+            castShadows FALSE
+          }
+        ]
+      }
+      DEF RAMP2_TRANS Transform {
+        translation 0 -0.2535 %{= -size.y / 2 }%
+        rotation 1 0 0 0.7854
+        children [
+          USE RAMP_SHAPE
+        ]
+      }
+    ]
+    name IS name
+    model "Turn Left Lane Marking"
+    boundingObject NULL
+  }
+}

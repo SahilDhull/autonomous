@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="straight_road_pedestrian_jump_ca">
+  <Parameters>
+    <Parameter id="1" name="agent_vhc_1_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="agent_vhc_1_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="3" name="agent_vhc_2_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="4" name="agent_vhc_2_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="5" name="agent_vhc_3_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="6" name="agent_vhc_3_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="7" name="agent_vhc_4_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="8" name="agent_vhc_4_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="9" name="agent_vhc_5_model" type="1">
+      <values>
+        <value>ToyotaPriusSimple</value>
+        <value>BmwX5Simple</value>
+        <value>CitroenCZeroSimple</value>
+        <value>LincolnMKZSimple</value>
+        <value>RangeRoverSportSVRSimple</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="10" name="agent_vhc_5_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="11" name="ped_1_shirt_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="12" name="ped_1_pants_color" type="0">
+      <values>
+        <value>1</value>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="13" name="fog" type="0">
+      <values>
+        <value>100</value>
+        <value>900</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="14" name="ego_vhc_position" type="0">
+      <values>
+        <value>-10</value>
+        <value>0</value>
+        <value>10</value>
+        <value>20</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="15" name="agent_vhc_1_position" type="0">
+      <values>
+        <value>80</value>
+        <value>90</value>
+        <value>100</value>
+        <value>110</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="16" name="ped_1_speed" type="0">
+      <values>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations />
+  <Constraints />
+</System>
+

@@ -1,0 +1,70 @@
+#VRML_SIM R2019a utf8
+DEF WORLDINFO WorldInfo {
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 5
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation -1 0 0 1.57
+  position -1.171591685665988 110.1575746692004 -0.69636601741467
+  near 1
+}
+Robot {
+  children [
+    Display {
+      width 256
+      height 128
+    }
+  ]
+  controller "replay_matlab_trace"
+  supervisor TRUE
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  translation 0 -0.02 0
+  size 10000 10000
+  tileSize 1 1
+  appearance NULL
+  texture [
+    "textures/grass.jpg"
+  ]
+}
+DEF ROAD_NETWORK Solid {
+  translation 0 0.025 0
+  children [
+    DEF MAIN_ROAD StraightRoadSegment {
+      translation 1000 0 0
+      rotation 0 1 0 -1.5707996938995747
+      width 31.5
+      numberOfLanes 9
+      length 5000
+      rightBorderBoundingObject TRUE
+      leftBorderBoundingObject TRUE
+    }
+  ]
+}

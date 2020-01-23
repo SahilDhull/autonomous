@@ -1,0 +1,606 @@
+#VRML_SIM V8.6 utf8
+WorldInfo {
+  info [
+    "Autonomous Vehicle Simulation"
+    "The simple controller example uses an on-board camera to follow the yellow road lines and a SICK sensor to avoid the obstacles."
+    "The control of the vehicle is done using the driver library."
+    "The vehicle based on the Car PROTO is modelled with realistic physics properties: motor torques, body mass, friction forces, suspensions, etc."
+  ]
+  title "City"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 0.0001
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 0.0005
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        1
+      ]
+      softCFM 0.0005
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 0.0005
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 0.0005
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0 -1 0 3.14157
+  position -0.0014758838 6 -365.15011
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+    occlusion TRUE
+    haloSizesAndPositions [
+      0.25 0.6
+      0.23 0.35
+      0.33 0.12
+    ]
+    burstSizesAndPositions [
+      0.33 0.8
+      0.16 0.47
+      0.5 0.1
+    ]
+  }
+}
+Pedestrian {
+  translation -2.25 1.27 165
+  rotation 0 1 0 1.5707997
+}
+Pedestrian {
+  translation -5.5 1.27 165
+  rotation 0 1 0 1.5707997
+}
+Supervisor {
+  children [
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+}
+BuildingUnderConstruction {
+  translation 0 0 200
+}
+Auditorium {
+  translation -36 0 28
+  rotation 0 1 0 3.1415927
+}
+Tree {
+  translation 10 0 10
+  texture [
+    "textures/birch_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 10
+}
+Tree {
+  translation 10 0 20
+  texture [
+    "textures/crab_apple_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 20
+  texture [
+    "textures/hackberry_tree.png"
+  ]
+}
+Tree {
+  translation 10 0 20
+  texture [
+    "textures/hazel_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 30
+  texture [
+    "textures/oak_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 -30
+  texture [
+    "textures/palm_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 -10
+  texture [
+    "textures/oak_tree.png"
+  ]
+}
+Tree {
+  translation 10 0 -10
+  texture [
+    "textures/spruce.png"
+  ]
+}
+Tree {
+  translation -10 0 -20
+  texture [
+    "textures/white_pine.png"
+  ]
+}
+Tree {
+  translation 10 0 -20
+  texture [
+    "textures/birch_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 -30
+}
+Tree {
+  translation 10 0 -30
+  texture [
+    "textures/crab_apple_tree.png"
+  ]
+}
+Tree {
+  translation -10 0 -40
+  texture [
+    "textures/hackberry_tree.png"
+  ]
+}
+Tree {
+  translation 10 0 -40
+  texture [
+    "textures/oak_tree.png"
+  ]
+}
+CommercialBuilding {
+  translation 22 0 22
+}
+Fence {
+  translation -9 0 -9
+  rotation 0 1 0 1.5707997
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation -9 0 9
+  rotation 0 1 0 4.7123897
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation 9 0 -9
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation 9 0 9
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation -9 0 9
+  rotation 0 1 0 3.1415927
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation -9 0 -9
+  rotation 0 1 0 3.1415927
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation 9 0 9
+  rotation 0 1 0 4.7123897
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+Fence {
+  translation 9 0 -9
+  rotation 0 1 0 1.5707997
+  path [
+    0 0 0
+    50 0 0
+  ]
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+  castLensFlares TRUE
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 1000
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "textures/ground.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+SimpleTwoFloorsHouse {
+  translation -20 0 -70
+  rotation 0 1 0 3.1415927
+}
+BungalowStyleHouse {
+  translation 19 0 -65
+  rotation 0 1 0 1.5707997
+}
+Hotel {
+  translation 18 0 112
+}
+HollowBuilding {
+  translation 28 0 -28
+}
+RoadIntersection {
+  translation 0 0.02 0
+  rotation 0 1 0 0.785398
+  id "101"
+  roadsWith 15
+  startRoadsLength 7.5
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorderWidth 1.5
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+RoadIntersection {
+  translation 0 0.02 -180
+  rotation 0 1 0 0.785398
+  id "101"
+  roadsWith 15
+  startRoadsLength 7.5
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorderWidth 1.5
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+RoadIntersection {
+  translation 0 0.02 180
+  rotation 0 1 0 0.785398
+  id "101"
+  roadsWith 15
+  startRoadsLength 7.5
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorderWidth 1.5
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 0 0.02 15
+  id "2"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 150
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 15 0.02 180
+  rotation 0 1 0 1.5708
+  id "7"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 0 0.02 -15
+  rotation 0 1 0 3.14157
+  id "1"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 150
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 0 0.02 -195
+  rotation 0 1 0 3.14157
+  id "10"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 150
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+ResidentialBuilding {
+  translation -19 0 88
+  rotation 0 1 0 1.5707997
+}
+UBuilding {
+  translation -30 0 -30
+}
+StraightRoadSegment {
+  translation -122 0.02 186
+  rotation 0 1 0 3.14157
+  id "9"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    TRUE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  rightBorder FALSE
+  leftBorder FALSE
+  rightSide FALSE
+  leftSide FALSE
+  length 373
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 122 0.02 186
+  rotation 0 1 0 3.14157
+  id "9"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    TRUE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  rightBorder FALSE
+  leftBorder FALSE
+  rightSide FALSE
+  leftSide FALSE
+  length 373
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 15 0.02 0
+  rotation 0 1 0 1.57
+  id "4"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 15 0.02 -180
+  rotation 0 1 0 1.57
+  id "5"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -15 0.02 0
+  rotation 0 1 0 -1.57
+  id "3"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -15 0.02 -180
+  rotation 0 1 0 -1.57
+  id "6"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  startingRoadBorderWidth 1.5
+  endingRoadBorderWidth 1.5
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -15 0.02 180
+  rotation 0 1 0 -1.57
+  id "8"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+CrossRoadsTrafficLight {
+  size 15 15
+}
+PedestrianCrossingWhite {
+  translation 0 -0.029 11.5
+  rotation 0 1 0 3.1416
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation 0 -0.029 -11.5
+  rotation 0 1 0 3.1416
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation -11.5 -0.029 0
+  rotation 0 1 0 1.57
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation 11.5 -0.029 0
+  rotation 0 1 0 1.57
+  size 14 8
+}

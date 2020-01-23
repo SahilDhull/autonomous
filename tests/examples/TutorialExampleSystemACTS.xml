@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="TutorialExample">
+  <Parameters>
+    <Parameter id="0" name="ego_init_speed" type="0">
+      <values>
+        <value>0</value>
+        <value>5</value>
+        <value>10</value>
+        <value>15</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="1" name="ego_x_position" type="0">
+      <values>
+        <value>15</value>
+        <value>20</value>
+        <value>25</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+    <Parameter id="2" name="pedestrian_speed" type="0">
+      <values>
+        <value>2</value>
+        <value>3</value>
+        <value>4</value>
+        <value>5</value>
+      </values>
+      <basechoices />
+      <invalidValues />
+    </Parameter>
+  </Parameters>
+  <OutputParameters />
+  <Relations />
+  <Constraints />
+</System>
+

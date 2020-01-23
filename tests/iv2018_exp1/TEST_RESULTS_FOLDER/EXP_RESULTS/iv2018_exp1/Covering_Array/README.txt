@@ -1,0 +1,1 @@
+Covering Array test results will come here!

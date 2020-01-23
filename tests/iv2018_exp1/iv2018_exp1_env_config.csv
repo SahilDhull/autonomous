@@ -1,0 +1,2 @@
+config_index,exp_short_name,exp_config_folder,exp_config_folder_is_absolute,world_file_folder,world_file_folder_is_absolute,world_file_name,is_save_trajectory_files,traj_log_folder,traj_log_folder_is_absolute,is_save_exp_results_file,exp_results_folder,exp_results_folder_is_absolute
+0,iv2018_exp1,exp_config,FALSE,../../Webots_Projects/worlds,FALSE,iv2018_exp1.wbt,TRUE,D:/TEST_RESULTS_FOLDER/TRAJ_LOGS/iv2018_exp1/Covering_Array,TRUE,TRUE,D:/TEST_RESULTS_FOLDER/EXP_RESULTS/iv2018_exp1/Covering_Array,TRUE

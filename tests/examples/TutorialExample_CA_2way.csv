@@ -1,0 +1,23 @@
+# ACTS Test Suite Generation: Mon Jan 14 22:46:33 MST 2019
+#  '*' represents don't care value 
+# Degree of interaction coverage: 2
+# Number of parameters: 3
+# Maximum number of values per parameter: 4
+# Number of configurations: 16
+ego_init_speed,ego_x_position,pedestrian_speed
+0,20,2
+0,25,3
+0,15,4
+0,20,5
+5,25,2
+5,15,3
+5,20,4
+5,25,5
+10,15,2
+10,20,3
+10,25,4
+10,15,5
+15,20,2
+15,25,3
+15,15,4
+15,15,5

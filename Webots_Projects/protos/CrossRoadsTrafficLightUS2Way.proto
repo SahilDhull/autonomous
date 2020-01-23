@@ -1,0 +1,96 @@
+#VRML_SIM R2018b utf8
+# license: Copyright Cyberbotics Ltd. Licensed for use only with Webots.
+# license url: https://cyberbotics.com/webots_assets_license
+# tags: static
+# Four roads crossing traffic light.
+
+PROTO CrossRoadsTrafficLightUS2Way [
+  field SFVec3f    translation 0 0 0
+  field SFRotation rotation    0 1 0 0
+  field SFString   name        "cross road traffic light"
+  field SFString   controller  "crossroads_traffic_lights"  # Is `Robot.contactMaterial`.
+  field SFVec2f    size        24.9 51.1                    # Defines the size of the traffic lights.
+]
+{
+%{
+  local size = fields.size.value
+}%
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    children [
+      TrafficLightBigPole {
+        translation %{= - size.x / 2 }% 0 %{= size.y / 2 }%
+        name "pole 1"
+        slot1 [
+          TrafficLight {
+            name "traffic light 0"
+            red_light "red light 0"
+            orange_light "orange light 0"
+            green_light "green light 0"
+            lamp_geometry TrafficLightStandardLampGeometry {
+            }
+          }
+        ]
+        slot2 [
+          TrafficLightHorizontal {
+            name "traffic light 1"
+            red_light "red light 1"
+            orange_light "orange light 1"
+            green_light "green light 1"
+            lamp_geometry TrafficLightStandardLampGeometry {
+            }
+          }
+        ]
+        slot3 [
+          TrafficLightHorizontal {
+            name "traffic light 2"
+            red_light "red light 2"
+            orange_light "orange light 2"
+            green_light "green light 2"
+            lamp_geometry TrafficLightArrowLampGeometry {
+            }
+          }
+        ]
+      }
+      TrafficLightBigPole {
+        translation %{= size.x / 2 }% 0 %{= - size.y / 2 }%
+        rotation 0 -1 0 3.1457
+        name "pole 2"
+        slot1 [
+          TrafficLight {
+            name "traffic light 3"
+            red_light "red light 3"
+            orange_light "orange light 3"
+            green_light "green light 3"
+            lamp_geometry TrafficLightStandardLampGeometry {
+            }
+          }
+        ]
+        slot2 [
+          TrafficLightHorizontal {
+            name "traffic light 4"
+            red_light "red light 4"
+            orange_light "orange light 4"
+            green_light "green light 4"
+            lamp_geometry TrafficLightStandardLampGeometry {
+            }
+          }
+        ]
+        slot3 [
+          TrafficLightHorizontal {
+            name "traffic light 5"
+            red_light "red light 5"
+            orange_light "orange light 5"
+            green_light "green light 5"
+            lamp_geometry TrafficLightArrowLampGeometry {
+            }
+          }
+        ]
+      }
+    ]
+    name IS name
+    model "cross road traffic light"
+    controller IS controller
+  }
+}

@@ -1,0 +1,394 @@
+#VRML_SIM V8.6 utf8
+WorldInfo {
+  info [
+    "Autonomous Vehicle Simulation"
+    "The simple controller example uses an on-board camera to follow the yellow road lines and a SICK sensor to avoid the obstacles."
+    "The control of the vehicle is done using the driver library."
+    "The vehicle based on the Car PROTO is modelled with realistic physics properties: motor torques, body mass, friction forces, suspensions, etc."
+  ]
+  title "City"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-04
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-04
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-04
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-04
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation -0.00039484364 -0.99684653 -0.079352666 3.1316047
+  position 1.8361591 12.160856 -179.00381
+  near 1
+  follow "solid:5"
+  followSmoothness 0
+  lensFlare LensFlare {
+    occlusion TRUE
+    haloSizesAndPositions [
+      0.25 0.6
+      0.23 0.35
+      0.33 0.12
+    ]
+    burstSizesAndPositions [
+      0.33 0.8
+      0.16 0.47
+      0.5 0.1
+    ]
+  }
+}
+Supervisor {
+  children [
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+  castLensFlares TRUE
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 1000
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "textures/ground.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+StraightRoadSegment {
+  translation 0 0.02 16.2
+  id "3"
+  startJunction "23"
+  endJunction "22"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 16.2 0.02 132
+  rotation 0 1 0 1.5708
+  id "5"
+  startJunction "28"
+  endJunction "16"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 79
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 0 0.02 -16.2
+  rotation 0 1 0 3.14157
+  id "7"
+  startJunction "17"
+  endJunction "29"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 103.25
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+RoadIntersection {
+  translation 0 0.02 0
+  rotation 0 1 0 0.785398
+  id "17"
+  connectedRoadIDs [
+    "7"
+    "8"
+    "0"
+    "15"
+  ]
+  roadsWith 15
+  startRoadsLength 8.75
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorder FALSE
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+RoadIntersection {
+  translation 0 0.02 -135.7
+  rotation 0 1 0 0.785398
+  id "17"
+  connectedRoadIDs [
+    "7"
+    "8"
+    "0"
+    "15"
+  ]
+  roadsWith 15
+  startRoadsLength 8.75
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorder FALSE
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+RoadIntersection {
+  translation 0 0.02 132
+  rotation 0 1 0 0.785398
+  id "17"
+  connectedRoadIDs [
+    "7"
+    "8"
+    "0"
+    "15"
+  ]
+  roadsWith 15
+  startRoadsLength 8.75
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "textures/road_line_dashed.png"
+    "textures/road_line_dashed.png"
+    "textures/road_line_triangle.png"
+    "textures/road_line_triangle.png"
+  ]
+  startRoadsDashedLine [
+    TRUE
+    FALSE
+  ]
+  startRoadBorder FALSE
+  startRoadsTexture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 16.2 0.02 0
+  rotation 0 1 0 1.57
+  id "8"
+  startJunction "17"
+  endJunction "26"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation 16.25 0.02 -135.7
+  rotation 0 1 0 1.57
+  id "8"
+  startJunction "17"
+  endJunction "26"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -16.2 0.02 0
+  rotation 0 1 0 -1.57
+  id "8"
+  startJunction "17"
+  endJunction "26"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 100
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -16.2 0.02 -135.7
+  rotation 0 1 0 -1.57
+  id "8"
+  startJunction "17"
+  endJunction "26"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 79
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+StraightRoadSegment {
+  translation -16.2 0.02 132
+  rotation 0 1 0 -1.57
+  id "8"
+  startJunction "17"
+  endJunction "26"
+  width 15
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  dashedLine [
+    TRUE
+    FALSE
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 79
+  texture [
+    "textures/road_double_yellow.jpg"
+  ]
+}
+CrossRoadsTrafficLight {
+  size 15 15
+}
+PedestrianCrossingWhite {
+  translation 0 -0.02 12
+  rotation 0 1 0 3.1416
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation 0 -0.02 -12
+  rotation 0 1 0 3.1416
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation -11.5 -0.02 0
+  rotation 0 1 0 1.57
+  size 14 8
+}
+PedestrianCrossingWhite {
+  translation 11.5 -0.02 0
+  rotation 0 1 0 1.57
+  size 14 8
+}

@@ -1,0 +1,54 @@
+# ACTS Test Suite Generation: Fri Dec 01 21:03:09 EST 2017,,,,,,,,,,,,,,,
+#  '*' represents don't care value ,,,,,,,,,,,,,,,
+# Degree of interaction coverage: 2,,,,,,,,,,,,,,,
+# Number of parameters: 16,,,,,,,,,,,,,,,
+# Maximum number of values per parameter: 5,,,,,,,,,,,,,,,
+# Number of configurations: 47,,,,,,,,,,,,,,,
+agent_vhc_1_model,agent_vhc_1_color,agent_vhc_2_model,agent_vhc_2_color,agent_vhc_3_model,agent_vhc_3_color,agent_vhc_4_model,agent_vhc_4_color,agent_vhc_5_model,agent_vhc_5_color,ped_1_shirt_color,ped_1_pants_color,fog,ego_vhc_position,agent_vhc_1_position,ped_1_speed
+ToyotaPriusSimple,1,BmwX5Simple,2,BmwX5Simple,2,BmwX5Simple,2,BmwX5Simple,2,2,2,900,0,90,3
+ToyotaPriusSimple,2,CitroenCZeroSimple,3,CitroenCZeroSimple,3,CitroenCZeroSimple,3,CitroenCZeroSimple,3,3,3,100,10,100,4
+ToyotaPriusSimple,3,LincolnMKZSimple,4,LincolnMKZSimple,4,LincolnMKZSimple,4,LincolnMKZSimple,4,4,4,900,20,110,5
+ToyotaPriusSimple,4,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,5,5,100,-10,80,2
+ToyotaPriusSimple,5,ToyotaPriusSimple,1,ToyotaPriusSimple,1,ToyotaPriusSimple,1,ToyotaPriusSimple,1,1,1,100,0,100,5
+BmwX5Simple,1,CitroenCZeroSimple,4,RangeRoverSportSVRSimple,1,BmwX5Simple,3,LincolnMKZSimple,5,1,2,900,10,110,2
+BmwX5Simple,2,LincolnMKZSimple,5,ToyotaPriusSimple,2,CitroenCZeroSimple,4,RangeRoverSportSVRSimple,1,2,3,900,20,80,3
+BmwX5Simple,3,RangeRoverSportSVRSimple,1,BmwX5Simple,3,LincolnMKZSimple,5,ToyotaPriusSimple,2,3,4,900,-10,90,4
+BmwX5Simple,4,ToyotaPriusSimple,2,CitroenCZeroSimple,4,RangeRoverSportSVRSimple,1,BmwX5Simple,3,4,5,900,10,90,5
+BmwX5Simple,5,BmwX5Simple,3,LincolnMKZSimple,5,ToyotaPriusSimple,2,CitroenCZeroSimple,4,5,1,100,20,90,2
+CitroenCZeroSimple,1,LincolnMKZSimple,1,CitroenCZeroSimple,5,BmwX5Simple,4,ToyotaPriusSimple,3,5,2,100,-10,100,3
+CitroenCZeroSimple,2,RangeRoverSportSVRSimple,2,LincolnMKZSimple,1,CitroenCZeroSimple,5,BmwX5Simple,4,1,3,100,-10,110,4
+CitroenCZeroSimple,3,ToyotaPriusSimple,3,RangeRoverSportSVRSimple,2,LincolnMKZSimple,1,CitroenCZeroSimple,5,2,4,100,0,80,2
+CitroenCZeroSimple,4,BmwX5Simple,4,ToyotaPriusSimple,3,RangeRoverSportSVRSimple,2,LincolnMKZSimple,1,3,5,100,0,110,4
+CitroenCZeroSimple,5,CitroenCZeroSimple,5,BmwX5Simple,4,ToyotaPriusSimple,3,RangeRoverSportSVRSimple,2,4,1,900,10,80,5
+LincolnMKZSimple,1,RangeRoverSportSVRSimple,3,ToyotaPriusSimple,4,BmwX5Simple,5,CitroenCZeroSimple,1,4,2,900,-10,100,5
+LincolnMKZSimple,2,ToyotaPriusSimple,4,BmwX5Simple,5,CitroenCZeroSimple,1,LincolnMKZSimple,2,5,3,100,0,110,3
+LincolnMKZSimple,3,BmwX5Simple,5,CitroenCZeroSimple,1,LincolnMKZSimple,2,RangeRoverSportSVRSimple,3,1,4,900,10,80,3
+LincolnMKZSimple,4,CitroenCZeroSimple,1,LincolnMKZSimple,2,RangeRoverSportSVRSimple,3,ToyotaPriusSimple,4,2,5,900,20,100,3
+LincolnMKZSimple,5,LincolnMKZSimple,2,RangeRoverSportSVRSimple,3,ToyotaPriusSimple,4,BmwX5Simple,5,3,1,100,20,90,4
+RangeRoverSportSVRSimple,1,ToyotaPriusSimple,5,LincolnMKZSimple,3,BmwX5Simple,1,RangeRoverSportSVRSimple,4,3,2,900,20,80,4
+RangeRoverSportSVRSimple,2,BmwX5Simple,1,RangeRoverSportSVRSimple,4,CitroenCZeroSimple,2,ToyotaPriusSimple,5,4,3,100,-10,100,2
+RangeRoverSportSVRSimple,3,CitroenCZeroSimple,2,ToyotaPriusSimple,5,LincolnMKZSimple,3,BmwX5Simple,1,5,4,900,10,90,2
+RangeRoverSportSVRSimple,4,LincolnMKZSimple,3,BmwX5Simple,1,RangeRoverSportSVRSimple,4,CitroenCZeroSimple,2,1,5,900,20,110,2
+RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,4,CitroenCZeroSimple,2,ToyotaPriusSimple,5,LincolnMKZSimple,3,2,1,900,-10,110,3
+RangeRoverSportSVRSimple,1,BmwX5Simple,2,BmwX5Simple,2,ToyotaPriusSimple,1,ToyotaPriusSimple,1,1,3,100,10,80,5
+BmwX5Simple,2,CitroenCZeroSimple,3,CitroenCZeroSimple,3,ToyotaPriusSimple,1,ToyotaPriusSimple,1,1,4,900,0,90,5
+RangeRoverSportSVRSimple,3,LincolnMKZSimple,4,LincolnMKZSimple,4,ToyotaPriusSimple,1,ToyotaPriusSimple,1,1,5,100,0,100,4
+RangeRoverSportSVRSimple,4,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,ToyotaPriusSimple,1,ToyotaPriusSimple,1,1,2,900,0,110,5
+CitroenCZeroSimple,2,ToyotaPriusSimple,1,ToyotaPriusSimple,1,BmwX5Simple,2,BmwX5Simple,2,2,1,100,10,80,5
+CitroenCZeroSimple,3,CitroenCZeroSimple,3,CitroenCZeroSimple,3,BmwX5Simple,2,BmwX5Simple,2,2,3,100,20,90,2
+BmwX5Simple,4,LincolnMKZSimple,4,LincolnMKZSimple,4,BmwX5Simple,2,BmwX5Simple,2,2,4,900,10,100,3
+ToyotaPriusSimple,5,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,BmwX5Simple,2,BmwX5Simple,2,2,5,900,20,90,4
+LincolnMKZSimple,1,ToyotaPriusSimple,1,ToyotaPriusSimple,1,CitroenCZeroSimple,3,CitroenCZeroSimple,3,3,1,900,-10,90,2
+ToyotaPriusSimple,3,BmwX5Simple,2,BmwX5Simple,2,CitroenCZeroSimple,3,CitroenCZeroSimple,3,3,2,900,0,100,3
+ToyotaPriusSimple,4,LincolnMKZSimple,4,LincolnMKZSimple,4,CitroenCZeroSimple,3,CitroenCZeroSimple,3,3,3,100,20,80,5
+LincolnMKZSimple,5,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,CitroenCZeroSimple,3,CitroenCZeroSimple,3,3,4,100,10,100,3
+CitroenCZeroSimple,1,ToyotaPriusSimple,1,ToyotaPriusSimple,1,LincolnMKZSimple,4,LincolnMKZSimple,4,4,5,100,0,100,4
+ToyotaPriusSimple,2,BmwX5Simple,2,BmwX5Simple,2,LincolnMKZSimple,4,LincolnMKZSimple,4,4,2,100,10,80,4
+CitroenCZeroSimple,4,CitroenCZeroSimple,3,CitroenCZeroSimple,3,LincolnMKZSimple,4,LincolnMKZSimple,4,4,1,900,-10,90,3
+LincolnMKZSimple,5,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,LincolnMKZSimple,4,LincolnMKZSimple,4,4,3,100,20,100,2
+CitroenCZeroSimple,1,ToyotaPriusSimple,1,ToyotaPriusSimple,1,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,5,4,100,0,110,5
+ToyotaPriusSimple,2,BmwX5Simple,2,BmwX5Simple,2,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,5,5,100,20,90,4
+LincolnMKZSimple,3,CitroenCZeroSimple,3,CitroenCZeroSimple,3,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,5,1,900,10,100,3
+ToyotaPriusSimple,5,LincolnMKZSimple,4,LincolnMKZSimple,4,RangeRoverSportSVRSimple,5,RangeRoverSportSVRSimple,5,5,2,900,10,90,3
+LincolnMKZSimple,2,RangeRoverSportSVRSimple,2,CitroenCZeroSimple,3,RangeRoverSportSVRSimple,1,RangeRoverSportSVRSimple,3,2,3,900,-10,100,5
+LincolnMKZSimple,3,LincolnMKZSimple,3,CitroenCZeroSimple,4,CitroenCZeroSimple,1,LincolnMKZSimple,4,3,5,100,-10,90,3
