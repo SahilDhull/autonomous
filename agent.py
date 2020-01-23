@@ -22,6 +22,7 @@ from Sim_ATAV.simulation_configurator.sim_environment_configurator import SimEnv
 from Sim_ATAV.simulation_configurator import covering_array_utilities
 from Sim_ATAV.simulation_configurator import experiment_tools
 from path import *
+from grid import *
 
 def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=60000, for_matlab=False):
     """Runs a test with the given arguments"""
@@ -220,7 +221,22 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                        [-20*math.sin(10.0/4), 20*math.cos(10.0/4)-20],
                        [-20*math.sin(11.0/4), 20*math.cos(11.0/4)-20],
                        [-20*math.sin(12.0/4), 20*math.cos(12.0/4)-20],
-                       [500.0,-40.0]]
+                       [500.0,-40.0],
+                       [500+20*math.sin(1.0/4), -20*math.cos(1.0/4)-20],
+                       [500+20*math.sin(2.0/4), -20*math.cos(2.0/4)-20],
+                       [500+20*math.sin(3.0/4), -20*math.cos(3.0/4)-20],
+                       [500+20*math.sin(4.0/4), -20*math.cos(4.0/4)-20],
+                       [500+20*math.sin(5.0/4), -20*math.cos(5.0/4)-20],
+                       [500+20*math.sin(6.0/4), -20*math.cos(6.0/4)-20],
+                       [500+20*math.sin(7.0/4), -20*math.cos(7.0/4)-20],
+                       [500+20*math.sin(8.0/4), -20*math.cos(8.0/4)-20],
+                       [500+20*math.sin(9.0/4), -20*math.cos(9.0/4)-20],
+                       [500+20*math.sin(10.0/4), -20*math.cos(10.0/4)-20],
+                       [500+20*math.sin(11.0/4), -20*math.cos(11.0/4)-20],
+                       [500+20*math.sin(12.0/4), -20*math.cos(12.0/4)-20],
+                       [500.0, 0.0],
+                       [0.0,   0.0]
+                       ]
     # print(target_pos_list)
 
     for target_pos in target_pos_list:
