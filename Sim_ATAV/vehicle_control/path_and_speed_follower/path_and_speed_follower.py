@@ -236,11 +236,11 @@ class PathAndSpeedFollower(BaseCarController):
                 # if cur_time_ms<1000:
                     # x = 0
                 # else:
-                x = controller_commons.speed_ms_to_kmh(min(max_speed_limit, current_target_speed))
-                self.set_target_speed_and_angle(speed=x,angle=control_steering)
-                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
-                #                                                                              current_target_speed)),
-                #                                 angle=control_steering)
+                    # x = controller_commons.speed_ms_to_kmh(min(max_speed_limit, current_target_speed))
+                # self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
+                                                                                             current_target_speed)),
+                                                angle=control_steering)
                 if cur_time_ms%500==0:
                     print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms))
             else:
