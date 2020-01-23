@@ -242,7 +242,7 @@ class PathAndSpeedFollower(BaseCarController):
                                                                                              current_target_speed)),
                                                 angle=control_steering)
                 if cur_time_ms%500==0:
-                    print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms))
+                    print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms) + " pos: "+str(cur_position))
             else:
                 control_throttle = self.longitudinal_controller.compute(min(max_speed_limit, current_target_speed)
                                                                         - cur_speed_ms)
