@@ -25,7 +25,7 @@ st = math.floor((math.pi*r_curv)/x_step)		# steps to take in the curved part
 for i in np.arange(x1,x2,-x_step):
 	gp = []
 	for j in np.arange(y1+w,y1-w,-y_step):
-		gp.append([i,round(j,2)])
+		gp.append([i,y1+round(j,2)])
 	grid_points.append(gp)
 
 
@@ -44,7 +44,7 @@ for i in range(st):
 for i in np.arange(x2,x1,x_step):
 	gp = []
 	for j in np.arange(y1+w,y1-w,-y_step):
-		gp.append([i,round(j,2)])
+		gp.append([i,y2+round(j,2)])
 	grid_points.append(gp)
 
 # 4th part
@@ -57,4 +57,12 @@ for i in range(st):
 		gp.append([x_cur+j*math.sin(theta),y_cur-j*math.cos(theta)])
 	grid_points.append(gp)
 
-print(grid_points[0][9])
+# print(grid_points[0][9])
+
+travel_path = []
+total_steps = 1000
+
+for i in range(total_steps):
+	travel_path.append(grid_points[i%len(grid_points)][9])
+
+# print (travel_path)

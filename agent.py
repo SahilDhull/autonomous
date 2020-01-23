@@ -83,7 +83,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.set_vehicle_model('TeslaModel3')
     vhc_obj.color = [1.0, 0.0,  0.0]
     vhc_obj.controller = 'path_and_speed_follower'
-    vhc_obj.controller_arguments.append('20.0')
+    vhc_obj.controller_arguments.append('15.0')
     vhc_obj.controller_arguments.append('True')
     vhc_obj.controller_arguments.append('3.5')
     vhc_obj.controller_arguments.append('2')
@@ -235,8 +235,8 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                        [500+20*math.sin(11.0/4), -20*math.cos(11.0/4)-20],
                        [500+20*math.sin(12.0/4), -20*math.cos(12.0/4)-20],
                        [500.0, 0.0],
-                       [0.0,   0.0]
-                       ]
+                       [0.0,   0.0]]
+    # target_pos_list = travel_path
     # print(target_pos_list)
 
     for target_pos in target_pos_list:
