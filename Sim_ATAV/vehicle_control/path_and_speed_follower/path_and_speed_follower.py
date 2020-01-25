@@ -239,6 +239,9 @@ class PathAndSpeedFollower(BaseCarController):
                     x = 10
                 self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x), angle=control_steering)
                 
+                if cur_time_ms%1000==0:
+                    print(self.get_rpm())
+
                 # if cur_time_ms<1000:
                     # x = 0
                 # else:

@@ -183,4 +183,4 @@ while(p[i][j]!=(-1,-1)):
 	travel_path = [[grid_points[i][j][0],grid_points[i][j][1]]] + travel_path
 	(i,j) = p[i][j]
 
-print (travel_path)
+# print (travel_path)

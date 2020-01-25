@@ -80,7 +80,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 2
-    vhc_obj.set_vehicle_model('TeslaModel3')
+    vhc_obj.set_vehicle_model('ToyotaPrius')
     vhc_obj.color = [1.0, 0.0,  0.0]
     vhc_obj.controller = 'path_and_speed_follower'
     vhc_obj.controller_arguments.append('15.0')
