@@ -233,16 +233,22 @@ class PathAndSpeedFollower(BaseCarController):
             control_steering = min(max(-max_steering, control_steering), max_steering)
 
             if self.is_direct_speed_control:
+                if cur_time_ms<1000:
+                    x = 0
+                else:
+                    x = 10
+                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x), angle=control_steering)
+                
                 # if cur_time_ms<1000:
                     # x = 0
                 # else:
                     # x = controller_commons.speed_ms_to_kmh(min(max_speed_limit, current_target_speed))
                 # self.set_target_speed_and_angle(speed=x,angle=control_steering)
-                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
-                                                                                             current_target_speed)),
-                                                angle=control_steering)
-                if cur_time_ms%500==0:
-                    print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms) + " pos: "+str(cur_position))
+                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
+                #                                                                              current_target_speed)),
+                #                                 angle=control_steering)
+                # if cur_time_ms%500==0:
+                #     print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms) + " pos: "+str(cur_position))
             else:
                 control_throttle = self.longitudinal_controller.compute(min(max_speed_limit, current_target_speed)
                                                                         - cur_speed_ms)

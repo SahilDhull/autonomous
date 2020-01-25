@@ -21,10 +21,10 @@ from Sim_ATAV.simulation_configurator.view_follow_config import ViewFollowConfig
 from Sim_ATAV.simulation_configurator.sim_environment_configurator import SimEnvironmentConfigurator
 from Sim_ATAV.simulation_configurator import covering_array_utilities
 from Sim_ATAV.simulation_configurator import experiment_tools
-from path import *
+# from path import *
 from grid import *
 
-def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=60000, for_matlab=False):
+def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=120000, for_matlab=False):
     """Runs a test with the given arguments"""
 
     sim_environment = SimEnvironment()
@@ -76,7 +76,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [300.0, 0.35, 3.5]
+    vhc_obj.current_position = [500.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 2
@@ -145,14 +145,14 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
 
     # ----- Controller Parameters:
     # Ego Target Path:
-    target_pos_list = [[-1000.0, 0.0],
-                       [1000.0, 0.0]]
+    # target_pos_list = [[-1000.0, 0.0],
+    #                    [1000.0, 0.0]]
 
-    for target_pos in target_pos_list:
-        sim_environment.controller_params_list.append(
-            WebotsControllerParameter(vehicle_id=1,
-                                      parameter_name='target_position',
-                                      parameter_data=target_pos))
+    # for target_pos in target_pos_list:
+    #     sim_environment.controller_params_list.append(
+    #         WebotsControllerParameter(vehicle_id=1,
+    #                                   parameter_name='target_position',
+    #                                   parameter_data=target_pos))
 
     # Agent Target Path:
     # target_pos_list = [
@@ -188,7 +188,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     #                    [-200.0, -4.0],
     #                    [-1000.0, -3.5]]
     # target_pos_list = static_path
-    target_pos_list = [
+    target_pos_list = [[500.0, 3.5],
                        [350.0, 3.6],
                        [305.0, 3.6],
                        [300.0, 3.2],
