@@ -27,6 +27,10 @@ HAS_DEBUG_DISPLAY = True
 SENSOR_TYPE = 'Actual'  # 'Actual', 'Perfect'
 DEBUG_MODE = False
 
+# Our global variables
+t1 = 5000
+v1 = 0.1
+flag = 0
 
 def debug_print(print_str):
     if DEBUG_MODE:
@@ -233,14 +237,32 @@ class PathAndSpeedFollower(BaseCarController):
             control_steering = min(max(-max_steering, control_steering), max_steering)
 
             if self.is_direct_speed_control:
-                if cur_time_ms<1000:
-                    x = 0
-                else:
-                    x = 10
-                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x), angle=control_steering)
+
+                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
                 
-                if cur_time_ms%1000==0:
-                    print(self.get_rpm())
+
+                v = 0.1
+                t = 0.3
+                global t1, v1, flag
+
+                if cur_time_ms==100:
+                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(v), angle=control_steering)
+                elif cur_time_ms>=5000:
+                    self.set_throttle(t)
+                # if cur_time_ms%200==0:
+                #     print("time: "+str(cur_time_ms)+" vel: "+str(cur_speed_ms))
+                if abs(round(cur_speed_ms,0)-cur_speed_ms)<0.01:
+                    t1 = cur_time_ms
+                    v1 = cur_speed_ms
+                    print ("--> "+str(t1))
+                if cur_time_ms-t1 in (100,200,300,400,500,600,700,800,900,1000):
+                    a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
+                    print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
+
+                # if cur_time_ms-t1 == 1000:
+                #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
+                #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
+
 
                 # if cur_time_ms<1000:
                     # x = 0

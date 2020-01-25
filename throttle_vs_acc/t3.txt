@@ -1,0 +1,216 @@
+INFO: simulation_controller: Starting controller: python.exe -u "simulation_controller.py" 10021
+INFO: vehicle_controller: Starting controller: python.exe -u "vehicle_controller.py" path_and_speed_follower TeslaModel3 25.0 True 3.5 2 False False
+INFO: pedestrian_control: Starting controller: python.exe -u "pedestrian_control.py" --trajectory "50.0 0.0, 80.0 -3.0, 200.0 0.0" --speed 3.0
+[simulation_controller] Starting supervisor initialization
+[simulation_controller] Heart Beat Type: 2 Period: 2000
+[simulation_controller] obj.controller : path_and_speed_follower
+[simulation_controller] SimulationMessageInterface: Simulation Duration: 120000                step size: 10 type: 2
+[simulation_controller] Simulation Duration = 120000, step size = 10
+[simulation_controller] log_data: log_count: 12000 single log size: 7
+[vehicle_controller] Warning: "emitter" device not found.
+[vehicle_controller] Vehicle controller will load.
+[vehicle_controller] Controller: path_and_speed_follower, Path:E:\autonomous\Webots_Projects\controllers\vehicle_controller\..\path_and_speed_follower
+[vehicle_controller] <module 'path_and_speed_follower' from 'E:\\autonomous\\Webots_Projects\\controllers\\vehicle_controller\\..\\path_and_speed_follower\\path_and_speed_follower.py'>
+[vehicle_controller] <function run at 0x000001CC7BA6DC18>
+[vehicle_controller] ['TeslaModel3', '25.0', 'True', '3.5', '2', 'False', 'False']
+[vehicle_controller] BaseController: Car Model: TeslaModel3
+[vehicle_controller] AutomatedDrivingControl Initialized: TeslaModel3, 25.0
+[vehicle_controller] Devices Started.
+[vehicle_controller] --> 10
+[vehicle_controller] time: 110 diff: 100 speed: 0.0 acc: 92.39
+[vehicle_controller] time: 210 diff: 200 speed: 0.0 acc: 19.93
+[vehicle_controller] time: 310 diff: 300 speed: 0.0 acc: 1.33
+[vehicle_controller] time: 410 diff: 400 speed: 0.0 acc: 0.48
+[vehicle_controller] time: 510 diff: 500 speed: 0.0 acc: 0.21
+[vehicle_controller] time: 610 diff: 600 speed: 0.0 acc: 0.22
+[vehicle_controller] time: 710 diff: 700 speed: 0.0 acc: 0.24
+[vehicle_controller] time: 810 diff: 800 speed: 0.0 acc: 0.23
+[vehicle_controller] time: 910 diff: 900 speed: 0.0 acc: 0.19
+[vehicle_controller] time: 1010 diff: 1000 speed: 0.0 acc: 0.15
+[vehicle_controller] --> 5360
+[vehicle_controller] time: 5460 diff: 100 speed: 0.99 acc: 2.45
+[vehicle_controller] time: 5560 diff: 200 speed: 0.99 acc: 2.45
+[vehicle_controller] time: 5660 diff: 300 speed: 0.99 acc: 2.44
+[vehicle_controller] time: 5760 diff: 400 speed: 0.99 acc: 2.44
+[vehicle_controller] --> 5770
+[vehicle_controller] time: 5870 diff: 100 speed: 1.99 acc: 2.41
+[vehicle_controller] time: 5970 diff: 200 speed: 1.99 acc: 2.4
+[vehicle_controller] time: 6070 diff: 300 speed: 1.99 acc: 2.39
+[vehicle_controller] time: 6170 diff: 400 speed: 1.99 acc: 2.39
+[vehicle_controller] --> 6190
+[vehicle_controller] time: 6290 diff: 100 speed: 3.0 acc: 2.36
+[vehicle_controller] time: 6390 diff: 200 speed: 3.0 acc: 2.35
+[vehicle_controller] time: 6490 diff: 300 speed: 3.0 acc: 2.35
+[vehicle_controller] time: 6590 diff: 400 speed: 3.0 acc: 2.34
+[vehicle_controller] --> 6620
+[vehicle_controller] time: 6720 diff: 100 speed: 4.0 acc: 2.31
+[vehicle_controller] time: 6820 diff: 200 speed: 4.0 acc: 2.3
+[vehicle_controller] time: 6920 diff: 300 speed: 4.0 acc: 2.3
+[vehicle_controller] time: 7020 diff: 400 speed: 4.0 acc: 2.29
+[vehicle_controller] --> 7060
+[vehicle_controller] time: 7160 diff: 100 speed: 5.01 acc: 2.26
+[vehicle_controller] time: 7260 diff: 200 speed: 5.01 acc: 2.26
+[vehicle_controller] time: 7360 diff: 300 speed: 5.01 acc: 2.25
+[vehicle_controller] time: 7460 diff: 400 speed: 5.01 acc: 2.24
+[vehicle_controller] --> 7500
+[vehicle_controller] time: 7600 diff: 100 speed: 6.0 acc: 2.21
+[vehicle_controller] time: 7700 diff: 200 speed: 6.0 acc: 2.21
+[vehicle_controller] time: 7800 diff: 300 speed: 6.0 acc: 2.2
+[vehicle_controller] time: 7900 diff: 400 speed: 6.0 acc: 2.2
+[vehicle_controller] --> 7960
+[vehicle_controller] time: 8060 diff: 100 speed: 7.01 acc: 2.16
+[vehicle_controller] time: 8160 diff: 200 speed: 7.01 acc: 2.16
+[vehicle_controller] time: 8260 diff: 300 speed: 7.01 acc: 2.15
+[vehicle_controller] time: 8360 diff: 400 speed: 7.01 acc: 2.15
+[vehicle_controller] --> 8420
+[vehicle_controller] time: 8520 diff: 100 speed: 7.99 acc: 2.12
+[vehicle_controller] time: 8620 diff: 200 speed: 7.99 acc: 2.11
+[vehicle_controller] time: 8720 diff: 300 speed: 7.99 acc: 2.11
+[vehicle_controller] time: 8820 diff: 400 speed: 7.99 acc: 2.1
+[vehicle_controller] --> 8900
+[vehicle_controller] time: 9000 diff: 100 speed: 9.0 acc: 2.07
+[vehicle_controller] time: 9100 diff: 200 speed: 9.0 acc: 2.05
+[vehicle_controller] time: 9200 diff: 300 speed: 9.0 acc: 2.02
+[vehicle_controller] time: 9300 diff: 400 speed: 9.0 acc: 1.99
+[vehicle_controller] time: 9400 diff: 500 speed: 9.0 acc: 1.97
+[vehicle_controller] --> 9410
+[vehicle_controller] time: 9510 diff: 100 speed: 10.0 acc: 1.8
+[vehicle_controller] time: 9610 diff: 200 speed: 10.0 acc: 1.78
+[vehicle_controller] time: 9710 diff: 300 speed: 10.0 acc: 1.75
+[vehicle_controller] time: 9810 diff: 400 speed: 10.0 acc: 1.73
+[vehicle_controller] time: 9910 diff: 500 speed: 10.0 acc: 1.71
+[vehicle_controller] --> 10000
+[vehicle_controller] time: 10100 diff: 100 speed: 11.0 acc: 1.55
+[vehicle_controller] time: 10200 diff: 200 speed: 11.0 acc: 1.53
+[vehicle_controller] time: 10300 diff: 300 speed: 11.0 acc: 1.51
+[vehicle_controller] time: 10400 diff: 400 speed: 11.0 acc: 1.5
+[vehicle_controller] time: 10500 diff: 500 speed: 11.0 acc: 1.48
+[vehicle_controller] time: 10600 diff: 600 speed: 11.0 acc: 1.46
+[vehicle_controller] --> 10690
+[vehicle_controller] time: 10790 diff: 100 speed: 12.0 acc: 1.33
+[vehicle_controller] time: 10890 diff: 200 speed: 12.0 acc: 1.32
+[vehicle_controller] time: 10990 diff: 300 speed: 12.0 acc: 1.3
+[vehicle_controller] time: 11090 diff: 400 speed: 12.0 acc: 1.29
+[vehicle_controller] time: 11190 diff: 500 speed: 12.0 acc: 1.28
+[vehicle_controller] time: 11290 diff: 600 speed: 12.0 acc: 1.26
+[vehicle_controller] time: 11390 diff: 700 speed: 12.0 acc: 1.25
+[vehicle_controller] --> 11490
+[vehicle_controller] --> 11500
+[vehicle_controller] time: 11600 diff: 100 speed: 13.0 acc: 1.14
+[vehicle_controller] time: 11700 diff: 200 speed: 13.0 acc: 1.13
+[vehicle_controller] time: 11800 diff: 300 speed: 13.0 acc: 1.11
+[vehicle_controller] time: 11900 diff: 400 speed: 13.0 acc: 1.11
+[vehicle_controller] time: 12000 diff: 500 speed: 13.0 acc: 1.1
+[vehicle_controller] time: 12100 diff: 600 speed: 13.0 acc: 1.09
+[vehicle_controller] time: 12200 diff: 700 speed: 13.0 acc: 1.08
+[vehicle_controller] time: 12300 diff: 800 speed: 13.0 acc: 1.07
+[vehicle_controller] time: 12400 diff: 900 speed: 13.0 acc: 1.06
+[vehicle_controller] --> 12440
+[vehicle_controller] --> 12450
+[vehicle_controller] time: 12550 diff: 100 speed: 14.0 acc: 0.96
+[vehicle_controller] time: 12650 diff: 200 speed: 14.0 acc: 0.95
+[vehicle_controller] time: 12750 diff: 300 speed: 14.0 acc: 0.95
+[vehicle_controller] time: 12850 diff: 400 speed: 14.0 acc: 0.94
+[vehicle_controller] time: 12950 diff: 500 speed: 14.0 acc: 0.93
+[vehicle_controller] time: 13050 diff: 600 speed: 14.0 acc: 0.92
+[vehicle_controller] time: 13150 diff: 700 speed: 14.0 acc: 0.92
+[vehicle_controller] time: 13250 diff: 800 speed: 14.0 acc: 0.91
+[vehicle_controller] time: 13350 diff: 900 speed: 14.0 acc: 0.9
+[vehicle_controller] time: 13450 diff: 1000 speed: 14.0 acc: 0.9
+[vehicle_controller] --> 13570
+[vehicle_controller] --> 13580
+[vehicle_controller] time: 13680 diff: 100 speed: 15.01 acc: 0.81
+[vehicle_controller] time: 13780 diff: 200 speed: 15.01 acc: 0.8
+[vehicle_controller] time: 13880 diff: 300 speed: 15.01 acc: 0.79
+[vehicle_controller] time: 13980 diff: 400 speed: 15.01 acc: 0.79
+[vehicle_controller] time: 14080 diff: 500 speed: 15.01 acc: 0.78
+[vehicle_controller] time: 14180 diff: 600 speed: 15.01 acc: 0.78
+[vehicle_controller] time: 14280 diff: 700 speed: 15.01 acc: 0.77
+[vehicle_controller] time: 14380 diff: 800 speed: 15.01 acc: 0.77
+[vehicle_controller] time: 14480 diff: 900 speed: 15.01 acc: 0.76
+[vehicle_controller] time: 14580 diff: 1000 speed: 15.01 acc: 0.75
+[vehicle_controller] --> 14920
+[vehicle_controller] --> 14930
+[vehicle_controller] --> 14940
+[vehicle_controller] time: 15040 diff: 100 speed: 16.01 acc: 0.66
+[vehicle_controller] time: 15140 diff: 200 speed: 16.01 acc: 0.66
+[vehicle_controller] time: 15240 diff: 300 speed: 16.01 acc: 0.65
+[vehicle_controller] time: 15340 diff: 400 speed: 16.01 acc: 0.65
+[vehicle_controller] time: 15440 diff: 500 speed: 16.01 acc: 0.64
+[vehicle_controller] time: 15540 diff: 600 speed: 16.01 acc: 0.64
+[vehicle_controller] time: 15640 diff: 700 speed: 16.01 acc: 0.64
+[vehicle_controller] time: 15740 diff: 800 speed: 16.01 acc: 0.63
+[vehicle_controller] time: 15840 diff: 900 speed: 16.01 acc: 0.63
+[vehicle_controller] time: 15940 diff: 1000 speed: 16.01 acc: 0.62
+[vehicle_controller] --> 16590
+[vehicle_controller] --> 16600
+[vehicle_controller] --> 16610
+[vehicle_controller] --> 16620
+[vehicle_controller] time: 16720 diff: 100 speed: 17.01 acc: 0.53
+[vehicle_controller] time: 16820 diff: 200 speed: 17.01 acc: 0.53
+[vehicle_controller] time: 16920 diff: 300 speed: 17.01 acc: 0.52
+[vehicle_controller] time: 17020 diff: 400 speed: 17.01 acc: 0.52
+[vehicle_controller] time: 17120 diff: 500 speed: 17.01 acc: 0.52
+[vehicle_controller] time: 17220 diff: 600 speed: 17.01 acc: 0.51
+[vehicle_controller] time: 17320 diff: 700 speed: 17.01 acc: 0.51
+[vehicle_controller] time: 17420 diff: 800 speed: 17.01 acc: 0.51
+[vehicle_controller] time: 17520 diff: 900 speed: 17.01 acc: 0.5
+[vehicle_controller] time: 17620 diff: 1000 speed: 17.01 acc: 0.5
+
+
+[vehicle_controller] time: 18860 diff: 100 speed: 18.01 acc: 0.41
+[vehicle_controller] time: 18960 diff: 200 speed: 18.01 acc: 0.4
+[vehicle_controller] time: 19060 diff: 300 speed: 18.01 acc: 0.4
+[vehicle_controller] time: 19160 diff: 400 speed: 18.01 acc: 0.4
+[vehicle_controller] time: 19260 diff: 500 speed: 18.01 acc: 0.4
+[vehicle_controller] time: 19360 diff: 600 speed: 18.01 acc: 0.39
+[vehicle_controller] time: 19460 diff: 700 speed: 18.01 acc: 0.39
+[vehicle_controller] time: 19560 diff: 800 speed: 18.01 acc: 0.39
+[vehicle_controller] time: 19660 diff: 900 speed: 18.01 acc: 0.39
+[vehicle_controller] time: 19760 diff: 1000 speed: 18.01 acc: 0.39
+
+
+[vehicle_controller] time: 21740 diff: 100 speed: 19.01 acc: 0.29
+[vehicle_controller] time: 21840 diff: 200 speed: 19.01 acc: 0.29
+[vehicle_controller] time: 21940 diff: 300 speed: 19.01 acc: 0.29
+[vehicle_controller] time: 22040 diff: 400 speed: 19.01 acc: 0.29
+[vehicle_controller] time: 22140 diff: 500 speed: 19.01 acc: 0.29
+[vehicle_controller] time: 22240 diff: 600 speed: 19.01 acc: 0.28
+[vehicle_controller] time: 22340 diff: 700 speed: 19.01 acc: 0.28
+[vehicle_controller] time: 22440 diff: 800 speed: 19.01 acc: 0.28
+[vehicle_controller] time: 22540 diff: 900 speed: 19.01 acc: 0.28
+[vehicle_controller] time: 22640 diff: 1000 speed: 19.01 acc: 0.28
+
+
+[vehicle_controller] time: 26020 diff: 100 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26120 diff: 200 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26220 diff: 300 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26320 diff: 400 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26420 diff: 500 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26520 diff: 600 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26620 diff: 700 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26720 diff: 800 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26820 diff: 900 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 26920 diff: 1000 speed: 20.01 acc: 0.17
+
+[vehicle_controller] time: 34510 diff: 100 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 34610 diff: 200 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 34710 diff: 300 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 34810 diff: 400 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 34910 diff: 500 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 35010 diff: 600 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 35110 diff: 700 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 35210 diff: 800 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 35310 diff: 900 speed: 20.01 acc: 0.18
+[vehicle_controller] time: 35410 diff: 1000 speed: 20.01 acc: 0.17
+
+[vehicle_controller] time: 42540 diff: 100 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 42640 diff: 200 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 42740 diff: 300 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 42840 diff: 400 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 42940 diff: 500 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 43040 diff: 600 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 43140 diff: 700 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 43240 diff: 800 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 43340 diff: 900 speed: 21.01 acc: 0.08
+[vehicle_controller] time: 43440 diff: 1000 speed: 21.01 acc: 0.08

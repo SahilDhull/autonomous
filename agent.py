@@ -22,7 +22,7 @@ from Sim_ATAV.simulation_configurator.sim_environment_configurator import SimEnv
 from Sim_ATAV.simulation_configurator import covering_array_utilities
 from Sim_ATAV.simulation_configurator import experiment_tools
 # from path import *
-from grid import *
+# from grid import *
 
 def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=120000, for_matlab=False):
     """Runs a test with the given arguments"""
@@ -80,10 +80,10 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 2
-    vhc_obj.set_vehicle_model('ToyotaPrius')
+    vhc_obj.set_vehicle_model('TeslaModel3')
     vhc_obj.color = [1.0, 0.0,  0.0]
     vhc_obj.controller = 'path_and_speed_follower'
-    vhc_obj.controller_arguments.append('15.0')
+    vhc_obj.controller_arguments.append('25.0')
     vhc_obj.controller_arguments.append('True')
     vhc_obj.controller_arguments.append('3.5')
     vhc_obj.controller_arguments.append('2')
@@ -188,7 +188,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     #                    [-200.0, -4.0],
     #                    [-1000.0, -3.5]]
     # target_pos_list = static_path
-    target_pos_list = [[500.0, 3.5],
+    target_pos_list = [[400.0, 3.5],
                        [350.0, 3.6],
                        [305.0, 3.6],
                        [300.0, 3.2],
@@ -236,6 +236,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                        [500+20*math.sin(12.0/4), -20*math.cos(12.0/4)-20],
                        [500.0, 0.0],
                        [0.0,   0.0]]
+    # target_pos_list = [[350.0, 0.0], [0.0, 0.0]]
     # target_pos_list = travel_path
     # print(target_pos_list)
 
