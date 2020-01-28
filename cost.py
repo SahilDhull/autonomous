@@ -34,10 +34,13 @@ def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
         return 0.1
     return turn_radius
 
+def pr(a):
+    for i in a:
+        print(i, end=' ')
 
 def cost(c1, pt1,pt2, off=0.0):
-    print(pt1)
-    print(pt2)
+    # print(pt1)
+    # print(pt2)
     # r = RadiusofCurvature(pt1[0],pt2[0])
     R={}
     R[0] = inf
@@ -70,7 +73,7 @@ def computeTargetPath(cur_pt):
     actual_tim = [p/4.0 for p in range(10)]
 
     if(x1>-1000.0 and cur_pt[1]> (-20.0) ):
-        x2 = x1-30
+        x2 = x1-10
         # 1st part
         y1 = 0.0
         for i in np.arange(x1,x2,-x_step):
@@ -164,7 +167,12 @@ def computeTargetPath(cur_pt):
     (i,j,ind1,ind2,ind3) = final_pos
     # # print(p[i][j][ind1][ind2][ind3])
     while ( (p[i][j][ind1][ind2][ind3]) !=(-1,-1,-1,-1,-1) ):
-        travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),a[ind1],actual_vel[ind2],actual_tim[ind3]]] + travel_path
+        # pr([i,j,ind1,ind2,ind3])
+        # print(grid_points[i][j])
+        # print(a)
+        # print(actual_vel)
+        # print(actual_tim)
+        travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),a,actual_vel[ind2],actual_tim[ind3]]] + travel_path
         (i,j,ind1,ind2,ind3) = (p[i][j][ind1][ind2][ind3])
     print(travel_path)
 
