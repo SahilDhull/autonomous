@@ -3,6 +3,7 @@ import math
 import copy
 import dubins
 import shapely.geometry as geom
+import threading
 
 inf = 1e9
 
@@ -35,8 +36,8 @@ def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
 
 
 def cost(c1, pt1,pt2, off=0.0):
-    # print(pt1)
-    # print(pt2)
+    print(pt1)
+    print(pt2)
     # r = RadiusofCurvature(pt1[0],pt2[0])
     R={}
     R[0] = inf
@@ -122,7 +123,6 @@ def computeTargetPath(cur_pt):
     cf = inf
     for i in  range(Y-1):
         for j in range(X):
-            print(str(i)+" "+str(j))
             for ind1,a in enumerate(acc):
                 for ind2,v in enumerate(vel):
                     for ind3,t in enumerate(tim):
@@ -137,17 +137,17 @@ def computeTargetPath(cur_pt):
                                     continue
                                 else:
                                     v_f = v_f ** 0.5
-                                if v_f>9:
-                                    v_f = 9
+                                
                                 ind5 = math.floor(v_f)
-                                if v_f == v:
-                                    t_f = 5.0/v + actual_tim[ind3]
+                                ind5 = min(ind5,9)
+                                if v_f == actual_vel[ind2]:
+                                    t_f = 5.0/v_f + actual_tim[ind3]
                                 else: 
-                                    t_f = (v_f-v)/a_f + actual_tim[ind3]
+                                    t_f = (v_f-actual_vel[ind2])/a_f + actual_tim[ind3]
                                 ind6 = math.floor(t_f*4)
-                                if(ind6>9):
-                                    continue
-                                print (str(i)+" "+str(k)+" "+str(ind4)+" "+str(ind5)+" "+str(ind6))
+                                ind6 = min(ind6,9)
+
+                                # print (str(i)+" "+str(k)+" "+str(ind4)+" "+str(ind5)+" "+str(ind6))
                                 cur_cost = cost(c[i][j][ind1][ind2][ind3],(grid_points[i][j],a,actual_vel[ind2],actual_tim[ind3]),(grid_points[i+1][k],a_f,v_f,t_f))
                                 if(c[i+1][k][ind4][ind5][ind6] > cur_cost):
                                     c[i+1][k][ind4][ind5][ind6] = cur_cost
