@@ -18,9 +18,12 @@ class PathFollowingTools(object):
     def __init__(self, target_points=None):
         if target_points is None:
             self.target_path = None
+            self.future_starting_point = None
             self.starting_point = None
             self.detour_path = None
             self.path_details = None
+            self.future_target_path = None
+            self.future_path_details = None
         else:
             self.starting_point = target_points[0]
             self.target_path = geom.LineString(target_points)
@@ -34,6 +37,8 @@ class PathFollowingTools(object):
             self.starting_point = target_pt
         elif self.target_path is None:
             self.target_path = geom.LineString([self.starting_point, target_pt])
+        elif self.target_path == []:
+            self.target_path = geom.LineString([self.starting_point, target_pt])
         else:
             points = list(self.target_path.coords)
             if location == -1:
@@ -41,6 +46,22 @@ class PathFollowingTools(object):
             else:
                 points.insert(location, (target_pt[0], target_pt[1]))
             self.target_path = geom.LineString(points)
+
+    def add_future_point_to_path(self, target_pt, location=-1):
+        """Add a new point to the path. Handles creation of the path if there is no path."""
+        if self.future_starting_point is None:
+            self.future_starting_point = target_pt
+        elif self.future_target_path is None:
+            self.future_target_path = geom.LineString([self.starting_point, target_pt])
+        elif self.future_target_path == []:
+            self.future_target_path = geom.LineString([self.starting_point, target_pt])
+        else:
+            points = list(self.future_target_path.coords)
+            if location == -1:
+                points.append((target_pt[0], target_pt[1]))
+            else:
+                points.insert(location, (target_pt[0], target_pt[1]))
+            self.future_target_path = geom.LineString(points)
 
     def get_distance_and_angle_error(self, vhc_pos, vhc_bearing, last_segment_ind=0, is_detouring=False):
         """Compute shortest distance to the path and orientation error wrt the closest point on the path."""
@@ -249,9 +270,58 @@ class PathFollowingTools(object):
                         self.add_point_to_path(new_point, location=insert_location)
                         insert_location += 1
 
+    def smoothen_the_future_path(self, turn_radius=10.0, step_size=1.0):
+        """Converts linear segments to Dubins path where necessary."""
+        new_segments = []
+        if self.future_target_path is not None and len(self.future_target_path.coords) > 0:
+            # First, connect turns with Dubins paths:
+            num_original_points = len(self.future_target_path.coords)
+            for pt_ind in range(num_original_points - 3):
+                (init_line_segment_as_list, line_segment_as_vector, cur_angle, segment_length) = \
+                    self.get_future_line_segment(pt_ind)
+                (line_segment_as_list, line_segment_as_vector, next_angle, segment_length) = \
+                    self.get_future_line_segment(pt_ind + 1)
+                angle_diff = next_angle - cur_angle
+                if abs(angle_diff) > math.pi / 60.0:
+                    (line_segment_as_list, line_segment_as_vector, end_angle, segment_length) = \
+                        self.get_future_line_segment(pt_ind + 2)
+                    # If there is little angle difference or if the segment length is short,
+                    # don't bother creating a Dubins path for this segments.
+                    if (abs(next_angle - end_angle) > math.pi/60.0 and
+                            np.linalg.norm(np.array(line_segment_as_list[0]) -
+                                           np.array(init_line_segment_as_list[0])) > 3.0):
+                        start_pt = self.convert_point_for_dubins_computation(
+                            point_coordinates=init_line_segment_as_list[1], angle=cur_angle)
+                        end_pt = self.convert_point_for_dubins_computation(
+                            point_coordinates=line_segment_as_list[0], angle=end_angle)
+                        (configurations, path_found) = self.generate_dubins_path(start_pt, end_pt,
+                                                                                 turn_radius=turn_radius,
+                                                                                 step_size=step_size)
+                        if path_found:
+                            new_points = self.convert_dubins_configurations_to_waypoints(configurations)
+                            new_segments.append((pt_ind + 1, new_points))
+
+            for new_segment in reversed(new_segments):
+                insert_location = new_segment[0] + 1
+                new_points = new_segment[1]
+                if len(new_points) > 1:
+                    for new_point in new_points[1:]:
+                        self.add_future_point_to_path(new_point, location=insert_location)
+                        insert_location += 1
+
     def get_line_segment(self, segment_ind):
         """Returns the indexed segment as list, as vector and its angle and length."""
         line_segment = geom.LineString(self.target_path.coords[segment_ind:segment_ind + 2])
+        line_segment_as_list = list(line_segment.coords)
+        line_segment_as_vector = [line_segment_as_list[1][0] - line_segment_as_list[0][0],
+                                  line_segment_as_list[1][1] - line_segment_as_list[0][1]]
+        segment_angle = math.atan2(line_segment_as_vector[0], line_segment_as_vector[1])
+        segment_length = math.sqrt(line_segment_as_vector[0]**2 + line_segment_as_vector[1]**2)
+        return line_segment_as_list, line_segment_as_vector, segment_angle, segment_length
+
+    def get_future_line_segment(self, segment_ind):
+        """Returns the indexed segment as list, as vector and its angle and length."""
+        line_segment = geom.LineString(self.future_target_path.coords[segment_ind:segment_ind + 2])
         line_segment_as_list = list(line_segment.coords)
         line_segment_as_vector = [line_segment_as_list[1][0] - line_segment_as_list[0][0],
                                   line_segment_as_list[1][1] - line_segment_as_list[0][1]]
@@ -299,6 +369,47 @@ class PathFollowingTools(object):
                     turn_angle = math.pi
 
                 self.path_details.append((turn_angle, travel_distance))
+
+    def populate_the_future_path_with_details(self):
+        """Compute turn angle, position and distance to the next turn for each segment on the path."""
+        self.future_path_details = []
+        if self.future_target_path is not None and len(self.future_target_path.coords) > 0:
+            for current_segment_ind in range(len(self.future_target_path.coords) - 1):
+                turn_angle = 0.0
+                travel_distance = 0
+                no_turn_distance = 0
+                if current_segment_ind < len(self.future_target_path.coords) - 1:
+                    turn_started = False
+                    for pt_ind in range(current_segment_ind, len(self.future_target_path.coords) - 1):
+                        (line_segment_as_list, line_segment_as_vector, cur_angle, segment_length) = \
+                            self.get_future_line_segment(pt_ind)
+
+                        # Accumulate travel distance segment by segment
+                        if pt_ind != current_segment_ind and not turn_started:
+                            travel_distance += segment_length
+
+                        if pt_ind < len(self.future_target_path.coords) - 2:
+                            (line_segment_as_list, line_segment_as_vector, next_angle, segment_length) = \
+                                self.get_future_line_segment(pt_ind + 1)
+                            angle_diff = next_angle - cur_angle
+                            if abs(angle_diff) > math.pi/180.0:
+                                if abs(turn_angle + angle_diff) > abs(turn_angle):
+                                    turn_angle = turn_angle + angle_diff
+                                    turn_started = True
+                                    no_turn_distance = 0
+                                else:
+                                    break
+                            else:
+                                no_turn_distance += segment_length
+                                if turn_started and no_turn_distance > 10.0:
+                                    break
+                        else:
+                            turn_angle = math.pi
+                else:  # last segment
+                    travel_distance = 0.0
+                    turn_angle = math.pi
+
+                self.future_path_details.append((turn_angle, travel_distance))
 
     def get_expected_travel_times_for_wpts(self, current_speed_m_s, current_position, current_segment_ind=0):
         """This makes a rough computation on time to reach to each waypoint.
