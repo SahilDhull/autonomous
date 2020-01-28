@@ -69,10 +69,15 @@ def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
 
 
 def cost(c1, pt1,pt2, off=0.0):
-    r = RadiusofCurvature(pt1,pt2)
+    # r = RadiusofCurvature(pt1,pt2)
+    R={}
+    R[0] = inf
+    R[0.4] = 14.58
+    R[0.8] = 7.48
+    R[1.2] = 5.08
+    # For straight line only
+    r = R[round(abs(pt2[1]-pt1[1]),1)]
     return c1 + math.sqrt((pt2[0]-pt1[0])**2 + (pt2[1]-pt1[1])**2) + 10.0/r + 10.0*abs(off)
-
-
 
 
 def debug_print(print_str):

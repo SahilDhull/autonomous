@@ -37,7 +37,14 @@ def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
 def cost(c1, pt1,pt2, off=0.0):
     # print(pt1)
     # print(pt2)
-    r = RadiusofCurvature(pt1[0],pt2[0])
+    # r = RadiusofCurvature(pt1[0],pt2[0])
+    R={}
+    R[0] = inf
+    R[0.4] = 14.58
+    R[0.8] = 7.48
+    R[1.2] = 5.08
+    # For straight line only
+    r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(off)
     dynamic_cost = 10*(pt2[3]-pt1[3]) + pt2[2]**2 + 0.1*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
     return static_cost + dynamic_cost 
@@ -56,13 +63,13 @@ def computeTargetPath(cur_pt):
 
     
     acc= [-2.5,-2.0,-1.5,-1.0,-0.5,0.01,0.5,1.0,1.5,2.0,2.5]
-    vel = [v for v in range(31)]
-    actual_vel = [v for v in range(31)]
-    tim = [p/4.0 for p in range(40)]
-    actual_tim = [p/4.0 for p in range(40)]
+    vel = [v for v in range(10)]
+    actual_vel = [v for v in range(10)]
+    tim = [p/4.0 for p in range(10)]
+    actual_tim = [p/4.0 for p in range(10)]
 
     if(x1>-1000.0 and cur_pt[1]> (-20.0) ):
-        x2 = x1-90
+        x2 = x1-30
         # 1st part
         y1 = 0.0
         for i in np.arange(x1,x2,-x_step):
@@ -100,7 +107,7 @@ def computeTargetPath(cur_pt):
             c.append(k)
             p.append(f)
 
-    # print(p[0][0][0][0][0])
+    # print(c[0][0][0][9][0])
     y1 = cur_pt[1]
     ind2 = 0
     if (y1 >= 0.0):
@@ -115,6 +122,7 @@ def computeTargetPath(cur_pt):
     cf = inf
     for i in  range(Y-1):
         for j in range(X):
+            print(str(i)+" "+str(j))
             for ind1,a in enumerate(acc):
                 for ind2,v in enumerate(vel):
                     for ind3,t in enumerate(tim):
@@ -129,15 +137,17 @@ def computeTargetPath(cur_pt):
                                     continue
                                 else:
                                     v_f = v_f ** 0.5
+                                if v_f>9:
+                                    v_f = 9
                                 ind5 = math.floor(v_f)
                                 if v_f == v:
                                     t_f = 5.0/v + actual_tim[ind3]
                                 else: 
                                     t_f = (v_f-v)/a_f + actual_tim[ind3]
                                 ind6 = math.floor(t_f*4)
-                                if(ind6>29):
+                                if(ind6>9):
                                     continue
-                                
+                                print (str(i)+" "+str(k)+" "+str(ind4)+" "+str(ind5)+" "+str(ind6))
                                 cur_cost = cost(c[i][j][ind1][ind2][ind3],(grid_points[i][j],a,actual_vel[ind2],actual_tim[ind3]),(grid_points[i+1][k],a_f,v_f,t_f))
                                 if(c[i+1][k][ind4][ind5][ind6] > cur_cost):
                                     c[i+1][k][ind4][ind5][ind6] = cur_cost
