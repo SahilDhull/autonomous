@@ -133,7 +133,7 @@ def computeTargetPath(cur_pt):
     # (i,j,ind1,ind2,ind3) = final_pos
     # # # print(p[i][j][ind1][ind2][ind3])
     # while ( (p[i][j][ind1][ind2][ind3]) !=(-1,-1,-1,-1,-1) ):
-    #     travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),a[ind1],actual_vel[ind2],actual_tim[ind3]]] + travel_path
+    #     travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),acc[ind1],actual_vel[ind2],actual_tim[ind3]]] + travel_path
     #     (i,j,ind1,ind2,ind3) = (p[i][j][ind1][ind2][ind3])
     # print(travel_path)
 
