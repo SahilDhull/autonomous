@@ -51,7 +51,7 @@ def cost(c1, pt1,pt2, off=0.0):
 	# For straight line only
 	r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
 	static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(off)
-	dynamic_cost = 10*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.01 + 0.1*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
+	dynamic_cost = 10*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
 	return static_cost + dynamic_cost 
 
 def computeTargetPath(cur_pt):
@@ -90,28 +90,23 @@ def computeTargetPath(cur_pt):
 		Y = len(grid_points)
 		#initialisation
 		for j in range(Y):
-			k = []
-			f = []
+			k1 = []
+			f1 = []
 			for i in range(X):
-				k1 = []
-				f1 = []
-				for ind,a in enumerate(acc):
-					k2 = []
-					f2 = []
-					for v in vel:
-						k3 = []
-						f3 = []
-						for t in tim:
-							k3.append(inf)
-							f3.append((-1,-1,-1,-1,-1))
-						k2.append(k3)
-						f2.append(f3)
-					k1.append(k2)
-					f1.append(f2)
-				k.append(k1)
-				f.append(f1)
-			c.append(k)
-			p.append(f)
+				k2 = []
+				f2 = []
+				for v in vel:
+					k3 = []
+					f3 = []
+					for t in tim:
+						k3.append(inf)
+						f3.append((-1,-1,-1,-1))
+					k2.append(k3)
+					f2.append(f3)
+				k1.append(k2)
+				f1.append(f2)
+			c.append(k1)
+			p.append(f1)
 
 
 	actual_vel = []
@@ -119,11 +114,8 @@ def computeTargetPath(cur_pt):
 		v1 = []
 		for j in range(X):
 			v2 = []
-			for ai in acc:
-				v3 = []
-				for ti in tim:
-					v4 = [v for v in range(10)]
-					v3.append(v4)
+			for ti in tim:
+				v3 = [v for v in range(10)]
 				v2.append(v3)
 			v1.append(v2)
 		actual_vel.append(v1)
@@ -134,14 +126,27 @@ def computeTargetPath(cur_pt):
 		t1 = []
 		for j in range(X):
 			t2 = []
-			for ai in acc:
-				t3 = []
-				for vi in vel:
-					t4 = [p/4.0 for p in range(10)]
-					t3.append(t4)
+			for vi in vel:
+				t3 = [p/4.0 for p in range(10)]
 				t2.append(t3)
 			t1.append(t2)
 		actual_tim.append(t1)
+
+
+	prev_acc = []
+	for i in range(Y):
+		a1 =  []
+		for j in range(X):
+			a2 = []
+			for vi in vel:
+				a3 = []
+				for ti in tim:
+					a3.append(0.0)
+				a2.append(a3)
+			a1.append(a2)
+		prev_acc.append(a1)
+
+
 
 	# print(c[0][0][0][9][0])
 	y1 = cur_pt[1]
@@ -151,61 +156,61 @@ def computeTargetPath(cur_pt):
 	else:
 		ind2 = 9+round((-y1)/0.4,0)
 	ind2 = int(ind2)
-	c[0][ind2][0][0][0] = 0.0
+	c[0][ind2][0][0] = 0.0
 
 	
-	final_pos = [-1,-1,-1,-1,-1]
+	final_pos = [-1,-1,-1,-1]
 	cf = inf
 	for i in  range(Y-1):
 		for j in range(X):
-			for ind1,a in enumerate(acc):
-				for ind2,v in enumerate(vel):
-					for ind3,t in enumerate(tim):
-						m1 = max(0,j-3)
-						m2 = min(X-1,j+3)
-						for k in range(m1,m2+1):
-							for ind4,a_f in enumerate(acc):
-								cur_cost = 0
-								v_f = ( (actual_vel[i][j][ind1][ind3][ind2]**2) +10*a_f)
-								if(v_f < 0):
-									v_f =0
-									continue
-								else:
-									v_f = v_f ** 0.5
+			for ind2,v in enumerate(vel):
+				for ind3,t in enumerate(tim):
+					m1 = max(0,j-3)
+					m2 = min(X-1,j+3)
+					for k in range(m1,m2+1):
+						for ind4,a_f in enumerate(acc):
+							cur_cost = 0
+							v_f = ( (actual_vel[i][j][ind3][ind2]**2) +10*a_f)
+							if(v_f < 0):
+								v_f =0
+								continue
+							else:
+								v_f = v_f ** 0.5
 								
-								ind5 = math.floor(v_f)
-								ind5 = min(ind5,9)
-								if v_f == actual_vel[i][j][ind1][ind3][ind2]:
-									t_f = 5.0/v_f + actual_tim[i][j][ind1][ind2][ind3]
-								else: 
-									t_f = (v_f-actual_vel[i][j][ind1][ind3][ind2])/a_f + actual_tim[i][j][ind1][ind2][ind3]
-								ind6 = math.floor(t_f*4)
-								ind6 = min(ind6,9)
+							ind5 = math.floor(v_f)
+							ind5 = min(ind5,9)
+							if v_f == actual_vel[i][j][ind3][ind2]:
+								t_f = 5.0/v_f + actual_tim[i][j][ind2][ind3]
+							else: 
+								t_f = (v_f-actual_vel[i][j][ind3][ind2])/a_f + actual_tim[i][j][ind2][ind3]
+							ind6 = math.floor(t_f*4)
+							ind6 = min(ind6,9)
 
-								# print (str(i)+" "+str(k)+" "+str(ind4)+" "+str(ind5)+" "+str(ind6))
-								cur_cost = cost(c[i][j][ind1][ind2][ind3],(grid_points[i][j],a,actual_vel[i][j][ind1][ind3][ind2],actual_tim[i][j][ind1][ind2][ind3]),(grid_points[i+1][k],a_f,v_f,t_f))
-								if(c[i+1][k][ind4][ind5][ind6] > cur_cost):
-									c[i+1][k][ind4][ind5][ind6] = cur_cost
-									actual_vel[i+1][k][ind4][ind6][ind5] = v_f
-									actual_tim[i+1][k][ind4][ind5][ind6] = t_f
-									p[i+1][k][ind4][ind5][ind6] = (i,j,ind1,ind2,ind3)
-									if i==Y-2 and cf > cur_cost:
-										cf =cur_cost
-										final_pos = (i+1,k,ind4,ind5,ind6)
+							# print (str(i)+" "+str(k)+" "+str(ind4)+" "+str(ind5)+" "+str(ind6))
+							cur_cost = cost(c[i][j][ind2][ind3],(grid_points[i][j],prev_acc[i][j][ind2][ind3],actual_vel[i][j][ind3][ind2],actual_tim[i][j][ind2][ind3]),(grid_points[i+1][k],a_f,v_f,t_f))
+							if(c[i+1][k][ind5][ind6] > cur_cost):
+								c[i+1][k][ind5][ind6] = cur_cost
+								prev_acc[i+1][k][ind5][ind6] = a_f
+								actual_vel[i+1][k][ind6][ind5] = v_f
+								actual_tim[i+1][k][ind5][ind6] = t_f
+								p[i+1][k][ind5][ind6] = (i,j,ind2,ind3)
+								if i==Y-2 and cf > cur_cost:
+									cf =cur_cost
+									final_pos = (i+1,k,ind5,ind6)
 
 	print(final_pos)
 	
 	travel_path = []
-	(i,j,ind1,ind2,ind3) = final_pos
+	(i,j,ind2,ind3) = final_pos
 	# # print(p[i][j][ind1][ind2][ind3])
-	while ( (p[i][j][ind1][ind2][ind3]) !=(-1,-1,-1,-1,-1) ):
+	while ( (p[i][j][ind2][ind3]) !=(-1,-1,-1,-1) ):
 		# pr([i,j,ind1,ind2,ind3])
 		# print(grid_points[i][j])
 		# print(a)
 		# print(actual_vel)
 		# print(actual_tim)
-		travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),acc[ind1],actual_vel[i][j][ind1][ind3][ind2],actual_tim[i][j][ind1][ind2][ind3]]] + travel_path
-		(i,j,ind1,ind2,ind3) = (p[i][j][ind1][ind2][ind3])
+		travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),prev_acc[i][j][ind2][ind3],actual_vel[i][j][ind3][ind2],actual_tim[i][j][ind2][ind3]]] + travel_path
+		(i,j,ind2,ind3) = (p[i][j][ind2][ind3])
 	print(travel_path)
 
 	
