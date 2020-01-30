@@ -377,7 +377,7 @@ class PathAndSpeedFollower(BaseCarController):
 
             if self.is_direct_speed_control:
 
-                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
+                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
                 
                 '''
                 v = 0.1
@@ -404,11 +404,11 @@ class PathAndSpeedFollower(BaseCarController):
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
 
-                if cur_time_ms<3010:
-                    x = 0.0
-                else:
-                    x = controller_commons.speed_ms_to_kmh(5.0)
-                self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                # if cur_time_ms<8010:
+                #     x = 0.0
+                # else:
+                #     x = controller_commons.speed_ms_to_kmh(10.0)
+                # self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
                 #                                                                              current_target_speed)),
                 #                                 angle=control_steering)
@@ -510,7 +510,6 @@ class PathAndSpeedFollower(BaseCarController):
                 if path_modified:
                     self.path_following_tools.smoothen_the_path()
                     self.path_following_tools.populate_the_path_with_details()
-                    # print(self.path_following_tools.target_path)
 
             #----------Dynamic Path computation starts-------------------------
             '''

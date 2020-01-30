@@ -514,6 +514,7 @@ class PathAndSpeedFollower(BaseCarController):
             #----------Dynamic Path computation starts-------------------------
             
             if(cur_time_ms == 10):
+                print(self.path_following_tools.target_path)
                 cur_position = get_self_position()
                 t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,))
                 t1.start() 
