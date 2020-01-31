@@ -37,8 +37,10 @@ t1 = 5000
 v1 = 0.1
 flag = 0
 suboptimalPath = []
-
-
+target_a = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5]
+target_v = [5.0, 7.0710678118654755, 8.660254037844387, 10.0, 11.180339887498949, 12.24744871391589, 13.228756555322953, 14.142135623730951, 15.000000000000002, 15.811388300841898, 16.583123951777, 17.320508075688775, 18.02775637731995, 18.70828693386971, 19.364916731037088, 20.000000000000004, 20.615528128088304, 21.213203435596427, 21.79449471770337, 22.360679774997898, 22.912878474779202, 23.45207879911715, 23.9791576165636, 24.494897427831784, 25.000000000000004, 25.495097567963928, 25.980762113533164, 26.45751311064591, 26.925824035672523]
+target_t = [2.0, 2.8284271247461903, 3.4641016151377553, 4.0, 4.47213595499958, 4.898979485566356, 5.2915026221291805, 5.65685424949238, 6.0, 6.324555320336758, 6.6332495807108, 6.928203230275509, 7.211102550927979, 7.4833147735478835, 7.745966692414834, 8.0, 8.24621125123532, 8.485281374238568, 8.717797887081344, 8.944271909999156, 9.165151389911678, 9.380831519646858, 9.591663046625438, 9.797958971132712, 10.0, 10.198039027185569, 10.392304845413264, 10.583005244258363, 10.77032961426901]
+time_index = 0
 inf = 1e9
 
 def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
@@ -403,12 +405,19 @@ class PathAndSpeedFollower(BaseCarController):
                 #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
-
+                global time_index
                 if cur_time_ms<3010:
                     x = 0.0
+                    self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 else:
-                    x = controller_commons.speed_ms_to_kmh(5.0)
-                self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                    # if(target_t[time_index] > ((cur_time_ms/1000.0) -3) ):
+                    #     x = controller_commons.speed_ms_to_kmh(target_v[time_index])
+                    # else:
+                    #     time_index = time_index + 1
+                    #     x = controller_commons.speed_ms_to_kmh(target_v[time_index])
+                    self.set_throttle_and_steering_angle(0.3, control_steering)
+                # print(x)
+                # self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
                 #                                                                              current_target_speed)),
                 #                                 angle=control_steering)

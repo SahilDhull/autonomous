@@ -222,7 +222,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     #############################################
 
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [501.0, 0.35, 3.6]
+    vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 1
@@ -250,7 +250,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [501.0, 0.35, 0.0]
+    vhc_obj.current_position = [500.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 2
@@ -322,8 +322,8 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
 
     # ----- Controller Parameters:
     # Ego Target Path:
-    target_pos_list = [[502.0, 3.6],
-                       [-400.0, 3.6]]
+    target_pos_list = [[451.0, 0.0],
+                       [-400.0, 0.0]]
 
     
     # Agent Target Path:
@@ -419,9 +419,11 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     '''
     # target_pos_list = computeTargetPath()
     # target_pos_list = []
-    target_pos_list = [[502.0, 0.0],
-                       [-400.0, 0.0]]
+    # target_pos_list = [[502.0, 0.0],
+    #                    [-400.0, 0.0]]
 
+    target_pos_list = [[500.0,0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
+    
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
             WebotsControllerParameter(vehicle_id=2,
