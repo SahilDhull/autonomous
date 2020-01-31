@@ -377,7 +377,7 @@ class PathAndSpeedFollower(BaseCarController):
 
             if self.is_direct_speed_control:
 
-                self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
+                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
                 
                 '''
                 v = 0.1
@@ -404,11 +404,11 @@ class PathAndSpeedFollower(BaseCarController):
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
 
-                # if cur_time_ms<8010:
-                #     x = 0.0
-                # else:
-                #     x = controller_commons.speed_ms_to_kmh(10.0)
-                # self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                if cur_time_ms<8010:
+                    x = 0.0
+                else:
+                    x = controller_commons.speed_ms_to_kmh(10.0)
+                self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
                 #                                                                              current_target_speed)),
                 #                                 angle=control_steering)
@@ -512,13 +512,13 @@ class PathAndSpeedFollower(BaseCarController):
                     self.path_following_tools.populate_the_path_with_details()
 
             #----------Dynamic Path computation starts-------------------------
-            '''
+            
             if(cur_time_ms == 10):
+                print(self.path_following_tools.target_path)
                 cur_position = get_self_position()
                 t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,))
                 t1.start() 
 
-            
             global suboptimalPath
             if (cur_time_ms == 8000):
                 t1.join()
@@ -536,18 +536,37 @@ class PathAndSpeedFollower(BaseCarController):
 
             elif (cur_time_ms % 8000 == 0):
                 t1.join()
-            
                 # print(suboptimalPath)
                 # cur_position = get_self_position()
                 # (cur_seg,line_seg,nearest_pos,dis) = self.path_following_tools.get_current_segment(cur_position,0,self.path_following_tools.target_path)
                 
+                '''
+                cur_target_path = list(self.path_following_tools.target_path.coords)
+                cur_path_details = self.path_following_tools.path_details
+                
+                self.path_following_tools.target_path = None
+                self.path_following_tools.path_details = None
+                self.path_following_tools.starting_point = (cur_target_path[-3][0],cur_target_path[-3][1])
+                
+                suboptimalPath = [[cur_target_path[-2][0],cur_target_path[-2][1]]] + [[cur_target_path[-1][0],cur_target_path[-1][1]]] + suboptimalPath
+                for pt in suboptimalPath:
+                    self.path_following_tools.add_point_to_path(pt)
+
+                self.path_following_tools.smoothen_the_path()
+                self.path_following_tools.populate_the_path_with_details()
+                 
+                cur_target_path = cur_target_path[:-3] + list(self.path_following_tools.target_path.coords)
+                self.path_following_tools.target_path = geom.LineString(cur_target_path)
+                cur_path_details = cur_path_details[:-3] + self.path_following_tools.path_details
+                self.path_following_tools.path_details = cur_path_details
+                '''
                 self.path_following_tools.target_path = self.path_following_tools.future_target_path
                 self.path_following_tools.path_details = self.path_following_tools.future_path_details
 
                 cur_position = suboptimalPath[-1]
                 t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,)) 
                 t1.start()
-            '''
+
             #---------Dynamic Path computation end--------------------
             compute_and_apply_control()
 

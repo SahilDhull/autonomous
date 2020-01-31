@@ -418,7 +418,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                        [0.0,   0.0]]
     '''
     # target_pos_list = computeTargetPath()
-    target_pos_list = []
+    # target_pos_list = []
+    target_pos_list = [[502.0, 0.0],
+                       [-400.0, 0.0]]
 
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(

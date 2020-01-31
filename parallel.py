@@ -28,6 +28,42 @@ grid_points = []
 c = []
 p = []
 
+obs_initial_pos = [450.0,0.0]
+obs_vel = 5.0
+corner_local_coords = [[-1.0, 2.0], [1.0, 2.0], [-1.0, -2.0], [1.0, -2.0]]
+                
+def rotate_point_ccw(point, theta):
+    cos_theta = math.cos(theta)
+    sin_theta = math.sin(theta)
+    return np.dot(np.array([[cos_theta, -sin_theta], [sin_theta, cos_theta]]), point)
+
+def check_colliding(pt2):
+    obstacle_position = [obs_initial_pos[0] - obs_vel*pt2[3],obs_initial_pos[1]]
+    car_corner_pos = []
+    for local_coord in corner_local_coords:
+        car_corner_pos.append([pt2[0][0]+local_coord[1],pt2[0][1]+local_coord[0]])
+
+
+    obs_corner_pos = []
+    for local_coord in corner_local_coords:
+        # rotated_local_coord = \
+        #     rotate_point_ccw(point=np.transpose(np.array(local_coord)),
+        #                      rotation_angle=-detected_objects[obj_ind].object_yaw_angle)
+        rotated_local_coord = \
+            rotate_point_ccw(point=np.transpose(np.array(local_coord)),
+                             theta=0.0)
+        
+        obs_corner_pos.append([obstacle_position[0] + rotated_local_coord[1],
+                             obstacle_position[1] + rotated_local_coord[0]])
+
+
+    collision = 0
+    for pos in car_corner_pos:
+        if (pos[0]>=obs_corner_pos[2][0] and pos[0]<=obs_corner_pos[0][0] and pos[1]<=obs_corner_pos[1][1] and pos[1]>=obs_corner_pos[0][1]): 
+            collision=1
+            break
+    return collision    
+
 def cost(c1, pt1,pt2, off=0.0):
     # print(pt1)
     # print(pt2)
@@ -39,9 +75,10 @@ def cost(c1, pt1,pt2, off=0.0):
     R[1.2] = 5.08
     # For straight line only
     r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
-    static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(off)
-    dynamic_cost = 10*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
-    return static_cost + dynamic_cost 
+    static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(pt2[0][1])
+    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
+    
+    return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
 def computeTargetPath(cur_pt):
     x1 = round(cur_pt[0],2)
@@ -62,7 +99,7 @@ def computeTargetPath(cur_pt):
     global prev_acc
         
     if(x1>-1000.0 and cur_pt[1]> (-20.0) ):
-        x2 = x1-50
+        x2 = x1-150
         # 1st part
         y1 = 0.0
         for i in np.arange(x1,x2,-x_step):
