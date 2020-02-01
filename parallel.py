@@ -8,7 +8,7 @@ import threading
 
 
 inf = 1e9
-No_of_threads = 4
+No_of_threads = 11
 acc= [-2.5,-2.0,-1.5,-1.0,-0.5,0.01,0.5,1.0,1.5,2.0,2.5]
 vel = [v for v in range(10)]
 tim = [p/4.0 for p in range(10)]
@@ -30,7 +30,7 @@ p = []
 
 obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
-corner_local_coords = [[-1.0, 2.0], [1.0, 2.0], [-1.0, -2.0], [1.0, -2.0]]
+corner_local_coords = [[-1.5, 2.0], [1.5, 2.0], [-1.5, -2.0], [1.5, -2.0]]
                 
 def rotate_point_ccw(point, theta):
     cos_theta = math.cos(theta)
@@ -76,7 +76,7 @@ def cost(c1, pt1,pt2, off=0.0):
     # For straight line only
     r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(pt2[0][1])
-    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
+    dynamic_cost = 10*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -180,14 +180,35 @@ def computeTargetPath(cur_pt):
         t1= threading.Thread(target=parallel_func, args=(1,i,X,))
         t2= threading.Thread(target=parallel_func, args=(2,i,X,))
         t3= threading.Thread(target=parallel_func, args=(3,i,X,))
+        t4= threading.Thread(target=parallel_func, args=(4,i,X,))
+        t5= threading.Thread(target=parallel_func, args=(5,i,X,))
+        t6= threading.Thread(target=parallel_func, args=(6,i,X,))
+        t7= threading.Thread(target=parallel_func, args=(7,i,X,))
+        t8= threading.Thread(target=parallel_func, args=(8,i,X,))
+        t9= threading.Thread(target=parallel_func, args=(9,i,X,))
+        t10= threading.Thread(target=parallel_func, args=(10,i,X,))
         t0.start()
         t1.start()
         t2.start()
         t3.start()
+        t4.start()
+        t5.start()
+        t6.start()
+        t7.start()
+        t8.start()
+        t9.start()
+        t10.start()
         t0.join()
         t1.join()
         t2.join()
         t3.join()
+        t4.join()
+        t5.join()
+        t6.join()
+        t7.join()
+        t8.join()
+        t9.join()
+        t10.join()
 
     i = Y-2
     cf = inf

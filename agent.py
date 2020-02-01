@@ -168,7 +168,7 @@ def computeTargetPath():
 
     return travel_path
 
-def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=30000, for_matlab=False):
+def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=300000, for_matlab=False):
     """Runs a test with the given arguments"""
 
     sim_environment = SimEnvironment()
@@ -422,9 +422,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                        [0.0,   0.0]]
     '''
     # target_pos_list = computeTargetPath()
-    # target_pos_list = []
-    target_pos_list = [[502.0, 0.0],
-                       [-400.0, 0.0]]
+    target_pos_list = [[495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
+    # target_pos_list = [[502.0, 0.0],
+    #                    [-400.0, 0.0]]
 
     # target_pos_list = [[500.0,0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
     
@@ -443,9 +443,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     sim_environment.view_follow_config = \
         ViewFollowConfig(item_type=ItemDescription.ITEM_TYPE_VEHICLE,
                          item_index=0,
-                         position=[sim_environment.agent_vehicles_list[0].current_position[0] + 15.0,
-                                   sim_environment.agent_vehicles_list[0].current_position[1] + 2.0,
-                                   sim_environment.agent_vehicles_list[0].current_position[2]],
+                         position=[sim_environment.agent_vehicles_list[1].current_position[0] + 15.0,
+                                   sim_environment.agent_vehicles_list[1].current_position[1] + 2.0,
+                                   sim_environment.agent_vehicles_list[1].current_position[2]],
                          rotation=[0.0, -1.0, 0.0, -math.pi/2.0])
 
     # ----- Data Log Configurations:
