@@ -222,7 +222,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     '''
 
     #############################################
-    '''
+    
     vhc_obj = WebotsVehicle()
     vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
@@ -249,7 +249,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
     sim_environment.agent_vehicles_list.append(vhc_obj)
-    '''
+    
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
@@ -369,6 +369,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
             WebotsControllerParameter(vehicle_id=1,
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
+
     # target_pos_list = static_path
     '''
     target_pos_list = [[400.0, 3.5],

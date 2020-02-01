@@ -26,6 +26,7 @@ from Sim_ATAV.vehicle_control.controller_commons.planning.target_speed_planner i
 from Sim_ATAV.vehicle_control.generic_stanley_controller.generic_stanley_controller \
     import GenericStanleyController
 from Sim_ATAV.vehicle_control.generic_pid_controller.generic_pid_controller import GenericPIDController
+from vel_acc_to_throttle import *
 
 WORLD_TIME_STEP_MS = 10
 HAS_DEBUG_DISPLAY = True
@@ -410,14 +411,16 @@ class PathAndSpeedFollower(BaseCarController):
                     x = 0.0
                     self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 else:
-                    # if(target_t[time_index] > ((cur_time_ms/1000.0) -3) ):
-                    #     x = controller_commons.speed_ms_to_kmh(target_v[time_index])
-                    # else:
-                    #     time_index = time_index + 1
-                    #     x = controller_commons.speed_ms_to_kmh(target_v[time_index])
-                    # self.set_throttle_and_steering_angle(0.3, control_steering)
-                    x = 10.0
-                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x),angle=control_steering)
+                    if(target_t[time_index] > ((cur_time_ms/1000.0) -3) ):
+                        x = controller_commons.speed_ms_to_kmh(target_v[time_index])
+                    else:
+                        time_index = time_index + 1
+                        # x = controller_commons.speed_ms_to_kmh(target_v[time_index])
+                    cur_v = target_v[time_index]
+                    cur_a = target_a[time_index]
+                    self.set_throttle_and_steering_angle(throttle_value(cur_v,cur_a), control_steering)
+                    # x = 10.0
+                    # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x),angle=control_steering)
                 # print(x)
                 # self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
