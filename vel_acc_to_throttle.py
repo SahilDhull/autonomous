@@ -122,9 +122,17 @@ vel_acc_dict.update(t_100_map)
 
 # print (vel_acc_dict)
 
+# temp = vel_acc_dict.keys()
+
+# a,b = map(list, zip(*temp))
+
 def throttle_value(v,a):
+	v = round(v,2)
+	a = round(a,2)
 	if (v,a) in vel_acc_dict:
 		return vel_acc_dict[(v,a)]
+	else:
+		return vel_acc_dict[min(vel_acc_dict.keys(), key=lambda k: abs((k[0]-v)**2+(k[1]-a)**2))]
 	return -1
 
-print(throttle_value(0.3,6))
+# print(throttle_value(0.3,6))

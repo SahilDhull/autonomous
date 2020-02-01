@@ -222,7 +222,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     '''
 
     #############################################
-    '''
+    
     vhc_obj = WebotsVehicle()
     vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
@@ -249,7 +249,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
     sim_environment.agent_vehicles_list.append(vhc_obj)
-    '''
+    
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
@@ -363,13 +363,13 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     #                    [-200.0, -4.0],
     #                    [-1000.0, -3.5]]
 
-    '''
+    
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
             WebotsControllerParameter(vehicle_id=1,
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
-    '''
+    
     # target_pos_list = static_path
     '''
     target_pos_list = [[400.0, 3.5],
@@ -423,12 +423,12 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     '''
     # target_pos_list = computeTargetPath()
     # target_pos_list = []
-    # target_pos_list = [[502.0, 0.0],
-    #                    [-400.0, 0.0]]
+    target_pos_list = [[502.0, 0.0],
+                       [-400.0, 0.0]]
 
     # target_pos_list = [[500.0,0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
     
-    target_pos_list = [[501.0,0.0],[450.0,0.0],[445.0,0.8],[440.0,1.6],[350.0,1.6]]
+    # target_pos_list = [[501.0,0.0],[450.0,0.0],[445.0,0.8],[440.0,1.6],[350.0,1.6]]
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
             WebotsControllerParameter(vehicle_id=2,
