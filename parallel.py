@@ -30,7 +30,11 @@ p = []
 
 obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
+<<<<<<< HEAD
 corner_local_coords = [[-1.5, 2.0], [1.5, 2.0], [-1.5, -2.0], [1.5, -2.0]]
+=======
+corner_local_coords = [[-1.35, 2.0], [1.35, 2.0], [-1.35, -2.0], [1.35, -2.0]]
+>>>>>>> d9b41ee8d8b4e033f6fba0b76194ea1673d05f8d
                 
 def rotate_point_ccw(point, theta):
     cos_theta = math.cos(theta)
