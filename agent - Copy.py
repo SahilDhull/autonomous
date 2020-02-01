@@ -2,8 +2,6 @@ import os
 import sys
 import math
 import time
-import  csv
-
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../')  # This is needed for the calls from Matlab
 from Sim_ATAV.simulation_control.sim_data import SimData
 from Sim_ATAV.simulation_control.webots_sensor import WebotsSensor
@@ -168,7 +166,7 @@ def computeTargetPath():
 
     return travel_path
 
-def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=30000, for_matlab=False):
+def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=300000, for_matlab=False):
     """Runs a test with the given arguments"""
 
     sim_environment = SimEnvironment()
@@ -222,7 +220,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     '''
 
     #############################################
-    '''
+
     vhc_obj = WebotsVehicle()
     vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
@@ -249,7 +247,6 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
     sim_environment.agent_vehicles_list.append(vhc_obj)
-    '''
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
@@ -363,13 +360,12 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     #                    [-200.0, -4.0],
     #                    [-1000.0, -3.5]]
 
-    '''
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
             WebotsControllerParameter(vehicle_id=1,
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
-    '''
+
     # target_pos_list = static_path
     '''
     target_pos_list = [[400.0, 3.5],
@@ -426,9 +422,8 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # target_pos_list = [[502.0, 0.0],
     #                    [-400.0, 0.0]]
 
-    # target_pos_list = [[500.0,0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
+    target_pos_list = [[500.0,0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 1.2], [410.0, 2.4], [405.0, 2.4], [400.0, 1.2], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
     
-    target_pos_list = [[501.0,0.0],[450.0,0.0],[445.0,0.8],[440.0,1.6],[350.0,1.6]]
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
             WebotsControllerParameter(vehicle_id=2,
@@ -443,9 +438,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     sim_environment.view_follow_config = \
         ViewFollowConfig(item_type=ItemDescription.ITEM_TYPE_VEHICLE,
                          item_index=0,
-                         position=[sim_environment.agent_vehicles_list[0].current_position[0] + 15.0,
-                                   sim_environment.agent_vehicles_list[0].current_position[1] + 2.0,
-                                   sim_environment.agent_vehicles_list[0].current_position[2]],
+                         position=[sim_environment.agent_vehicles_list[1].current_position[0] + 15.0,
+                                   sim_environment.agent_vehicles_list[1].current_position[1] + 2.0,
+                                   sim_environment.agent_vehicles_list[1].current_position[2]],
                          rotation=[0.0, -1.0, 0.0, -math.pi/2.0])
 
     # ----- Data Log Configurations:
@@ -500,11 +495,6 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     if for_matlab:
         trajectory = experiment_tools.npArray2Matlab(trajectory)
     time.sleep(1)  # Wait for Webots to reload the world.
-    # print(trajectory)
-    
-    # with open("out.csv","w") as f:
-    #     wr = csv.writer(f)
-    #     wr.writerows(trajectory)
     return trajectory
 
 
