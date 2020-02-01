@@ -415,7 +415,9 @@ class PathAndSpeedFollower(BaseCarController):
                     # else:
                     #     time_index = time_index + 1
                     #     x = controller_commons.speed_ms_to_kmh(target_v[time_index])
-                    self.set_throttle_and_steering_angle(0.3, control_steering)
+                    # self.set_throttle_and_steering_angle(0.3, control_steering)
+                    x = 10.0
+                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x),angle=control_steering)
                 # print(x)
                 # self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
@@ -522,6 +524,7 @@ class PathAndSpeedFollower(BaseCarController):
                     # print(self.path_following_tools.target_path)
 
             #----------Dynamic Path computation starts-------------------------
+            # print(self.self_current_state)
             '''
             if(cur_time_ms == 10):
                 cur_position = get_self_position()
