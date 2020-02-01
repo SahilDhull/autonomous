@@ -120,28 +120,11 @@ t_100_map = {(0.38, 8.14): 1.0, (0.79, 8.33): 1.0, (1.62, 8.29): 1.0, (2.04, 8.2
 
 vel_acc_dict.update(t_100_map)
 
-print (vel_acc_dict)
+# print (vel_acc_dict)
 
-# v_a_to_th = []
+def throttle_value(v,a):
+	if (v,a) in vel_acc_dict:
+		return vel_acc_dict[(v,a)]
+	return -1
 
-# # v = 0
-# a_to_th = {}
-# v_a_to_th.append(a_to_th)
-
-# # v = 1
-# a_to_th = {0.78:0.1, 1.6:0.2, 2.45:0.3}
-# v_a_to_th.append(a_to_th)
-
-# # v = 2
-# a_to_th = {0.73:0.1, 1.55:0.2, 2.4:0.3}
-# v_a_to_th.append(a_to_th)
-
-# # v = 3
-# a_to_th = {0.68:0.1, 1.51:0.2, 2.35:0.3}
-# v_a_to_th.append(a_to_th)
-
-# # v = 4
-# a_to_th = {0.63:1, 1.46:0.2, 2.3:0.3}
-# v_a_to_th.append(a_to_th)
-
-# print (v_a_to_th[2][2.4])
+print(throttle_value(0.3,6))
