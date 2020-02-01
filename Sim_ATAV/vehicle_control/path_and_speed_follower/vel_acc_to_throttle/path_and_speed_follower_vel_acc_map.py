@@ -1,3 +1,5 @@
+# Before running this file rename it to "path_and_speed_follower.py", else it won't run
+
 """Defines SimpleSensorFusionControl class
 ----------------------------------------------------------------------------------------------------------
 This file is part of Sim-ATAV project and licensed under MIT license.
