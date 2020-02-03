@@ -234,6 +234,7 @@ class PathFollowingTools(object):
     def smoothen_the_path(self, turn_radius=10.0, step_size=1.0):
         """Converts linear segments to Dubins path where necessary."""
         new_segments = []
+        # print(self.target_path)
         if self.target_path is not None and len(self.target_path.coords) > 0:
             # First, connect turns with Dubins paths:
             num_original_points = len(self.target_path.coords)
@@ -351,7 +352,7 @@ class PathFollowingTools(object):
                             (line_segment_as_list, line_segment_as_vector, next_angle, segment_length) = \
                                 self.get_line_segment(pt_ind + 1)
                             angle_diff = next_angle - cur_angle
-                            if abs(angle_diff) > math.pi/180.0:
+                            if abs(angle_diff) > math.pi/60.0:
                                 if abs(turn_angle + angle_diff) > abs(turn_angle):
                                     turn_angle = turn_angle + angle_diff
                                     turn_started = True
@@ -369,6 +370,8 @@ class PathFollowingTools(object):
                     turn_angle = math.pi
 
                 self.path_details.append((turn_angle, travel_distance))
+        # print(self.target_path)
+        # print(self.path_details)
 
     def populate_the_future_path_with_details(self):
         """Compute turn angle, position and distance to the next turn for each segment on the path."""

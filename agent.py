@@ -180,21 +180,21 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # sim_environment.road_list.append(road)
 
     # ----- Define VEHICLES:
-    '''
+    
     # Ego vehicle
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [500.0, 0.35, 3.6]
+    vhc_obj.current_position = [500.0, 0.35, 0.0]
     # vhc_obj.current_orientation = math.pi/2
     # vhc_obj.rotation = [0.0, 1.0, 0.0, vhc_obj.current_orientation]
-    vhc_obj.current_orientation = 0.0
+    vhc_obj.current_orientation = -math.pi/2.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2.0]
     
     vhc_obj.vhc_id = 1
-    vhc_obj.color = [1.0, 1.0, 0.0]
-    vhc_obj.set_vehicle_model('ToyotaPrius')
+    vhc_obj.color = [1.0, 0.0, 0.0]
+    vhc_obj.set_vehicle_model('TeslaModel3')
     vhc_obj.controller = 'automated_driving_with_fusion2'
     vhc_obj.is_controller_name_absolute = True
-    vhc_obj.controller_arguments.append('Toyota')
+    # vhc_obj.controller_arguments.append('Toyota')
     vhc_obj.controller_arguments.append('70.0')
     vhc_obj.controller_arguments.append('0.0')
     vhc_obj.controller_arguments.append('1')
@@ -213,16 +213,19 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array.append(WebotsSensor())
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
+    # vhc_obj.sensor_array.append(WebotsSensor())
+    # vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
+    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
+    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
     vhc_obj.sensor_array.append(WebotsSensor())
-    vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
-    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
-    vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
+    vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
     sim_environment.ego_vehicles_list.append(vhc_obj)
     
-    '''
 
     #############################################
-    
+    '''
     vhc_obj = WebotsVehicle()
     vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
@@ -249,11 +252,11 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
     sim_environment.agent_vehicles_list.append(vhc_obj)
-    
+    '''
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [500.0, 0.35, 0.0]
+    vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 2
@@ -277,8 +280,11 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array.append(WebotsSensor())
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
     sim_environment.agent_vehicles_list.append(vhc_obj)
-
 
     
 
@@ -325,7 +331,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
 
     # ----- Controller Parameters:
     # Ego Target Path:
-    target_pos_list = [[451.0, 0.0],
+    target_pos_list = [[450.0, 0.0],
                        [-400.0, 0.0]]
 
     
@@ -366,7 +372,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
-            WebotsControllerParameter(vehicle_id=1,
+            WebotsControllerParameter(vehicle_id=2,
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
 
@@ -431,7 +437,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # target_pos_list = [[501.0,0.0],[450.0,0.0],[445.0,0.8],[440.0,1.6],[350.0,1.6]]
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
-            WebotsControllerParameter(vehicle_id=2,
+            WebotsControllerParameter(vehicle_id=1,
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
 
@@ -443,9 +449,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     sim_environment.view_follow_config = \
         ViewFollowConfig(item_type=ItemDescription.ITEM_TYPE_VEHICLE,
                          item_index=0,
-                         position=[sim_environment.agent_vehicles_list[1].current_position[0] + 15.0,
-                                   sim_environment.agent_vehicles_list[1].current_position[1] + 2.0,
-                                   sim_environment.agent_vehicles_list[1].current_position[2]],
+                         position=[sim_environment.ego_vehicles_list[0].current_position[0] + 15.0,
+                                   sim_environment.ego_vehicles_list[0].current_position[1] + 2.0,
+                                   sim_environment.ego_vehicles_list[0].current_position[2]],
                          rotation=[0.0, -1.0, 0.0, -math.pi/2.0])
 
     # ----- Data Log Configurations:

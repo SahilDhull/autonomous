@@ -18,19 +18,19 @@ except:
     LIBRARY_PATH = 'C:/Program Files/Webots/lib/python36'
 LIBRARY_PATH.replace('/', os.sep)
 sys.path.append(LIBRARY_PATH)
-from Sim_ATAV.vehicle_control.automated_driving_with_fusion2.automated_driving_with_fusion2 import AutomatedDrivingControlWithFusion2
+from Sim_ATAV.vehicle_control.automated_driving_with_fusion2.automated_driving_with_fusion2 import PathAndSpeedFollower
 
 
 def run(input_args):
     """For running controller from "vehicle_controller"."""
-    controller = AutomatedDrivingControlWithFusion2(input_args)
+    controller = PathAndSpeedFollower(input_args)
     controller.run()
 
 
 def main():
     """For running the controller directly from Webots
     without passing it as a parameter to vehicle_controller"""
-    controller = AutomatedDrivingControlWithFusion2(sys.argv[1:])
+    controller = PathAndSpeedFollower(sys.argv[1:])
     controller.run()
 
 

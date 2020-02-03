@@ -27,11 +27,6 @@ from Sim_ATAV.vehicle_control.generic_stanley_controller.generic_stanley_control
     import GenericStanleyController
 from Sim_ATAV.vehicle_control.generic_pid_controller.generic_pid_controller import GenericPIDController
 
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensing.radar_detection import RadarDetection
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensor_fusion.ego_state_sensor_fusion \
-    import EgoStateSensorFusion
-
-
 WORLD_TIME_STEP_MS = 10
 HAS_DEBUG_DISPLAY = True
 SENSOR_TYPE = 'Actual'  # 'Actual', 'Perfect'
@@ -42,9 +37,8 @@ t1 = 5000
 v1 = 0.1
 flag = 0
 suboptimalPath = []
-target_throttle = [0.35, 0.35, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.65, 0.7, 0.75, 0.8, 0.8, 0.85, 0.9, 0.95, 0.95, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-target_t = [2.0, 2.8284271247461903, 3.4641016151377553, 4.0, 4.47213595499958, 4.898979485566356, 5.2915026221291805, 5.65685424949238, 6.0, 6.324555320336758, 6.6332495807108, 6.928203230275509, 7.211102550927979, 7.4833147735478835, 7.745966692414834, 8.0, 8.24621125123532, 8.485281374238568, 8.717797887081344, 8.944271909999156, 9.165151389911678, 9.380831519646858, 9.591663046625438, 9.797958971132712, 10.0, 10.198039027185569, 10.392304845413264, 10.583005244258363, 10.77032961426901]
-time_index = 0
+
+
 inf = 1e9
 
 def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
@@ -195,19 +189,6 @@ class PathAndSpeedFollower(BaseCarController):
         if self.receiver is not None:
             self.receiver.enable(WORLD_TIME_STEP_MS)
         self.emitter = self.getEmitter(self.emitter_device_name)
-        
-        ###Changes starts here
-        self.radar_front = self.getRadar(self.radar_front_device_name)
-        if self.radar_front is not None:
-            self.radar_front.enable(self.RADAR_PERIOD_MS)
-            print("radar_front is present")
-            self.radar_sensor = RadarDetection(radar_device=self.radar_front,
-                                               radar_relative_pos=(self.RADAR_FRONT_RELATIVE_POSITION[0],
-                                                                   self.RADAR_FRONT_RELATIVE_POSITION[1]))
-            # self.perception_system.register_sensor(sensor_detector=self.radar_sensor,
-            #                                        sensor_period=self.RADAR_PERIOD_MS)
-        
-        ###Changes end here
         # Start the car engine
         self.start_car()
 
@@ -422,20 +403,12 @@ class PathAndSpeedFollower(BaseCarController):
                 #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
-                global time_index
+
                 if cur_time_ms<3010:
                     x = 0.0
-                    self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 else:
-                    # if(target_t[time_index] <= ((cur_time_ms/1000.0) -3) ):
-                    #     time_index = time_index + 1
-                
-                    # self.set_throttle_and_steering_angle(throttle_value(cur_v,cur_a), control_steering)
-                    x = 5.0
-                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x),angle=control_steering)
-            
-                # print(x)
-                # self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                    x = controller_commons.speed_ms_to_kmh(5.0)
+                self.set_target_speed_and_angle(speed=x,angle=control_steering)
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
                 #                                                                              current_target_speed)),
                 #                                 angle=control_steering)
@@ -540,7 +513,6 @@ class PathAndSpeedFollower(BaseCarController):
                     # print(self.path_following_tools.target_path)
 
             #----------Dynamic Path computation starts-------------------------
-            # print(self.self_current_state)
             '''
             if(cur_time_ms == 10):
                 cur_position = get_self_position()
