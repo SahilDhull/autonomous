@@ -6,6 +6,7 @@ import shapely.geometry as geom
 import threading
 
 
+from vel_acc_to_throttle import *
 
 inf = 1e9
 No_of_threads = 11
@@ -76,7 +77,7 @@ def cost(c1, pt1,pt2, off=0.0):
     # For straight line only
     r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(pt2[0][1])
-    dynamic_cost = 500*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
+    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -288,20 +289,24 @@ def parallel_func(ind4,i,X):
 output = computeTargetPath([500.0,0.0])
 
 target_path = []
-v = []
+# v = []
 t = []
-a= []
+# a= []
+throttle = []
 for i in output:
     target_path.append([i[0],i[1]])
-    a.append(i[2])
-    v.append(i[3])
+    # a.append(i[2])
+    # v.append(i[3])
+    throttle.append(throttle_value(i[3],i[2]))
     t.append(i[4])
 
+print(throttle)
+print(" ")
 print(target_path)
-print(" ")
-print(a)
-print(" ")
-print(v)
+# print(" ")
+# print(a)
+# print(" ")
+# print(v)
 print(" ")
 print(t)
 

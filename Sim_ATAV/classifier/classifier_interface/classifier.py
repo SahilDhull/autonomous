@@ -181,10 +181,10 @@ class Classifier(object):
     def do_object_detection(self, image, is_return_image=True):
         """Do the object detection using SqueezeDet."""
         # Resize image to the image size in the trained model.
-        # start_time = timeit.default_timer()
-        # image = cv2.resize(image,
-        #                    (self.model_config.IMAGE_WIDTH, self.model_config.IMAGE_HEIGHT))
-        # elapsed_time = timeit.default_timer() - start_time
+        start_time = timeit.default_timer()
+        image = cv2.resize(image,
+                           (self.model_config.IMAGE_WIDTH, self.model_config.IMAGE_HEIGHT))
+        elapsed_time = timeit.default_timer() - start_time
         # print('Classifier image resize: {}'.format(elapsed_time))
         # Normalize image by subtracting the mean B,G,R values of the training set.
         input_image = image - self.model_config.BGR_MEANS

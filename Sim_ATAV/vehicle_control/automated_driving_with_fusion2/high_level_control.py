@@ -180,6 +180,9 @@ class HighLevelControl(object):
         self.risk_assessment(detected_objects)
         self.decide_control_mode()
         current_target_speed = self.compute_target_speed()
+        # print(self.control_mode)
+        # print("current_target_speed")
+        # print(current_target_speed)
         (control_throttle, control_steering) = \
             self.low_level_controller.compute_throttle_and_steering(current_target_speed=current_target_speed,
                                                                     control_mode=self.control_mode)

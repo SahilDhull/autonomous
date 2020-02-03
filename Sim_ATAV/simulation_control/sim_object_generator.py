@@ -144,7 +144,9 @@ class SimObjectGenerator(object):
             if vhc_object.is_controller_name_absolute:
                 vehicle_string += "  controller \"" + vhc_object.controller + "\"\n"
                 if vhc_object.controller_arguments:
-                    vehicle_string += "  controllerArgs \""
+                    # vehicle_string += "  controllerArgs \""
+                    vehicle_string += "  controllerArgs \"" + \
+                         vhc_object.vehicle_model + " "
                     for (arg_ind, argument_string) in enumerate(vhc_object.controller_arguments):
                         if arg_ind > 0:
                             vehicle_string += ' '

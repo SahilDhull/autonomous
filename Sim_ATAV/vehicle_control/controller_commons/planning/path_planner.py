@@ -30,8 +30,11 @@ class PathPlanner(object):
 
     def apply_path_changes(self, force_apply=False):
         if self.is_path_modified or force_apply:
+            # print(self.path_following_tools.target_path)
             self.path_following_tools.smoothen_the_path()
+            # print(self.path_following_tools.target_path)
             self.path_following_tools.populate_the_path_with_details()
+            # print(self.path_following_tools.path_details)
             self.is_path_modified = False
 
     def update_estimations(self, cur_position, cur_speed_ms, cur_yaw_angle, detected_objects):

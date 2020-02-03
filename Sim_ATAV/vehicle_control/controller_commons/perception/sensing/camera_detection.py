@@ -27,6 +27,8 @@ class CameraDetection(object):
                                                                                       dtype=np.uint8),
                                                                         self.camera.getWidth(),
                                                                         self.camera.getHeight())
+            # print(sensor_camera_image)
+            
             # Neural Network Object Detection and Classification:
             (_detection_image, (detection_boxes, detection_probs, detection_classes)) = \
                 self.classifier.do_object_detection(sensor_camera_image, is_return_image=False)

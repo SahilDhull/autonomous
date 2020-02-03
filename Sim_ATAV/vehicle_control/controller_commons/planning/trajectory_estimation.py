@@ -36,6 +36,8 @@ class TrajectoryEstimation(object):
                 [math.cos(cur_yaw_angle) * future_rel_pos[0] + math.sin(cur_yaw_angle) * future_rel_pos[1],
                  -math.sin(cur_yaw_angle) * future_rel_pos[0] + math.cos(cur_yaw_angle) * future_rel_pos[1]]
             self.ego_future.append(future_rel_pos[:])
+        # print("ego_future")
+        # print(self.ego_future)
         return self.ego_future
 
     def estimate_future_ego_agent_conflicts(self, detected_objects, cur_ego_position, cur_ego_yaw_angle):
@@ -114,6 +116,8 @@ class TrajectoryEstimation(object):
                             break
                     detected_objects[obj_ind].aux_data['future_intersection'] = \
                         (min_dist, min_dist_time, min_lat_dist, min_long_dist)
+                    # print("detected_objectss")
+                    # print(detected_objects[obj_ind])
                     self.console_output.debug_print(
                         'MINIMUM DISTANCE WITH OBJ :{} ({}) at time {} obj cur pos: {}'.format(
                             min_dist, [min_lat_dist, min_long_dist], min_dist_time,

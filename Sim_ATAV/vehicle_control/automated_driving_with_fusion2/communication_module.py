@@ -53,6 +53,8 @@ class CommunicationModule(object):
                         self.controller.visibility_monitor.add_monitor(visibility_eval_config)
             if self.controller.path_planner is not None:
                 self.controller.path_planner.apply_path_changes()
+            # print(self.controller.path_planner.path_following_tools.target_path)
+            # print(self.controller.path_planner.path_following_tools.path_details)
 
     def transmit_control_data(self, control_throttle, control_steering):
         if self.controller.emitter is not None:
