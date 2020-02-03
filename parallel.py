@@ -30,7 +30,7 @@ p = []
 
 obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
-corner_local_coords = [[-1.6, 2.4], [1.6, 2.4], [-1.6, -2.4], [1.6, -2.4]]
+corner_local_coords = [[-1.4, 2.2], [1.4, 2.2], [-1.4, -2.2], [1.4, -2.2]]
                 
 def rotate_point_ccw(point, theta):
     cos_theta = math.cos(theta)
@@ -76,7 +76,7 @@ def cost(c1, pt1,pt2, off=0.0):
     # For straight line only
     r = R[round(abs(pt2[0][1]-pt1[0][1]),1)]
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(pt2[0][1])
-    dynamic_cost = 500*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
+    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.1*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
