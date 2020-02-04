@@ -169,19 +169,19 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
         self.camera = self.getCamera(self.camera_device_name)
         if self.camera is not None:
             self.camera.enable(self.CLASSIFIER_PERIOD_MS)
-            self.classifier = Classifier(is_show_image=False, is_gpu=self.has_gpu, processor_id=self.processor_id)
-            self.classifier.start_classification_engine()
-            # self.obj_tracker = ObjectTracker()
-            self.ground_truth_generator = GroundTruthGenerator()
-            self.ground_truth_generator.set_camera_parameters(self.camera.getWidth(),
-                                                              self.camera.getHeight(),
-                                                              self.camera.getFov())
-            self.camera_sensor = CameraDetection(camera_device=self.camera,
-                                                 classifier=self.classifier,
-                                                 cam_relative_pos=(self.CAMERA_MAIN_RELATIVE_POSITION[0],
-                                                                   self.CAMERA_MAIN_RELATIVE_POSITION[1]))
-            self.perception_system.register_sensor(sensor_detector=self.camera_sensor,
-                                                   sensor_period=self.CLASSIFIER_PERIOD_MS)
+            # self.classifier = Classifier(is_show_image=False, is_gpu=self.has_gpu, processor_id=self.processor_id)
+            # self.classifier.start_classification_engine()
+            # # self.obj_tracker = ObjectTracker()
+            # self.ground_truth_generator = GroundTruthGenerator()
+            # self.ground_truth_generator.set_camera_parameters(self.camera.getWidth(),
+            #                                                   self.camera.getHeight(),
+            #                                                   self.camera.getFov())
+            # self.camera_sensor = CameraDetection(camera_device=self.camera,
+            #                                      classifier=self.classifier,
+            #                                      cam_relative_pos=(self.CAMERA_MAIN_RELATIVE_POSITION[0],
+            #                                                        self.CAMERA_MAIN_RELATIVE_POSITION[1]))
+            # self.perception_system.register_sensor(sensor_detector=self.camera_sensor,
+            #                                        sensor_period=self.CLASSIFIER_PERIOD_MS)
         # self.display = self.getDisplay(self.display_device_name)
         self.camera_info_display = CameraInfoDisplay(self.display)
         if self.display is not None:
