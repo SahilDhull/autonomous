@@ -29,8 +29,10 @@ class CameraInfoDisplay(object):
     def __init__(self, display_device):
         self.display = display_device
         if self.display is not None:
-            self.display_width = self.display.getWidth()
+            # self.display_width = self.display.getWidth()
+            self.display_width = 200
             self.display_height = self.display.getHeight()
+            print (self.display_height)
         else:
             self.display_width = 0
             self.display_height = 0
@@ -47,7 +49,10 @@ class CameraInfoDisplay(object):
         if self.display is not None:
             # Remove objects:
             self.display.setAlpha(0.0)
-            self.display.fillRectangle(0, 0, self.display.getWidth(), self.display.getHeight())
+            # self.display.fillRectangle(0, 0, self.display.getWidth(), self.display.getHeight())
+            self.display.fillRectangle(0, 0, 200, 200)
+            print("\n\n\n\n\n\n\n\n\n")
+
             self.display.setAlpha(1.0)
 
     def show_object_detection_box(self, obj_class, detection_box, obj_ind=0, show_label_text=True, is_tracker_detection=False):
