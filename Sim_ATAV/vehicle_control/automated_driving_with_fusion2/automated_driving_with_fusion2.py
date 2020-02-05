@@ -9,6 +9,7 @@ C. Erkan Tuncali (etuncali [at] asu.edu)
 from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
 import math
+import pickle
 import numpy as np
 from Sim_ATAV.common.controller_communication_interface import ControllerCommunicationInterface
 from Sim_ATAV.vehicle_control.base_controller.base_controller import BaseCarController
@@ -45,6 +46,9 @@ DEBUG_MODE = False
 target_throttle = [0.35, 0.35, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.65, 0.7, 0.75, 0.8, 0.8, 0.85, 0.9, 0.95, 0.95, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 target_t = [2.0, 2.8284271247461903, 3.4641016151377553, 4.0, 4.47213595499958, 4.898979485566356, 5.2915026221291805, 5.65685424949238, 6.0, 6.324555320336758, 6.6332495807108, 6.928203230275509, 7.211102550927979, 7.4833147735478835, 7.745966692414834, 8.0, 8.24621125123532, 8.485281374238568, 8.717797887081344, 8.944271909999156, 9.165151389911678, 9.380831519646858, 9.591663046625438, 9.797958971132712, 10.0, 10.198039027185569, 10.392304845413264, 10.583005244258363, 10.77032961426901]
 time_index = 0
+img_cnt = 1
+data_dict = {}
+
 
 
 class AutomatedDrivingControlWithFusion2(BaseCarController):
@@ -178,6 +182,7 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
             # self.camera.setFocalDistance(30.0)
             # print("---")
             self.camera.enable(self.CLASSIFIER_PERIOD_MS)
+
             # self.classifier = Classifier(is_show_image=False, is_gpu=self.has_gpu, processor_id=self.processor_id)
             # self.classifier.start_classification_engine()
             # # self.obj_tracker = ObjectTracker()
@@ -246,10 +251,13 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
         print("Devices Started.")
         sys.stdout.flush()
 
+        global data_dict
+
         while self.step() >= 0:
             sim_time = self.get_sim_time()
             cur_time_ms = int(round(1000 * sim_time))
             
+
             self.ego_state.update_states(cur_time_ms)
             # ************ Sensor fusion for detections ************
             self.perception_system.update_detections(cur_time_ms)
@@ -268,9 +276,12 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
             # print("target_speed_m_s")
             # print(self.high_level_controller.target_speed_m_s)
             
+
+
             if cur_time_ms%1000==0:
                 print(str(cur_time_ms)+" "+str(self.ego_state.get_speed_ms())+" "+str(self.ego_state.get_position()))
-                # print(control_throttle)
+            
+
             
             ## Changed part
             global time_index
@@ -285,7 +296,17 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
                 # cur_a = target_a[time_index]
                 self.set_throttle_and_steering_angle(target_throttle[time_index], control_steering)
                
-            ## Changed part ends here 
+            if cur_time_ms%100==0:
+                global img_cnt
+                img_name = "img_"+str(img_cnt)+".png"
+                self.camera.saveImage("../../../images/"+img_name,1)
+                img_cnt = img_cnt + 1
+                data_dict[img_name] = [self.ego_state.get_speed_ms(),target_throttle[time_index],control_steering]
+                
+
+            ## Changed part ends here --------------------------------------------------------------
+
+
             # print(control_throttle)
             # self.set_throttle_and_steering_angle(control_throttle, control_steering)
             # self.set_throttle_and_steering_angle(1.0, control_steering)
@@ -314,6 +335,11 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
             self.radio_comm_module.transmit_control_data(control_throttle, control_steering)
             self.radio_comm_module.transmit_detection_evaluation_data()
             self.radio_comm_module.transmit_visibility_evaluation_data()
+
+        out_file = "../../../control_throttle.pkl"
+        
+        with open(out_file, 'wb') as handle:
+            pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Clean up
         del self.classifier
