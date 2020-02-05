@@ -1,0 +1,314 @@
+#VRML_SIM R2019a utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0 -1 0 -1.5707963267948966
+  position 516.1009059057735 2.2817219747705884 0.0012775876576083482
+  near 1
+  follow "VUT_1"
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+CurvedRoadSegment {
+  translation 0 0.02 -20
+  rotation 0 1 0 -1.57083
+  name "curved_road"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 -40
+  rotation 0 1 0 -1.570832
+  name "road_2"
+  width 10.5
+  numberOfLanes 3
+  length 500
+}
+CurvedRoadSegment {
+  translation 500 0.02 -20
+  rotation 0 1 0 1.57083
+  name "curved_road_2"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1"
+  width 10.5
+  numberOfLanes 3
+  length 500
+}
+DEF ROAD_DISTURBANCE_1 Solid {
+  translation 40 -0.008284271247461904 0
+  rotation 0 1 0 -1.5707963267948966
+  children [
+    DEF ROAD_DIST_0 Transform {
+      translation -0.875 0 0.5
+      rotation 1 0 0 1.1780972450961724
+      children [
+        DEF DISTURBANCE_SHAPE Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.2 0.2 0.2
+            }
+          }
+          geometry Box {
+            size 1.75 0.10452503719011012 0.10452503719011012
+          }
+          castShadows FALSE
+        }
+      ]
+    }
+    DEF ROAD_DIST_1 Transform {
+      translation 0.875 0 1
+      rotation 1 0 0 1.1780972450961724
+      children [
+        USE DISTURBANCE_SHAPE
+      ]
+    }
+    DEF ROAD_DIST_2 Transform {
+      translation -0.875 0 1.5
+      rotation 1 0 0 1.1780972450961724
+      children [
+        USE DISTURBANCE_SHAPE
+      ]
+    }
+    DEF ROAD_DIST_3 Transform {
+      translation 0.875 0 2
+      rotation 1 0 0 1.1780972450961724
+      children [
+        USE DISTURBANCE_SHAPE
+      ]
+    }
+    DEF ROAD_DIST_4 Transform {
+      translation -0.875 0 2.5
+      rotation 1 0 0 1.1780972450961724
+      children [
+        USE DISTURBANCE_SHAPE
+      ]
+    }
+    DEF ROAD_DIST_5 Transform {
+      translation 0.875 0 3
+      rotation 1 0 0 1.1780972450961724
+      children [
+        USE DISTURBANCE_SHAPE
+      ]
+    }
+  ]
+  name "solid(1)"
+  boundingObject Group {
+    children [
+      USE ROAD_DIST_0
+      USE ROAD_DIST_1
+      USE ROAD_DIST_2
+      USE ROAD_DIST_3
+      USE ROAD_DIST_4
+      USE ROAD_DIST_5
+    ]
+  }
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF VUT_1 TeslaModel3 {
+  translation 501.10090590577363 0.2817219747705886 0.0012775876576083482
+  rotation 0.00044099426245137693 0.9999995811405753 0.0008020241483198397 -1.5773238395596705
+  color 1 0 0
+  name "VUT_1"
+  controller "automated_driving_with_fusion2"
+  controllerArgs "TeslaModel3 70.0 0.0 1 True False 0"
+  sensorsSlotTop [
+    Camera {
+      width 1024
+      height 1024
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+}
+DEF DVHC_2 TeslaModel3 {
+  translation 450.0018104223217 0.27371731907661556 1.912484343457777e-08
+  rotation 0.0032820951550955944 0.9999892278243905 0.0032820857045611075 -1.5708071127919563
+  color 1 0 0
+  name "DVHC_2"
+  controller "vehicle_controller"
+  controllerArgs "path_and_speed_follower TeslaModel3 25.0 True 3.5 2 False False"
+  sensorsSlotFront [
+    Radar {
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+}
+DEF PED_1 Pedestrian {
+  hidden translation_2 -2.7755575615628914e-16 0.028538202008353913 -0.11064833724063672
+  hidden rotation_2 1 0 0 0.6099999999999997
+  hidden translation_3 0 0.00848631723560006 -0.04066732103874688
+  hidden rotation_3 -1 0 0 0.4250000000000001
+  hidden translation_4 0 -0.005342628429769181 0.03676350994405739
+  hidden rotation_4 1 0 0 0.09999999999999855
+  hidden translation_5 -2.7755575615628914e-16 0.042366221000113946 0.11001777909215267
+  hidden rotation_5 -1 0 0 0.6300000000000002
+  hidden translation_6 0 0.0036966174005200747 -0.009652942684659507
+  hidden rotation_6 -1 0 0 0.10499999999999965
+  hidden translation_7 0 -0.00276454045075486 0.022123701295126683
+  hidden rotation_7 1 0 0 0.059999999999998214
+  hidden translation_8 1.3877787807814457e-16 -0.03402595718866375 -0.1844223270501947
+  hidden rotation_8 -1 0 0 0.6300000000000002
+  hidden translation_9 0 -0.18045501728423674 0.4625724444271987
+  hidden rotation_9 1 0 0 0.6650000000000001
+  hidden translation_10 0 -0.0023513771466621147 -0.210055833304578
+  hidden rotation_10 -1 0 0 0.17999999999999955
+  hidden translation_11 1.3877787807814457e-16 0.002153833724572396 -0.022591359457334374
+  hidden rotation_11 -1 0 0 0.07499999999999779
+  hidden translation_12 0 -0.2692323634791359 0.5510741148457098
+  hidden rotation_12 0.9999999999999999 0 0 0.8299999999999998
+  hidden translation_14 0 0.004712410564391034 -0.04970742838476432
+  hidden rotation_14 1 0 0 0.1350000000000007
+  translation 54.268709546000856 1.245 -0.4268709546000854
+  rotation 0 1 0 1.6704649792860586
+  name "PED_1"
+  controller "pedestrian_control"
+  controllerArgs "--trajectory \"50.0 0.0, 80.0 -3.0, 200.0 0.0\" --speed 3.0"
+  shirtColor 0 0 0
+  pantsColor 0 0 1
+  rightLegAngle -0.07500000000000001
+  rightLowerLegAngle 0.83
+  leftLegAngle -0.63
+  leftLowerLegAngle 0.665
+  leftFootAngle -0.18
+  rightArmAngle -0.63
+  rightLowerArmAngle -0.105
+  rightHandAngle 0.06
+  leftArmAngle 0.61
+  leftLowerArmAngle -0.425
+  leftHandAngle 0.1
+  headAngle 0.135
+}
+StopSign {
+  translation 40 0 6
+  rotation 0 1 0 1.5708
+}
