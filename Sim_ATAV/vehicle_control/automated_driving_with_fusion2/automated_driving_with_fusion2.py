@@ -9,59 +9,59 @@ C. Erkan Tuncali (etuncali [at] asu.edu)
 from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
 import math
-import pickle
 import numpy as np
+import threading
+
+import pickle
+
 from Sim_ATAV.common.controller_communication_interface import ControllerCommunicationInterface
 from Sim_ATAV.vehicle_control.base_controller.base_controller import BaseCarController
 from Sim_ATAV.vehicle_control.controller_commons import controller_commons
-from Sim_ATAV.vehicle_control.controller_commons.visualization.camera_info_display import CameraInfoDisplay
+from Sim_ATAV.vehicle_control.controller_commons.path_following_tools import PathFollowingTools
+from Sim_ATAV.vehicle_control.controller_commons.perception.sensor_fusion.sensor_fusion_tracker \
+    import SensorFusionTracker
+from Sim_ATAV.vehicle_control.controller_commons.planning.target_speed_planner import TargetSpeedPlanner,\
+    TargetSpeedData
 from Sim_ATAV.vehicle_control.generic_stanley_controller.generic_stanley_controller \
     import GenericStanleyController
 from Sim_ATAV.vehicle_control.generic_pid_controller.generic_pid_controller import GenericPIDController
-from Sim_ATAV.classifier.classifier_interface.classifier import Classifier
-from Sim_ATAV.classifier.classifier_interface.ground_truth_generator import GroundTruthGenerator
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensing.camera_detection import CameraDetection
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensing.radar_detection import RadarDetection
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensing.lidar_detection import LidarDetection
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensor_fusion.simple_sensor_fusion import SimpleSensorFusion
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensing.radio_detection import RadioDetection
-from Sim_ATAV.vehicle_control.controller_commons.perception.sensor_fusion.ego_state_sensor_fusion \
-    import EgoStateSensorFusion
-from Sim_ATAV.vehicle_control.controller_commons.visualization.sensor_visualization import SensorVisualization
-from Sim_ATAV.vehicle_control.controller_commons.visualization.console_output import ConsoleOutput
-from Sim_ATAV.vehicle_control.controller_commons.planning.path_planner import PathPlanner
-from .high_level_control import HighLevelControl
-from .low_level_control import LowLevelControl
-from .communication_module import CommunicationModule
 
-# from vel_acc_to_throttle import *
+from Sim_ATAV.vehicle_control.controller_commons.visualization.camera_info_display import CameraInfoDisplay
 
 WORLD_TIME_STEP_MS = 10
 HAS_DEBUG_DISPLAY = True
-SENSOR_TYPE = 'Actual'  # 'Actual' #'Perfect'
+SENSOR_TYPE = 'Actual'  # 'Actual', 'Perfect'
 DEBUG_MODE = False
 
-# target_a = [2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5]
-# target_v = [5.0, 7.0710678118654755, 8.660254037844387, 10.0, 11.180339887498949, 12.24744871391589, 13.228756555322953, 14.142135623730951, 15.000000000000002, 15.811388300841898, 16.583123951777, 17.320508075688775, 18.02775637731995, 18.70828693386971, 19.364916731037088, 20.000000000000004, 20.615528128088304, 21.213203435596427, 21.79449471770337, 22.360679774997898, 22.912878474779202, 23.45207879911715, 23.9791576165636, 24.494897427831784, 25.000000000000004, 25.495097567963928, 25.980762113533164, 26.45751311064591, 26.925824035672523]
-target_throttle = [0.35, 0.35, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.65, 0.7, 0.75, 0.8, 0.8, 0.85, 0.9, 0.95, 0.95, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-target_t = [2.0, 2.8284271247461903, 3.4641016151377553, 4.0, 4.47213595499958, 4.898979485566356, 5.2915026221291805, 5.65685424949238, 6.0, 6.324555320336758, 6.6332495807108, 6.928203230275509, 7.211102550927979, 7.4833147735478835, 7.745966692414834, 8.0, 8.24621125123532, 8.485281374238568, 8.717797887081344, 8.944271909999156, 9.165151389911678, 9.380831519646858, 9.591663046625438, 9.797958971132712, 10.0, 10.198039027185569, 10.392304845413264, 10.583005244258363, 10.77032961426901]
+# Our global variables
+target_throttle = [0.15, 0.25, 0.3, 0.3, 0.3, 0.35, 0.4, 0.4, 0.45, 0.5, 0.5, 0.55, 0.55, 0.6, 0.65, 0.65, 0.7, 0.7, 0.75, 0.75, 0.8, 0.8, 0.85, 0.85, 0.6, -0.1, -0.3, -0.4, -0.4, -0.4, -0.4, -0.4, -0.3, -0.1, 0.0, 0.1, 0.1, 0.1, 0.0, -0.1, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.0]
+
+target_t = [0.0, 2.24, 3.17, 3.88, 4.48, 5.01, 5.49, 5.93, 6.34, 6.72, 7.08, 7.43, 7.76, 8.08, 8.38, 8.67, 8.95, 9.23, 9.5, 9.76, 10.01, 10.26, 10.5, 10.74, 10.97, 11.2, 11.43, 11.68, 11.95, 12.24, 12.55, 12.9, 13.3, 13.77, 14.28, 14.81, 15.34, 15.87, 16.4, 16.94, 17.56, 18.42, 19.52, 20.62, 21.72, 22.81, 23.9, 24.99, 26.08, 27.34]
+
+
 time_index = 0
 img_cnt = 1
 data_dict = {}
 
 
+inf = 1e9
 
-class AutomatedDrivingControlWithFusion2(BaseCarController):
-    """AutomatedDrivingControlWithFusion class is a car controller class for Webots.
-    It is used for experimenting basic automated driving capabilities for
-    perception system test purposes."""
+
+def debug_print(print_str):
+    if DEBUG_MODE:
+        print(print_str)
+        sys.stdout.flush()
+
+
+class PathAndSpeedFollower(BaseCarController):
+    """PathAndSpeedFollower class is a car controller class for Webots."""
 
     CAMERA_TO_FRONT_DISTANCE = 2.3  # 2.3 m is the distance from Prius top sensor location to the very front of the car
     LIDAR_TO_FRONT_DISTANCE = 2.3
     CAMERA_MAIN_RELATIVE_POSITION = [0.0, 1.3]
     LIDAR_MAIN_RELATIVE_POSITION = [0.0, 1.3]
     RADAR_FRONT_RELATIVE_POSITION = [0.0, 3.6]
-    FRONT_TO_REAR_WHEELS_DISTANCE = 3.6  # Approximate (this is intentionally longer than the actual wheel base
+    FRONT_TO_REAR_WHEELS_DISTANCE = 3.6  # Approximate (this is intentially longer than the actual wheel base
     # for smoother operation)
 
     CAMERA_LOCAL_COORDINATES = [0.0, 1.3, 1.1]
@@ -92,13 +92,12 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
     OBJECT_TRACKER_MAX_DISTANCE = 70.0
 
     def __init__(self, controller_parameters):
-        (car_model, target_speed_kmh, target_lat_pos, self_vhc_id, slow_at_intersection, has_gpu, processor_id) = \
-            controller_parameters
+        (car_model, target_speed_m_s, is_direct_speed_control, target_lat_pos, self_vhc_id, slow_at_intersection,
+         use_fusion) = controller_parameters
         BaseCarController.__init__(self, car_model)
-        self.console_output = ConsoleOutput(DEBUG_MODE)
         self.slow_at_intersection = slow_at_intersection in ('True', 'true', 'yes', 'Yes')
-        self.has_gpu = has_gpu in ('True', 'true', 'yes', 'Yes')
-        self.processor_id = processor_id
+        self.is_direct_speed_control = is_direct_speed_control in ('True', 'true', 'yes', 'Yes')
+        self.use_fusion = use_fusion in ('True', 'true', 'yes', 'Yes')
         self.camera_device_name = 'camera'
         self.camera = None
         self.compass_device_name = 'compass'
@@ -115,56 +114,33 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
         self.receiver = None
         self.emitter_device_name = 'emitter'
         self.emitter = None
-        self.lidar_main_device_name = 'velodyne'  # ibeo'  # 'velodyne'
+        self.lidar_main_device_name = 'velodyne'  # ibeo',  'velodyne'
         self.lidar_main = None
         self.radar_front_device_name = 'radar'
         self.radar_front = None
-        self.target_speed_m_s = controller_commons.kmh_to_ms(float(target_speed_kmh))
+        self.target_speed_m_s = float(target_speed_m_s)
         self.classifier = None
         self.classification_client = None
         self.obj_tracker = None
         self.ground_truth_generator = None
-        self.controller_comm_interface = ControllerCommunicationInterface()
+        self.contr_comm = ControllerCommunicationInterface()
         self.target_lat_pos = float(target_lat_pos)
         self.target_bearing = 0.0
         self.lateral_controller = GenericStanleyController()
         self.lateral_controller.k = 0.5
         self.lateral_controller.k2 = 0.4
+        self.lateral_controller.k3 = 1.1
         self.lateral_controller.set_output_range(-0.8, 0.8)
         self.longitudinal_controller = GenericPIDController(0.15, 0.01, 0.0)
         self.longitudinal_controller.set_integrator_value_range(-20.0, 20.0)
         self.self_vhc_id = int(self_vhc_id)
+        self.path_following_tools = PathFollowingTools()
         self.self_sensor_fusion_tracker = None
         self.last_segment_ind = 0
         self.self_current_state = [0.0, 0.0, 0.0, 0.0, 0.0]
         self.last_segment_ind = 0
-        self.very_risky_object_list = []
-        self.risky_object_list = []
-        self.proceed_w_caution_object_list = []
         self.detour_start_time = None
-        self.camera_sensor = None
-        self.radar_sensor = None
-        self.lidar_sensor = None
-        self.sensor_visualizer = None
-        self.ground_truth_detector = RadioDetection(controller_communication_interface=self.controller_comm_interface,
-                                                    ego_vhc_id=self.self_vhc_id)
-        self.ego_state = EgoStateSensorFusion()
-        self.perception_system = SimpleSensorFusion(self.ego_state)
-        self.path_planner = PathPlanner()
-        self.low_level_controller = LowLevelControl(ego_state=self.ego_state,
-                                                    longitudinal_controller=self.longitudinal_controller,
-                                                    lateral_controller=self.lateral_controller,
-                                                    path_planner=self.path_planner)
-        self.high_level_controller = HighLevelControl(ego_state=self.ego_state,
-                                                      low_level_controller=self.low_level_controller,
-                                                      path_planner=self.path_planner,
-                                                      console_output=self.console_output)
-        self.low_level_controller.set_parameter('long_position_offset', self.FRONT_TO_REAR_WHEELS_DISTANCE)
-        self.high_level_controller.set_parameter('slow_down_at_intersections', True)
-        self.high_level_controller.set_parameter('target_speed_m_s', 50.0)
-        self.radio_comm_module = None
-        self.detection_perf_monitor = None
-        self.visibility_monitor = None
+        self.target_speed_planner = TargetSpeedPlanner(default_speed=self.target_speed_m_s)
         print('AutomatedDrivingControl Initialized: {}, {}'.format(car_model, self.target_speed_m_s))
 
     def start_devices(self):
@@ -172,169 +148,304 @@ class AutomatedDrivingControlWithFusion2(BaseCarController):
         # Start camera and the sensors:
         self.camera = self.getCamera(self.camera_device_name)
         if self.camera is not None:
-            # self.camera.enable(self.CLASSIFIER_PERIOD_MS)
-            # self.camera.enable(32)
-            # self.camera.zoom = 1
-
-            
-            # self.camera.recognitionEnable(self.CLASSIFIER_PERIOD_MS)
-            # self.camera.setFov(0.785398)
-            # self.camera.setFocalDistance(30.0)
-            # print("---")
             self.camera.enable(self.CLASSIFIER_PERIOD_MS)
-
-            # self.classifier = Classifier(is_show_image=False, is_gpu=self.has_gpu, processor_id=self.processor_id)
-            # self.classifier.start_classification_engine()
-            # # self.obj_tracker = ObjectTracker()
-            # self.ground_truth_generator = GroundTruthGenerator()
-            # self.ground_truth_generator.set_camera_parameters(self.camera.getWidth(),
-            #                                                   self.camera.getHeight(),
-            #                                                   self.camera.getFov())
-            # self.camera_sensor = CameraDetection(camera_device=self.camera,
-            #                                      classifier=self.classifier,
-            #                                      cam_relative_pos=(self.CAMERA_MAIN_RELATIVE_POSITION[0],
-            #                                                        self.CAMERA_MAIN_RELATIVE_POSITION[1]))
-            # self.perception_system.register_sensor(sensor_detector=self.camera_sensor,
-            #                                        sensor_period=self.CLASSIFIER_PERIOD_MS)
-        # self.display = self.getDisplay(self.display_device_name)
         self.camera_info_display = CameraInfoDisplay(self.display)
-        if self.display is not None:
-            if self.camera is not None:
-                self.camera_info_display.attach_camera(self.camera)
+          
         self.gps = self.getGPS(self.gps_device_name)
         if self.gps is not None:
             self.gps.enable(WORLD_TIME_STEP_MS)
-            self.ego_state.set_gps_sensor(self.gps)
         self.compass = self.getCompass(self.compass_device_name)
         if self.compass is not None:
             self.compass.enable(WORLD_TIME_STEP_MS)
-            self.ego_state.set_compass_sensor(self.compass)
         self.receiver = self.getReceiver(self.receiver_device_name)
         if self.receiver is not None:
             self.receiver.enable(WORLD_TIME_STEP_MS)
         self.emitter = self.getEmitter(self.emitter_device_name)
-        self.lidar_main = self.getLidar(self.lidar_main_device_name)
-        if self.lidar_main is not None:
-            self.lidar_main.enable(self.LIDAR_PERIOD_MS)
-            self.lidar_main.enablePointCloud()
-            self.lidar_sensor = LidarDetection(lidar_device=self.lidar_main,
-                                               lidar_relative_pos=(self.LIDAR_MAIN_RELATIVE_POSITION[0],
-                                                                   self.LIDAR_MAIN_RELATIVE_POSITION[1]),
-                                               lidar_layers=[7, 8, 9, 10])
-            self.perception_system.register_sensor(sensor_detector=self.lidar_sensor,
-                                                   sensor_period=self.LIDAR_PERIOD_MS)
-        self.radar_front = self.getRadar(self.radar_front_device_name)
-        if self.radar_front is not None:
-            self.radar_front.enable(self.RADAR_PERIOD_MS)
-            self.radar_sensor = RadarDetection(radar_device=self.radar_front,
-                                               radar_relative_pos=(self.RADAR_FRONT_RELATIVE_POSITION[0],
-                                                                   self.RADAR_FRONT_RELATIVE_POSITION[1]))
-            self.perception_system.register_sensor(sensor_detector=self.radar_sensor,
-                                                   sensor_period=self.RADAR_PERIOD_MS)
-        self.sensor_display = self.getDisplay(self.sensor_display_device_name)
-        self.sensor_visualizer = SensorVisualization(sensor_display=self.sensor_display,
-                                                     ego_state=self.ego_state,
-                                                     object_detector=self.perception_system,
-                                                     lidar_device=self.lidar_main,
-                                                     radar_device=self.radar_front)
-        self.sensor_visualizer.set_camera_display(self.camera_info_display)
-        if self.lidar_main is not None or self.radar_front is not None:
-            self.high_level_controller.set_parameter('risky_obj_distance_threshold', 15.0)
-        self.radio_comm_module = CommunicationModule(controller=self)
         # Start the car engine
         self.start_car()
 
     def run(self):
         """Runs the controller."""
         self.start_devices()
-        print("INFO: It is normal to get device not found warnings for some sensors that are not part of the experiment.")
         print("Devices Started.")
         sys.stdout.flush()
 
-        global data_dict
+        def get_self_position():
+            """Returns current self position."""
+            return self.self_current_state[0:2]
+
+        def get_self_speed_ms():
+            """Returns current speed in m/s."""
+            return self.self_current_state[2]
+
+        def get_self_yaw_angle():
+            """Returns self yaw angle in radians."""
+            return self.self_current_state[3]
+
+        # Internal functions to keep the code more readable:
+        def read_gps_sensor(gps_device):
+            """Reads GPS sensor."""
+            if gps_device is not None:
+                sensor_gps_speed_m_s = gps_device.getSpeed()
+                sensor_gps_position_m = gps_device.getValues()
+            else:
+                sensor_gps_speed_m_s = 0.0
+                sensor_gps_position_m = [0.0, 0.0, 0.0]
+            return sensor_gps_position_m, sensor_gps_speed_m_s
+
+        def read_compass_sensor(compass_device):
+            """Reads Compass Sensor."""
+            if compass_device is not None:
+                sensor_compass_bearing_rad = controller_commons.get_bearing(compass_device)
+            else:
+                sensor_compass_bearing_rad = 0.0
+            return sensor_compass_bearing_rad
+
+        def compute_and_apply_control():
+            """Computes control output using the detected objects from sensor suite."""
+            cur_position = get_self_position()
+            cur_speed_ms = get_self_speed_ms()
+            cur_yaw_angle = get_self_yaw_angle()
+
+            # Compute control
+            if self.path_following_tools.target_path is not None:
+                # Compute distance from front wheels for smoother turns:
+                temp_cur_pos = [cur_position[0] - (self.FRONT_TO_REAR_WHEELS_DISTANCE * math.sin(cur_yaw_angle) +
+                                                   cur_speed_ms * 0.2 * math.sin(cur_yaw_angle)),
+                                cur_position[1] + (self.FRONT_TO_REAR_WHEELS_DISTANCE * math.cos(cur_yaw_angle) +
+                                                   cur_speed_ms * 0.2 * math.cos(cur_yaw_angle))]
+                (current_segment_ind, line_segment_as_list, nearest_pos_on_path, dist_to_seg_end) = \
+                    self.path_following_tools.get_current_segment(temp_cur_pos, self.last_segment_ind)
+                (distance_err, angle_err) = \
+                    self.path_following_tools.get_distance_and_angle_error(temp_cur_pos,
+                                                                           cur_yaw_angle,
+                                                                           last_segment_ind=self.last_segment_ind,
+                                                                           is_detouring=False)
+                self.last_segment_ind = current_segment_ind
+                if len(self.path_following_tools.path_details) > current_segment_ind:
+                    (next_turn_angle, travel_distance) = self.path_following_tools.path_details[current_segment_ind]
+                    travel_distance += dist_to_seg_end
+                else:
+                    (next_turn_angle, travel_distance) = (0.0, 0.0)
+            else:
+                current_segment_ind = -1
+                angle_err = self.target_bearing - cur_yaw_angle
+                while angle_err > math.pi:
+                    angle_err -= 2*math.pi
+                while angle_err < -math.pi:
+                    angle_err += 2*math.pi
+                distance_err = -(self.target_lat_pos - cur_position[0])
+                (next_turn_angle, travel_distance) = (0.0, 0.0)
+
+            current_target_speed = \
+                self.target_speed_planner.get_current_target_speed(cur_time_ms=cur_time_ms,
+                                                                   cur_segment_ind=current_segment_ind)
+            if self.slow_at_intersection and abs(next_turn_angle) > math.pi/60 and travel_distance < 100.0:
+                turn_ratio = min(1.0, abs(next_turn_angle)/(math.pi/4.0))
+                max_speed_limit = 10.0 + ((1.0 - turn_ratio)*30.0)
+                # decrease speed limit as we approach to the intersection.
+                max_speed_limit = (max_speed_limit + (current_target_speed - max_speed_limit) *
+                                   ((max(travel_distance, 10.0)-10.0)/80.0))
+            else:
+                max_speed_limit = current_target_speed
+
+            control_steering = self.lateral_controller.compute(angle_err,
+                                                               distance_err,
+                                                               cur_speed_ms)
+            speed_ratio = min(1.0, self.self_current_state[2]/22.0)
+            max_steering = 0.1 + (1.0 - speed_ratio)*0.7
+            control_steering = min(max(-max_steering, control_steering), max_steering)
+
+            if self.is_direct_speed_control:
+
+                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
+                
+                '''
+                v = 0.1
+                t = 0.3
+                global t1, v1, flag
+
+                if cur_time_ms==100:
+                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(v), angle=control_steering)
+                elif cur_time_ms>=5000:
+                    self.set_throttle(t)
+                # if cur_time_ms%200==0:
+                #     print("time: "+str(cur_time_ms)+" vel: "+str(cur_speed_ms))
+                if abs(round(cur_speed_ms,0)-cur_speed_ms)<0.01:
+                    t1 = cur_time_ms
+                    v1 = cur_speed_ms
+                    # print ("--> "+str(t1))
+                if cur_time_ms-t1 in (100,200,300,400,500,600,700,800,900,1000):
+                    a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
+                    # print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
+                '''
+
+                # if cur_time_ms-t1 == 1000:
+                #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
+                #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
+
+
+                if cur_time_ms<3010:
+                    x = 0.0
+                    self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                else:
+                    global time_index
+                    if(target_t[time_index] < ((cur_time_ms/1000.0) -3) ):
+                        time_index = time_index + 1
+                    
+                    # if(target_throttle[time_index])
+                    self.set_throttle_and_steering_angle(target_throttle[time_index], control_steering)
+                    
+                '''
+                if cur_time_ms%100==0:
+                    global img_cnt
+                    img_name = "img_"+str(img_cnt)+".png"
+                    self.camera.saveImage("../../../images/"+img_name,1)
+                    img_cnt = img_cnt + 1
+                    data_dict[img_name] = [self.ego_state.get_speed_ms(),target_throttle[time_index],control_steering]
+                '''
+                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
+                #                                                                              current_target_speed)),
+                #                                 angle=control_steering)
+                if cur_time_ms%500==0:
+                    print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms) + " pos: "+str(cur_position))
+            else:
+                control_throttle = self.longitudinal_controller.compute(min(max_speed_limit, current_target_speed)
+                                                                        - cur_speed_ms)
+                self.set_throttle_and_steering_angle(control_throttle, control_steering)
+            if current_target_speed < 0.0:
+                # Emergency / sudden braking
+                self.set_brake(1.0)
+                self.set_throttle(0.0)
 
         while self.step() >= 0:
             sim_time = self.get_sim_time()
             cur_time_ms = int(round(1000 * sim_time))
-            
+            # -------------- Read Sensors----------------
+            # ************ Read GPS ************
+            (sensor_gps_position_m, sensor_gps_speed_m_s) = read_gps_sensor(self.gps)
+            # ************ Read Compass ************
+            sensor_compass_bearing_rad = read_compass_sensor(self.compass)
 
-            self.ego_state.update_states(cur_time_ms)
-            # ************ Sensor fusion for detections ************
-            self.perception_system.update_detections(cur_time_ms)
-
-            # Read sensor-like information and path updates from Simulation Supervisor
-            self.radio_comm_module.receive_and_update(cur_time_ms)
-
-            self.path_planner.update_estimations(self.ego_state.get_position(),
-                                                 self.ego_state.get_speed_ms(),
-                                                 self.ego_state.get_yaw_angle(),
-                                                 self.perception_system.new_detections)
-
-            (control_throttle, control_steering) = \
-                self.high_level_controller.compute_control(self.perception_system.new_detections)
-            
-            # print("target_speed_m_s")
-            # print(self.high_level_controller.target_speed_m_s)
-            
-
-
-            if cur_time_ms%1000==0:
-                print(str(cur_time_ms)+" "+str(self.ego_state.get_speed_ms())+" "+str(self.ego_state.get_position()))
-            
-
-            
-            ## Changed part
-            global time_index
-            if cur_time_ms<3010:
-                x = 0.0
-                self.set_target_speed_and_angle(speed=x,angle=control_steering)
+            # -------------- Sensor Fusion ----------------
+            # ************ Sensor Fusion for own states (GPS + Compass) ************
+            if self.self_sensor_fusion_tracker is None:
+                self.self_current_state = [sensor_gps_position_m[0], sensor_gps_position_m[2], sensor_gps_speed_m_s,
+                                           sensor_compass_bearing_rad, 0.0]
+                if sensor_gps_speed_m_s > 50.0 or sensor_gps_speed_m_s < -20.0:  # Filter out errors in read gps speed
+                    sensor_gps_speed_m_s = 0.0
+                    self.self_current_state[2] = sensor_gps_speed_m_s
+                if self.use_fusion:
+                    # Initiate self sensor fusion tracker
+                    self.self_sensor_fusion_tracker = SensorFusionTracker(initial_state_mean=self.self_current_state,
+                                                                          filter_type='ukf')
             else:
-                if(target_t[time_index] <= ((cur_time_ms/1000.0) -3) ):
-                    time_index = time_index + 1
-                    # x = controller_commons.speed_ms_to_kmh(target_v[time_index])
-                # cur_v = target_v[time_index]
-                # cur_a = target_a[time_index]
-                self.set_throttle_and_steering_angle(target_throttle[time_index], control_steering)
-               
-            if cur_time_ms%100==0:
-                global img_cnt
-                img_name = "img_"+str(img_cnt)+".png"
-                self.camera.saveImage("../../../images/"+img_name,1)
-                img_cnt = img_cnt + 1
-                data_dict[img_name] = [self.ego_state.get_speed_ms(),target_throttle[time_index],control_steering]
+                if self.gps is not None and self.compass is not None:
+                    measurement = [sensor_gps_position_m[0], sensor_gps_position_m[2], sensor_gps_speed_m_s,
+                                   sensor_compass_bearing_rad]
+                    (self.self_current_state, state_cov) = self.self_sensor_fusion_tracker.get_estimates(
+                        measurements=measurement, sensor_type=SensorFusionTracker.SENSOR_TYPE_GPS_COMPASS)
+                elif self.gps is not None:
+                    measurement = [sensor_gps_position_m[0], sensor_gps_position_m[2], sensor_gps_speed_m_s]
+                    (self.self_current_state, state_cov) = self.self_sensor_fusion_tracker.get_estimates(
+                        measurements=measurement, sensor_type=SensorFusionTracker.SENSOR_TYPE_GPS)
+                elif self.compass is not None:
+                    measurement = [sensor_compass_bearing_rad]
+                    (self.self_current_state, state_cov) = self.self_sensor_fusion_tracker.get_estimates(
+                        measurements=measurement, sensor_type=SensorFusionTracker.SENSOR_TYPE_COMPASS)
+                else:
+                    self.self_current_state = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+            # Read sensor-like information from Simulation Supervisor
+            
+            if self.receiver is not None:
+                messages = self.contr_comm.receive_all_communication(self.receiver)
+                command_list = self.contr_comm.extract_all_commands_from_message(messages)
+                path_modified = False
+                for command_item in command_list:
+                    command = command_item[0]
+                    if command == ControllerCommunicationInterface.SET_CONTROLLER_PARAMETERS_MESSAGE:
+                        parameter = command_item[1]
+                        if parameter.get_vehicle_id() == self.self_vhc_id:
+                            if parameter.get_parameter_name() == 'target_position':
+                                parameter_data = parameter.get_parameter_data()
+                                # print(parameter_data)
+                                self.path_following_tools.add_point_to_path(parameter_data)
+                                path_modified = True
+                            elif parameter.get_parameter_name() == 'target_speed_at_time':
+                                # 1st parameter is the start time for the target speed in seconds as float.
+                                # 2nd: how long will the target speed be active in seconds -1 for infinite/until next.
+                                # 3rd parameter is the target speed.
+                                parameter_data = parameter.get_parameter_data()
+                                if parameter_data[1] < 0:
+                                    target_length = math.inf
+                                else:
+                                    target_length = int(round(1000 * parameter_data[1]))
+                                self.target_speed_planner.add_target_speed_data(
+                                    TargetSpeedData(event_type='time',
+                                                    start_time=int(round(1000 * parameter_data[0])),
+                                                    length=target_length,
+                                                    target_speed=parameter_data[2]))
+                            elif parameter.get_parameter_name() == 'target_speed_at_segment':
+                                # 1st parameter is the start segment index for the target speed.
+                                # 2nd: how long will the target speed be active in seconds:
+                                #  -1 for infinite/until next, 0 for during the segment
+                                # 3rd parameter is the target speed.
+                                parameter_data = parameter.get_parameter_data()
+                                if parameter_data[1] < 0:
+                                    target_length = -1
+                                else:
+                                    target_length = int(round(1000 * parameter_data[1]))
+                                self.target_speed_planner.add_target_speed_data(
+                                    TargetSpeedData(event_type='segment',
+                                                    start_time=int(round(parameter_data[0])),
+                                                    length=target_length,
+                                                    target_speed=parameter_data[2]))
+
+                if path_modified:
+                    self.path_following_tools.smoothen_the_path()
+                    self.path_following_tools.populate_the_path_with_details()
+                    # print(self.path_following_tools.target_path)
+
+            #----------Dynamic Path computation starts-------------------------
+            '''
+            if(cur_time_ms == 10):
+                cur_position = get_self_position()
+                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,))
+                t1.start() 
+
+            
+            global suboptimalPath
+            if (cur_time_ms == 8000):
+                t1.join()
+                self.path_following_tools.target_path = None
+                self.path_following_tools.path_details = None
+                for pt in suboptimalPath:
+                    self.path_following_tools.add_point_to_path(pt)
+
+                self.path_following_tools.smoothen_the_path()
+                self.path_following_tools.populate_the_path_with_details()
+                 
+                cur_position = suboptimalPath[-1]
+                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,)) 
+                t1.start()
+
+            elif (cur_time_ms % 8000 == 0):
+                t1.join()
+            
+                # print(suboptimalPath)
+                # cur_position = get_self_position()
+                # (cur_seg,line_seg,nearest_pos,dis) = self.path_following_tools.get_current_segment(cur_position,0,self.path_following_tools.target_path)
                 
+                self.path_following_tools.target_path = self.path_following_tools.future_target_path
+                self.path_following_tools.path_details = self.path_following_tools.future_path_details
 
-            ## Changed part ends here --------------------------------------------------------------
-
-
-            # print(control_throttle)
-            # self.set_throttle_and_steering_angle(control_throttle, control_steering)
-            # self.set_throttle_and_steering_angle(1.0, control_steering)
-
-            if self.detection_perf_monitor is not None:
-                self.detection_perf_monitor.evaluate_detections()
-
-            if self.visibility_monitor is not None:
-                self.visibility_monitor.update_visibility_dict()
-
-            # if SENSOR_TYPE == 'Perfect':
-            #     control_steering = perfect_sens_control_steering
-            #     control_throttle = perfect_sens_control_throttle
-            #     self.very_risky_object_list = perf_sens_v_r_list
-            #     self.risky_object_list = perf_sens_r_list
-            #     self.proceed_w_caution_object_list = perf_sens_p_c_list
-
-            # ------------------ Display Sensor Information ---------------------------
-            self.sensor_visualizer.update_sensor_display(cur_time_ms,
-                                                         control_throttle,
-                                                         control_steering,
-                                                         self.high_level_controller.control_mode,
-                                                         self.path_planner.trajectory_estimation.ego_future)
-
-            # Transmit control information for logging.
-            self.radio_comm_module.transmit_control_data(control_throttle, control_steering)
-            self.radio_comm_module.transmit_detection_evaluation_data()
-            self.radio_comm_module.transmit_visibility_evaluation_data()
+                cur_position = suboptimalPath[-1]
+                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,)) 
+                t1.start()
+            '''
+            #---------Dynamic Path computation end--------------------
+            compute_and_apply_control()
 
         out_file = "../../../control_throttle.pkl"
         
