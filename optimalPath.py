@@ -40,7 +40,7 @@ temp_p = {}
 y_step = 0.9
 x_step = 5.0
 w = 3.6
-obs_initial_pos = [-450.0,0.0]
+obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
 corner_local_coords = [[-1.1, 2.5], [1.1, 2.5], [-1.1, -2.5], [1.1, -2.5]]
 Radius_of_road = 20.0
@@ -124,7 +124,7 @@ def cost(c1, pt1,pt2, off=0.0):
         R[temp] = r
 
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 20.0*abs(off)
-    dynamic_cost = 15*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 0.1*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 10*(((pt2[2])**2)/r)
+    dynamic_cost = 15*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 10*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -416,12 +416,12 @@ def parallel_func(ind4,i,X):
 
 total_distance_covered = 0
 # cur_pt = [16.77,0.0,0.5,34.45,26.0]
-# cur_pt =  [200.0, 0.0, 0.0, 0.0, 0.0]
-cur_pt = [80.0, 0.0, 2.0, 21.9088, 10.97]
+cur_pt =  [500.0, 0.0, 0.0, 0.0, 0.0]
+# cur_pt = [80.0, 0.0, 2.0, 21.9088, 10.97]
 
 path = [cur_pt]
 while(total_distance_covered < 100):
-    path = path + computeTargetPath(cur_pt,125)
+    path = path + computeTargetPath(cur_pt,300)
     # print("path=====================")
     # print(path)
     total_distance_covered = 150 + total_distance_covered

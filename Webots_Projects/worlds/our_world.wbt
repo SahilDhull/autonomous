@@ -60,8 +60,8 @@ WorldInfo {
   ]
 }
 DEF VIEWPOINT Viewpoint {
-  orientation 0.11287336233786666 0.9864639751530537 0.11894717230678559 4.646395501027939
-  position -39.88619143017495 12.500839329233411 -37.08967903397309
+  orientation 0.05948866410505451 -0.9961209647991742 -0.06483920365456802 4.622499062105961
+  position 520.5070786669977 3.4393818157278595 0.11282132272973744
   near 1
   followSmoothness 0
   lensFlare LensFlare {
@@ -146,4 +146,30 @@ StraightRoadSegment {
   width 10.5
   numberOfLanes 3
   length 500
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 500 0.35 0
+  rotation 0 1 0 -1.5707963267948966
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotTop [
+    Camera {
+      width 600
+      height 400
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
 }
