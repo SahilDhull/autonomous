@@ -13,7 +13,8 @@ from vel_acc_to_throttle import *
 
 inf = 1e9
 No_of_threads = 11
-acc= [-10.0,-5.0, -3.0, -1.0,0.01,2.0]
+
+acc= [-10.0,-5.0, -3.0, -1.0, 0.01, 1.0, 2.0]
 
 total_distance = 150.0
 grid_points = []
@@ -417,6 +418,7 @@ total_distance_covered = 0
 # cur_pt = [16.77,0.0,0.5,34.45,26.0]
 # cur_pt =  [200.0, 0.0, 0.0, 0.0, 0.0]
 cur_pt = [80.0, 0.0, 2.0, 21.9088, 10.97]
+
 path = [cur_pt]
 while(total_distance_covered < 100):
     path = path + computeTargetPath(cur_pt,125)

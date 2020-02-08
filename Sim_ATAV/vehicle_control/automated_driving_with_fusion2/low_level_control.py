@@ -43,7 +43,7 @@ class LowLevelControl(object):
         if self.path_planner.path_following_tools.target_path is not None:
             # Compute distance from front wheels for smoother turns:
             temp_cur_pos = [cur_position[0] - (self.long_position_offset * math.sin(cur_yaw_angle) +
-                                               cur_speed_ms * 0.2 * math.sin(cur_yaw_angle)),
+                                               cur_speed_ms  * 0.2 * math.sin(cur_yaw_angle)),
                             cur_position[1] + (self.long_position_offset * math.cos(cur_yaw_angle) +
                                                cur_speed_ms * 0.2 * math.cos(cur_yaw_angle))]
             (distance_err, angle_err) = self.path_planner.get_distance_and_angle_error(cur_position=temp_cur_pos,
