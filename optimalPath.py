@@ -13,7 +13,12 @@ from vel_acc_to_throttle import *
 
 inf = 1e9
 No_of_threads = 11
+<<<<<<< HEAD
 acc= [-10.0,-5.0,-3.0,-1.0,0.01,1.0,2.0]
+=======
+
+acc= [-10.0,-5.0, -3.0, -1.0, 0.01, 1.0, 2.0]
+>>>>>>> a13780131da8182a9231a1fb06551aeef32056d5
 
 total_distance = 150.0
 grid_points = []
@@ -118,12 +123,16 @@ def cost(c1, pt1,pt2, off=0.0):
         r = R[temp]
     else:
         r = RadiusofCurvature(pt1[0],pt2[0])
-        if(r==20):
+        if(r>=20):
             r=inf
         R[temp] = r
 
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 20.0*abs(off)
+<<<<<<< HEAD
     dynamic_cost = 100*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 10*(((pt2[2])**2)/r)
+=======
+    dynamic_cost = 15*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 10*(((pt2[2])**2)/r)
+>>>>>>> a13780131da8182a9231a1fb06551aeef32056d5
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -416,7 +425,12 @@ def parallel_func(ind4,i,X):
 total_distance_covered = 0
 # cur_pt = [16.77,0.0,0.5,34.45,26.0]
 cur_pt =  [500.0, 0.0, 0.0, 0.0, 0.0]
+<<<<<<< HEAD
 # cur_pt = [80.0,0.0,2.0,21.91,10.97]
+=======
+# cur_pt = [80.0, 0.0, 2.0, 21.9088, 10.97]
+
+>>>>>>> a13780131da8182a9231a1fb06551aeef32056d5
 path = [cur_pt]
 while(total_distance_covered < 100):
     path = path + computeTargetPath(cur_pt,300)
