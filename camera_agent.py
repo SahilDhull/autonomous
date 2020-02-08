@@ -182,46 +182,46 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     # ----- Define VEHICLES:
     
     # Ego vehicle
-    # vhc_obj = WebotsVehicle()
-    # vhc_obj.current_position = [500.0, 0.35, 0.0]
-    # vhc_obj.current_orientation = math.pi/2
-    # vhc_obj.rotation = [0.0, 1.0, 0.0, vhc_obj.current_orientation]
-    # vhc_obj.current_orientation = -math.pi/2.0
-    # vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2.0]
+    vhc_obj = WebotsVehicle()
+    vhc_obj.current_position = [500.0, 0.35, 0.0]
+    vhc_obj.current_orientation = math.pi/2
+    vhc_obj.rotation = [0.0, 1.0, 0.0, vhc_obj.current_orientation]
+    vhc_obj.current_orientation = -math.pi/2.0
+    vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2.0]
     
-    # vhc_obj.vhc_id = 1
-    # vhc_obj.color = [1.0, 0.0, 0.0]
-    # vhc_obj.set_vehicle_model('TeslaModel3')
-    # vhc_obj.controller = 'automated_driving_with_fusion2'
-    # vhc_obj.is_controller_name_absolute = True
-    # vhc_obj.controller_arguments.append('Toyota')
-    # vhc_obj.controller_arguments.append('70.0')
-    # vhc_obj.controller_arguments.append('0.0')
-    # vhc_obj.controller_arguments.append('1')
-    # vhc_obj.controller_arguments.append('True')
-    # vhc_obj.controller_arguments.append('False')
-    # vhc_obj.controller_arguments.append('0')
+    vhc_obj.vhc_id = 1
+    vhc_obj.color = [1.0, 0.0, 0.0]
+    vhc_obj.set_vehicle_model('TeslaModel3')
+    vhc_obj.controller = 'automated_driving_with_fusion2'
+    vhc_obj.is_controller_name_absolute = True
+    vhc_obj.controller_arguments.append('Toyota')
+    vhc_obj.controller_arguments.append('70.0')
+    vhc_obj.controller_arguments.append('0.0')
+    vhc_obj.controller_arguments.append('1')
+    vhc_obj.controller_arguments.append('True')
+    vhc_obj.controller_arguments.append('False')
+    vhc_obj.controller_arguments.append('0')
 
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'Receiver'
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"receiver"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'Compass'
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"compass"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'GPS'
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
-    # sim_environment.ego_vehicles_list.append(vhc_obj)
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'Receiver'
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"receiver"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'Compass'
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"compass"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'GPS'
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
+    sim_environment.ego_vehicles_list.append(vhc_obj)
     
 
     #############################################
@@ -256,7 +256,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
     vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
     # sim_environment.ego_vehicles_list.append(vhc_obj)
-    sim_environment.agent_vehicles_list.append(vhc_obj)
+    # sim_environment.agent_vehicles_list.append(vhc_obj)
 
     
     # ----- Agent vehicles
@@ -290,7 +290,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
     vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
-    # sim_environment.agent_vehicles_list.append(vhc_obj)
+    sim_environment.agent_vehicles_list.append(vhc_obj)
 
     
 
@@ -384,7 +384,7 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                                       parameter_data=target_pos))
 
     # target_pos_list = computeTargetPath()
-    target_pos_list = [[200.0, 0.0], [195.0, 0.0], [190.0, 0.0], [185.0, 0.0], [180.0, 0.0], [175.0, 0.0], [170.0, 0.0], [165.0, 0.0], [160.0, 0.0], [155.0, 0.0], [150.0, 0.0], [145.0, 0.0], [140.0, 0.0], [135.0, 0.0], [130.0, 0.0], [125.0, 0.0], [120.0, 0.0], [115.0, 0.0], [110.0, 0.0], [105.0, 0.0], [100.0, 0.0], [95.0, 0.0], [90.0, 0.0], [85.0, 0.0], [80.0, 0.0, 2.0, 21.91, 10.97], [75.0, 0.0, 0.01, 21.9123, 11.2], [70.0, 0.0, -5.0, 20.74, 11.43], [65.0, 0.0, -5.0, 19.4974, 11.68], [60.0, 0.0, -5.0, 18.17, 11.95], [55.0, 0.0, -5.0, 16.7376, 12.24], [50.0, 0.0, -5.0, 15.1706, 12.55], [45.0, 0.0, -5.0, 13.4219, 12.9], [40.0, 0.0, -5.0, 11.4082, 13.3], [35.0, 0.0, -3.0, 10.0073, 13.77], [30.0, 0.0, -1.0, 9.4945, 14.28], [25.0, 0.0, 0.01, 9.4998, 14.81], [20.0, 0.0, 0.01, 9.5051, 15.34], [15.0, 0.0, 0.01, 9.5104, 15.87], [10.0, 0.0, 0.01, 9.5157, 16.4], [5.0, 0.0, -1.0, 8.9749, 16.94], [-0.0, 0.0, -3.0, 7.1098, 17.56], [-4.95, -0.62, -3.0, 4.5331, 18.42], [-9.59, -2.45, 0.01, 4.5441, 19.52], [-13.63, -5.37, 0.01, 4.5551, 20.62], [-16.83, -9.19, 0.01, 4.5661, 21.72], [-18.98, -13.69, 0.01, 4.577, 22.81], [-19.95, -18.59, 0.01, 4.5879, 23.9], [-19.68, -23.56, 0.01, 4.5988, 24.99], [-18.19, -28.32, 0.01, 4.6097, 26.08], [-15.56, -32.56, -1.0, 3.354, 27.34]]
+    target_pos_list = [[500.0, 0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 0.0], [410.0, 0.0], [405.0, 0.0], [400.0, 0.0], [395.0, 0.0], [390.0, 0.0], [385.0, 0.9], [380.0, 2.7], [375.0, 2.7], [370.0, 2.7], [365.0, 2.7], [360.0, 2.7], [355.0, 2.7], [350.0, 0.9], [345.0, 0.0], [340.0, 0.0], [335.0, 0.0], [330.0, 0.0], [325.0, 0.0], [320.0, 0.0], [315.0, 0.0], [310.0, 0.0], [305.0, 0.0], [300.0, 0.0], [295.0, 0.0], [290.0, 0.0], [285.0, 0.0], [280.0, 0.0], [275.0, 0.0], [270.0, 0.0], [265.0, 0.0], [260.0, 0.0], [255.0, 0.0], [250.0, 0.0], [245.0, 0.0], [240.0, 0.0], [235.0, 0.0], [230.0, 0.0], [225.0, 0.0], [220.0, 0.0], [215.0, 0.0], [210.0, 0.0], [205.0, 0.0]]
 
 
 
