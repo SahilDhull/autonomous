@@ -168,66 +168,66 @@ def computeTargetPath():
 
     return travel_path
 
-def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=500000, for_matlab=False):
+def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=300000, for_matlab=False):
     """Runs a test with the given arguments"""
 
     sim_environment = SimEnvironment()
     # --- Add road
-    # road = WebotsRoad(number_of_lanes=3)
-    # road.rotation = [0, 1, 0, -math.pi / 2]
-    # road.position = [500, 0.02, 0]
-    # road.length = 500.0
+    road = WebotsRoad(number_of_lanes=3)
+    road.rotation = [0, 1, 0, -math.pi / 2]
+    road.position = [500, 0.02, 0]
+    road.length = 500.0
     # sim_environment.road_list.append(road)
 
     # ----- Define VEHICLES:
     
     # Ego vehicle
-    # vhc_obj = WebotsVehicle()
-    # vhc_obj.current_position = [500.0, 0.35, 0.0]
+    vhc_obj = WebotsVehicle()
+    vhc_obj.current_position = [500.0, 0.35, 0.0]
     # vhc_obj.current_orientation = math.pi/2
     # vhc_obj.rotation = [0.0, 1.0, 0.0, vhc_obj.current_orientation]
-    # vhc_obj.current_orientation = -math.pi/2.0
-    # vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2.0]
+    vhc_obj.current_orientation = -math.pi/2.0
+    vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2.0]
     
-    # vhc_obj.vhc_id = 1
-    # vhc_obj.color = [1.0, 0.0, 0.0]
-    # vhc_obj.set_vehicle_model('TeslaModel3')
-    # vhc_obj.controller = 'automated_driving_with_fusion2'
-    # vhc_obj.is_controller_name_absolute = True
+    vhc_obj.vhc_id = 1
+    vhc_obj.color = [1.0, 0.0, 0.0]
+    vhc_obj.set_vehicle_model('TeslaModel3')
+    vhc_obj.controller = 'automated_driving_with_fusion2'
+    vhc_obj.is_controller_name_absolute = True
     # vhc_obj.controller_arguments.append('Toyota')
-    # vhc_obj.controller_arguments.append('70.0')
-    # vhc_obj.controller_arguments.append('0.0')
-    # vhc_obj.controller_arguments.append('1')
-    # vhc_obj.controller_arguments.append('True')
-    # vhc_obj.controller_arguments.append('False')
-    # vhc_obj.controller_arguments.append('0')
+    vhc_obj.controller_arguments.append('70.0')
+    vhc_obj.controller_arguments.append('0.0')
+    vhc_obj.controller_arguments.append('1')
+    vhc_obj.controller_arguments.append('True')
+    vhc_obj.controller_arguments.append('False')
+    vhc_obj.controller_arguments.append('0')
 
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'Receiver'
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"receiver"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'Compass'
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"compass"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
-    # vhc_obj.sensor_array[-1].sensor_type = 'GPS'
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'Receiver'
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"receiver"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'Compass'
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"compass"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
+    vhc_obj.sensor_array[-1].sensor_type = 'GPS'
     # vhc_obj.sensor_array.append(WebotsSensor())
     # vhc_obj.sensor_array[-1].sensor_type = 'Radar' # 'Radar' #'DelphiESR'
     # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.FRONT
     # vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
-    # vhc_obj.sensor_array.append(WebotsSensor())
-    # vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
-    # vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
-    # vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
+    vhc_obj.sensor_array.append(WebotsSensor())
+    vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
+    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
+    vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
     # sim_environment.ego_vehicles_list.append(vhc_obj)
     
 
     #############################################
-    
+    '''
     vhc_obj = WebotsVehicle()
-    vhc_obj.current_position = [200.0, 0.35, 0.0]
+    vhc_obj.current_position = [450.0, 0.35, 0.0]
     vhc_obj.current_orientation = 0.0
     vhc_obj.rotation = [0.0, 1.0, 0.0, -math.pi/2]
     vhc_obj.vhc_id = 1
@@ -251,14 +251,8 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array.append(WebotsSensor())
     vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.CENTER
     vhc_obj.sensor_array[-1].sensor_type = 'GPS'
-    vhc_obj.sensor_array.append(WebotsSensor())
-    vhc_obj.sensor_array[-1].sensor_type = 'Camera' # 'Radar' #'DelphiESR'
-    vhc_obj.sensor_array[-1].sensor_location = WebotsSensor.TOP
-    vhc_obj.sensor_array[-1].add_sensor_field('name', '"camera"')
-    # sim_environment.ego_vehicles_list.append(vhc_obj)
-    # sim_environment.agent_vehicles_list.append(vhc_obj)
-
-    
+    sim_environment.agent_vehicles_list.append(vhc_obj)
+    '''
     # ----- Agent vehicles
     # Agent:
     vhc_obj = WebotsVehicle()
@@ -292,41 +286,6 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     vhc_obj.sensor_array[-1].add_sensor_field('name', '"radar"')
     sim_environment.agent_vehicles_list.append(vhc_obj)
 
-    
-
-    # ----- Define PEDESTRIANS:
-    # Pedestrian 1
-    # pedestrian = WebotsPedestrian()
-    # pedestrian.ped_id = 1
-    # pedestrian.current_position = [50.0, 1.3, 0.0]
-    # pedestrian.shirt_color = [0.0, 0.0, 0.0]
-    # pedestrian.pants_color = [0.0, 0.0, 1.0]
-    # pedestrian.target_speed = pedestrian_speed
-    # pedestrian.trajectory = [50.0, 0.0, 80.0, -3.0, 200.0, 0.0]
-    # pedestrian.controller = 'pedestrian_control'
-    # sim_environment.pedestrians_list.append(pedestrian)
-
-    # ----- Fog:
-    # sim_environment.fog = WebotsFog()
-    # sim_environment.fog.visibility_range = 700.0
-
-    # ----- Road Disturbances:
-    # road_disturbance = WebotsRoadDisturbance()
-    # road_disturbance.disturbance_type = WebotsRoadDisturbance.TRIANGLE_DOUBLE_SIDED
-    # road_disturbance.rotation = [0, 1, 0, -math.pi / 2.0]
-    # road_disturbance.position = [40, 0, 0]
-    # road_disturbance.width = 3.5
-    # road_disturbance.length = 3
-    # road_disturbance.height = 0.04
-    # road_disturbance.inter_object_spacing = 0.5
-    # sim_environment.road_disturbances_list.append(road_disturbance)
-
-    # ----- Stop sign:
-    # sim_obj = WebotsSimObject()
-    # sim_obj.object_name = 'StopSign'
-    # sim_obj.object_parameters.append(('translation', '40 0 6'))
-    # sim_obj.object_parameters.append(('rotation', '0 1 0 1.5708'))
-    # sim_environment.generic_sim_objects_list.append(sim_obj)
 
     # ----- Initial State Configurations:
     sim_environment.initial_state_config_list.append(
@@ -336,12 +295,39 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                            value=ego_init_speed_m_s))
 
     # ----- Controller Parameters:
-    # Ego Target Path:
+    
+    # Agent Target Path:
     target_pos_list = [[450.0, 0.0],
-                       [-400.0, 0.0]]
-    # target_pos_list = [[450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 0.0], [410.0, 0.0], [405.0, 0.0], [400.0, 0.9], [395.0, 3.6], [390.0, 3.6], [385.0, 3.6], [380.0, 0.9], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0], [350.0, 0.0], [345.0, 0.0], [340.0, 0.0], [335.0, 0.0], [330.0, 0.0], [325.0, 0.0], [320.0, 0.0], [315.0, 0.0], [310.0, 0.0], [305.0, 0.0], [300.0, 0.0], [295.0, 0.0], [290.0, 0.0], [285.0, 0.0], [280.0, 0.0], [275.0, 0.0], [270.0, 0.0], [265.0, 0.0], [260.0, 0.0], [255.0, 0.0], [250.0, 0.0], [245.0, 0.0], [240.0, 0.0], [235.0, 0.0], [230.0, 0.0], [225.0, 0.0], [220.0, 0.0], [215.0, 0.0], [210.0, 0.0], [205.0, 0.0], [200.0, 0.0], [195.0, 0.0], [190.0, 0.0], [185.0, 0.0], [180.0, 0.0], [175.0, 0.0], [170.0, 0.0], [165.0, 0.0], [160.0, 0.0], [155.0, 0.0], [150.0, 0.0], [145.0, 0.0], [140.0, 0.0], [135.0, 0.0], [130.0, 0.0], [125.0, 0.0], [120.0, 0.0], [115.0, 0.0], [110.0, 0.0], [105.0, 0.0], [100.0, 0.0], [95.0, 0.0], [90.0, 0.0], [85.0, 0.0], [80.0, 0.0], [75.0, 0.0], [70.0, 0.0], [65.0, 0.0], [60.0, 0.0], [55.0, 0.0], [50.0, 0.0], [45.0, 0.0], [40.0, 0.0], [35.0, 0.0], [30.0, 0.0], [25.0, 0.0], [20.0, 0.0], [15.0, 0.0], [10.0, 0.0], [5.0, 0.0], [-0.0, 0.0], [-4.95, -0.62], [-9.59, -2.45], [-13.63, -5.37], [-16.83, -9.19], [-18.98, -13.69], [-19.95, -18.59], [-19.68, -23.56], [-18.19, -28.32], [-15.56, -32.56], [-11.97, -36.02], [-7.63, -38.49], [-2.82, -39.8], [0.0, -40.0], [5.0, -40.0], [10.0, -40.0], [15.0, -40.0], [20.0, -40.0], [25.0, -40.0], [30.0, -40.0], [35.0, -40.0], [40.0, -40.0], [45.0, -40.0], [50.0, -40.0], [55.0, -40.0], [60.0, -40.0], [65.0, -40.0], [70.0, -40.0], [75.0, -40.0], [80.0, -40.0], [85.0, -40.0], [90.0, -40.0], [95.0, -40.0], [100.0, -40.0], [105.0, -40.0], [110.0, -40.0], [115.0, -40.0], [120.0, -40.0], [125.0, -40.0], [130.0, -40.0], [135.0, -40.0], [140.0, -40.0], [145.0, -40.0], [150.0, -40.0], [155.0, -40.0], [160.0, -40.0], [165.0, -40.0], [170.0, -40.0], [175.0, -40.0], [180.0, -40.0], [185.0, -40.0], [190.0, -40.0], [195.0, -40.0], [200.0, -40.0], [205.0, -40.0], [210.0, -40.0], [215.0, -40.0], [220.0, -40.0], [225.0, -40.0], [230.0, -40.0], [235.0, -40.0], [240.0, -40.0], [245.0, -40.0], [250.0, -40.0], [255.0, -40.0], [260.0, -40.0], [265.0, -40.0], [270.0, -40.0], [275.0, -40.0], [280.0, -40.0], [285.0, -40.0], [290.0, -40.0], [295.0, -40.0], [300.0, -40.0], [305.0, -40.0], [310.0, -40.0], [315.0, -40.0], [320.0, -40.0], [325.0, -40.0], [330.0, -40.0], [335.0, -40.0], [340.0, -40.0], [345.0, -40.0], [350.0, -40.0], [355.0, -40.0], [360.0, -40.0], [365.0, -40.0], [370.0, -40.0], [375.0, -40.0], [380.0, -40.0], [385.0, -40.0], [390.0, -40.0], [395.0, -40.0], [400.0, -40.0], [405.0, -40.0], [410.0, -40.0], [415.0, -40.0], [420.0, -40.0], [425.0, -40.0], [430.0, -40.0], [435.0, -40.0], [440.0, -40.0], [445.0, -40.0], [450.0, -40.0], [455.0, -40.0], [460.0, -40.0], [465.0, -40.0], [470.0, -40.0], [475.0, -40.0], [480.0, -40.0], [485.0, -40.0], [490.0, -40.0], [495.0, -40.0], [500.0, -40.0], [504.95, -39.38], [509.59, -37.55], [513.63, -34.63], [516.83, -30.81], [518.98, -26.31], [519.95, -21.41], [519.68, -16.44], [518.19, -11.68], [515.56, -7.44], [511.97, -3.98], [507.63, -1.51], [502.82, -0.2], [500.0, 0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.0], [415.0, 0.0], [410.0, 0.0], [405.0, 0.0], [400.0, 0.0], [395.0, 0.0], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0], [350.0, 0.0], [345.0, 0.0], [340.0, 0.0], [335.0, 0.0], [330.0, 0.0], [325.0, 0.0], [320.0, 0.0], [315.0, 0.0], [310.0, 0.0], [305.0, 0.0], [300.0, 0.0], [295.0, 0.0], [290.0, 0.0], [285.0, 0.0], [280.0, 0.0], [275.0, 0.0], [270.0, 0.0], [265.0, 0.0], [260.0, 0.0], [255.0, 0.0], [250.0, 0.0], [245.0, 0.0], [240.0, 0.0], [235.0, 0.0], [230.0, 0.0], [225.0, 0.9], [220.0, 3.6], [215.0, 3.6], [210.0, 0.9], [205.0, 0.0], [200.0, 0.0], [195.0, 0.0], [190.0, 0.0], [185.0, 0.0], [180.0, 0.0], [175.0, 0.0], [170.0, 0.0]]
+                       [15.0, 0.0],
+                       [0.0, 0.0],
+                       [-20*math.sin(1.0/4), 20*math.cos(1.0/4)-20],
+                       [-20*math.sin(2.0/4), 20*math.cos(2.0/4)-20],
+                       [-20*math.sin(3.0/4), 20*math.cos(3.0/4)-20],
+                       [-20*math.sin(4.0/4), 20*math.cos(4.0/4)-20],
+                       [-20*math.sin(5.0/4), 20*math.cos(5.0/4)-20],
+                       [-20*math.sin(6.0/4), 20*math.cos(6.0/4)-20],
+                       [-20*math.sin(7.0/4), 20*math.cos(7.0/4)-20],
+                       [-20*math.sin(8.0/4), 20*math.cos(8.0/4)-20],
+                       [-20*math.sin(9.0/4), 20*math.cos(9.0/4)-20],
+                       [-20*math.sin(10.0/4), 20*math.cos(10.0/4)-20],
+                       [-20*math.sin(11.0/4), 20*math.cos(11.0/4)-20],
+                       [-20*math.sin(12.0/4), 20*math.cos(12.0/4)-20],
+                       [500.0,-40.0],
+                       [500+20*math.sin(1.0/4), -20*math.cos(1.0/4)-20],
+                       [500+20*math.sin(2.0/4), -20*math.cos(2.0/4)-20],
+                       [500+20*math.sin(3.0/4), -20*math.cos(3.0/4)-20],
+                       [500+20*math.sin(4.0/4), -20*math.cos(4.0/4)-20],
+                       [500+20*math.sin(5.0/4), -20*math.cos(5.0/4)-20],
+                       [500+20*math.sin(6.0/4), -20*math.cos(6.0/4)-20],
+                       [500+20*math.sin(7.0/4), -20*math.cos(7.0/4)-20],
+                       [500+20*math.sin(8.0/4), -20*math.cos(8.0/4)-20],
+                       [500+20*math.sin(9.0/4), -20*math.cos(9.0/4)-20],
+                       [500+20*math.sin(10.0/4), -20*math.cos(10.0/4)-20],
+                       [500+20*math.sin(11.0/4), -20*math.cos(11.0/4)-20],
+                       [500+20*math.sin(12.0/4), -20*math.cos(12.0/4)-20],
+                       [500.0, 0.0]]
 
-
+    target_pos_list = target_pos_list + target_pos_list + target_pos_list + target_pos_list + target_pos_list
     
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
@@ -349,8 +335,9 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
                                       parameter_name='target_position',
                                       parameter_data=target_pos))
 
-    # target_pos_list = computeTargetPath()
-    target_pos_list = [[500.0, 0.0], [495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.4], [415.0, 0.8], [410.0, 1.6], [405.0, 2.4], [400.0, 2.4], [395.0, 2.4], [390.0, 1.2], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0], [350.0, 0.0], [345.0, 0.0], [340.0, 0.0], [335.0, 0.0], [330.0, 0.0], [325.0, 0.0], [320.0, 0.0], [315.0, 0.0], [310.0, 0.0], [305.0, 0.0], [300.0, 0.0], [295.0, 0.0], [290.0, 0.0], [285.0, 0.0], [280.0, 0.0], [275.0, 0.0], [270.0, 0.0], [265.0, 0.0], [260.0, 0.0], [255.0, 0.0], [250.0, 0.0], [245.0, 0.0], [240.0, 0.0], [235.0, 0.0], [230.0, 0.0], [225.0, 0.0], [220.0, 0.0], [215.0, 0.0], [210.0, 0.0], [205.0, 0.0]]
+    # target_pos_list = [[495.0, 0.0], [490.0, 0.0], [485.0, 0.0], [480.0, 0.0], [475.0, 0.0], [470.0, 0.0], [465.0, 0.0], [460.0, 0.0], [455.0, 0.0], [450.0, 0.0], [445.0, 0.0], [440.0, 0.0], [435.0, 0.0], [430.0, 0.0], [425.0, 0.0], [420.0, 0.8], [415.0, 2.0], [410.0, 3.2], [405.0, 3.2], [400.0, 2.0], [395.0, 0.8], [390.0, 0.0], [385.0, 0.0], [380.0, 0.0], [375.0, 0.0], [370.0, 0.0], [365.0, 0.0], [360.0, 0.0], [355.0, 0.0]]
+
+    target_pos_list = [[500.0,0.0], [450.0,3.5], [-1000.0,3.5]]
 
     for target_pos in target_pos_list:
         sim_environment.controller_params_list.append(
@@ -366,10 +353,10 @@ def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_
     sim_environment.view_follow_config = \
         ViewFollowConfig(item_type=ItemDescription.ITEM_TYPE_VEHICLE,
                          item_index=0,
-                         # position=[sim_environment.agent_vehicles_list[0].current_position[0] + 15.0,
-                         #           sim_environment.agent_vehicles_list[0].current_position[1] + 2.0,
-                         #           sim_environment.agent_vehicles_list[0].current_position[2]],
-                         position=[515.0, 2.35, 0.0],
+                         # position=[sim_environment.ego_vehicles_list[0].current_position[0] + 15.0,
+                         #           sim_environment.ego_vehicles_list[0].current_position[1] + 2.0,
+                         #           sim_environment.ego_vehicles_list[0].current_position[2]],
+                         position = [500.0, 2.0, 0.0],
                          rotation=[0.0, -1.0, 0.0, -math.pi/2.0])
 
     # ----- Data Log Configurations:

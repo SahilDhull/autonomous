@@ -14,7 +14,7 @@ from vel_acc_to_throttle import *
 inf = 1e9
 No_of_threads = 11
 
-acc= [-10.0,-5.0, -3.0, -1.0, 0.01, 1.0, 2.0]
+acc= [-10.0,-5.0, -3.0, -1.0, -0.5, 0.5, 2.0]
 
 total_distance = 150.0
 grid_points = []
@@ -37,12 +37,12 @@ temp_p = {}
 #-----------------------------------------
 
 
-y_step = 0.9
+y_step = 0.4
 x_step = 5.0
 w = 3.6
 obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
-corner_local_coords = [[-1.1, 2.5], [1.1, 2.5], [-1.1, -2.5], [1.1, -2.5]]
+corner_local_coords = [[-1.1, 3.0], [1.1, 3.0], [-1.1, -3.0], [1.1, -3.0]]
 Radius_of_road = 20.0
     
 def RadiusofCurvature(start_pt, end_pt, turn_radius=20.0, step_size=1.0):
@@ -123,8 +123,9 @@ def cost(c1, pt1,pt2, off=0.0):
             r=inf
         R[temp] = r
 
-    static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 20.0*abs(off)
-    dynamic_cost = 15*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 10*(((pt2[2])**2)/r)
+    obs_pos = [obs_initial_pos[0] - obs_vel*pt2[3],obs_initial_pos[1]]
+    static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(off) + 0.1*math.exp(-(pt2[0][0]-obs_pos[0])**2 + (pt2[0][1]-obs_pos[1])**2)
+    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 3.0*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -372,8 +373,8 @@ def parallel_func(ind4,i,X):
     global times
     while(ind4 < len(acc)):
         for (j,ind2,ind3) in c:
-            m1 = max(0,j-2)
-            m2 = min(X-1,j+2)
+            m1 = max(0,j-3)
+            m2 = min(X-1,j+3)
             for k in range(m1,m2+1):
                 a_f = acc[ind4]
                 cur_cost = 0
