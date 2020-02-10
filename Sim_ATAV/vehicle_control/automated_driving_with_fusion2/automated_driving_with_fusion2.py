@@ -38,6 +38,7 @@ target_throttle = [0.15, 0.25, 0.3, 0.3, 0.3, 0.35, 0.4, 0.4, 0.45, 0.5, 0.5, 0.
 
 target_t = [0.0, 2.24, 3.17, 3.88, 4.48, 5.01, 5.49, 5.93, 6.34, 6.72, 7.08, 7.43, 7.76, 8.08, 8.38, 8.67, 8.95, 9.23, 9.5, 9.76, 10.01, 10.26, 10.5, 10.74, 10.97, 11.2, 11.42, 11.64, 11.85, 12.06, 12.27, 12.47, 12.67, 12.87, 13.06, 13.25, 13.44, 13.63, 13.81, 13.99, 14.17, 14.35, 14.52, 14.69, 14.86, 15.03, 15.2, 15.36, 15.52, 15.68, 15.84, 16.0, 16.16, 16.31, 16.46, 16.61, 16.76, 16.91, 17.06, 17.21]
 
+exp_out = [[]]
 
 time_index = 0
 img_cnt = 1
@@ -292,7 +293,18 @@ class PathAndSpeedFollower(BaseCarController):
                     global time_index
                     if(target_t[time_index] < ((cur_time_ms/1000.0) -3) ):
                         time_index = time_index + 1
-                    
+                    # x2 = exp_out[time_index][0]
+                    # y2 = exp_out[time_index][1]
+                    # if(time_index>0):
+                    #     t1 = exp_out[time_index-1][4]
+                    #     dt = cur_time_ms/1000.0 - 3 - t1
+                    #     x1 = exp_out[time_index-1][0]
+                    #     y1 = exp_out[time_index-1][1]
+                    #     u1 = exp_out[time_index-1][3]
+                    #     a2 = exp_out[time_index][2]
+                    #     dx = u1*dt + 0.5*a2*dt*dt
+                        
+
                     # if(target_throttle[time_index])
                     self.set_throttle_and_steering_angle(target_throttle[time_index], control_steering)
                     

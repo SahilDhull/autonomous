@@ -155,14 +155,14 @@ def check_colliding(pt2):
 
     collision = 0
     for pos in car_corner_pos:
-        # pos[0] = pos[0] - pt2[2]*2
+        pos[0] = pos[0] - pt2[2]*2
         if (pos[0]>=obs_corner_pos[0][0] and pos[0]<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
             collision=1
             break
-        # pos[0] = pos[0] + 3*pt2[2]
-        # if (pos[0]>=obs_corner_pos[0][0] and pos[0]<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
-        #     collision=1
-        #     break
+        pos[0] = pos[0] + 3*pt2[2]
+        if (pos[0]>=obs_corner_pos[0][0] and pos[0]<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
+            collision=1
+            break
     return collision    
 
 def cost(c1, pt1,pt2, off=0.0):
@@ -546,11 +546,12 @@ for i in output:
     target_path.append([i[0],i[1]])
     # a.append(i[2])
     # v.append(i[3])
-    t.append(i[4])
+    
     if(prev == -1):
         prev = (i[3],i[2])
     else:
-        throttle.append(throttle_value( (i[3]+prev[0])/2.0,(i[2]+prev[1])/2.0))
+        t.append(i[4])
+        throttle.append(throttle_value( (i[3]+prev[0])/2.0,i[2]))
         prev = (i[3],i[2])
         
 print(throttle)
