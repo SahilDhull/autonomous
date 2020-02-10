@@ -170,6 +170,21 @@ vel_acc_dict.update(t_100_map)
 
 # a,b = map(list, zip(*temp))
 
+vel_acc_dict[(15.0,0.0)] = 0.1
+vel_acc_dict[(14.5,0.0)] = 0.1
+vel_acc_dict[(14.0,0.0)] = 0.1
+vel_acc_dict[(13.5,0.0)] = 0.1
+vel_acc_dict[(13.0,0.0)] = 0.1
+vel_acc_dict[(12.5,0.0)] = 0.05
+vel_acc_dict[(12.0,0.0)] = 0.05
+vel_acc_dict[(11.5,0.0)] = 0.05
+vel_acc_dict[(11.0,0.0)] = 0.05
+vel_acc_dict[(10.5,0.0)] = 0.05
+vel_acc_dict[(10.0,0.0)] = 0.05
+vel_acc_dict[(9.5,0.0)] = 0.05
+vel_acc_dict[(9.0,0.0)] = 0.05
+
+
 def throttle_value(v,a):
 	v = round(v,2)
 	a = round(a,2)
