@@ -81,7 +81,9 @@ x_step = 5.0
 w = 3.6
 obs_initial_pos = [450.0,0.0]
 obs_vel = 5.0
+
 corner_local_coords = [[-2.5, 1.1], [-2.5, -1.1], [2.5, 1.1], [2.5, -1.1]]
+
 Radius_of_road = 20.0
     
 def RadiusofCurvature(start_pt, end_pt, turn_radius=30.0, step_size=1.0):
@@ -181,7 +183,6 @@ def cost(c1, pt1,pt2, off=0.0):
         if(r==30):
             r=inf
         R[temp] = r
-
 
     obstacle_position = [obs_initial_pos[0] - obs_vel*pt2[3],obs_initial_pos[1]]
     
