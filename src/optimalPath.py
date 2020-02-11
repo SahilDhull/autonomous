@@ -123,9 +123,19 @@ def ObsPosition(t):
     t = t - Total_time * int(t/Total_time)
     offset = t * obs_vel
     if( obs_initial_pos[0] - offset >=0):
-        return [obs_initial_pos[0]-offset,obs_initial_pos[1]]
+        return [obs_initial_pos[0]-offset,obs_initial_pos[1], math.pi]
     elif( obs_initial_pos[0] - (offset - math.pi * Radius_of_road) >=0 ):
         turned_theta = (offset - obs_initial_pos[0])/Radius_of_road
+        return [-Radius_of_road*math.sin(turned_theta), -Radius_of_road + Radius_of_road*math.cos(turned_theta), math.pi + turned_theta]
+    elif( offset <= obs_initial_pos[0] + 500.0 + Radius_of_road*math.pi):
+        return [500.0 -offset +obs_initial_pos[0] +Radius_of_road*math.pi, -2*Radius_of_road, 0.0]
+    elif(offset <= 2*Radius_of_road*math.pi + obs_initial_pos[0]+500.0):
+        turned_theta = (offset - Radius_of_road*math.pi - 500.0 - obs_initial_pos[0])/Radius_of_road
+        return [500.0+Radius_of_road*math.sin(turned_theta),-Radius_of_road- Radius_of_road*math.cos(turned_theta), turned_theta]
+    else:
+        return [1000.0 - offset + 2*Radius_of_road*math.pi + obs_initial_pos[0], 0.0, math.pi]
+
+
 
 
 def check_colliding(pt2):
@@ -139,6 +149,7 @@ def check_colliding(pt2):
         
         car_corner_pos.append([pt2[0][0]+rotated_local_coord[0],pt2[0][1]+rotated_local_coord[1]])
 
+    # print(car_corner_pos)
 
     obs_corner_pos = []
     for local_coord in corner_local_coords:
@@ -152,17 +163,15 @@ def check_colliding(pt2):
         obs_corner_pos.append([obstacle_position[0] + rotated_local_coord[0],
                              obstacle_position[1] + rotated_local_coord[1]])
 
+    # print(obs_corner_pos)
 
     collision = 0
-    for pos in car_corner_pos:
-        pos[0] = pos[0] - pt2[2]*2
-        if (pos[0]>=obs_corner_pos[0][0] and pos[0]<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
-            collision=1
-            break
-        pos[0] = pos[0] + 3*pt2[2]
-        if (pos[0]>=obs_corner_pos[0][0] and pos[0]<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
-            collision=1
-            break
+    for dx in np.arange(-pt2[2],pt2[2],4.9):
+        for pos in car_corner_pos:
+            x = pos[0] + dx
+            if (x>=obs_corner_pos[0][0] and x<=obs_corner_pos[2][0] and pos[1]<=obs_corner_pos[0][1] and pos[1]>=obs_corner_pos[1][1]): 
+                collision=1
+                break
     return collision    
 
 def cost(c1, pt1,pt2, off=0.0):
@@ -188,7 +197,7 @@ def cost(c1, pt1,pt2, off=0.0):
     
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 10.0*abs(off) + 0.1*math.exp(-0.1*math.sqrt((pt2[0][0]-obstacle_position[0])**2 + (pt2[0][1]-obstacle_position[1])**2))
 
-    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 0.5*(((pt2[2])**2)/r)
+    dynamic_cost = 50*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.0*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 1.0*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
 
@@ -512,11 +521,15 @@ def parallel_func(ind4,i,X):
 
 total_distance_covered = 0
 # cur_pt = [16.77,0.0,0.5,34.45,26.0, math.pi]
-cur_pt =  [500.0, 0.0, 0.0, 0.0, 0.0, math.pi]
+cur_pt =  [100.0, 0.0, 0.0, 0.0, 0.0, math.pi]
+# cur_pt = [[405.0, 0.0, math.pi], 1.5, 16.583, 8.9, math.pi]
+# c = check_colliding(cur_pt)
+# print(c)
+
 
 path = [cur_pt]
 while(total_distance_covered < 100):
-    path = path + computeTargetPath(cur_pt,300)
+    path = path + computeTargetPath(cur_pt,200.0)
     # print("path=====================")
     # print(path)
     total_distance_covered = 100 + total_distance_covered
@@ -532,6 +545,7 @@ while(total_distance_covered < 100):
 
 
 output = path
+# output = [[500.0, 0.0, 0.0, 0.0, 0.0, 3.141592653589793], [495.0, 0.0, 4.0, 6.3246, 1.58], [490.0, 0.0, 4.0, 8.9443, 2.23], [485.0, 0.0, 4.0, 10.9545, 2.73], [480.0, 0.0, 4.0, 12.6492, 3.15], [475.0, 0.0, 4.0, 14.1422, 3.52], [470.0, 0.0, 4.0, 15.492, 3.86], [465.0, 0.0, 3.0, 16.4317, 4.17], [460.0, 0.0, 3.0, 17.3205, 4.47], [455.0, 0.0, 3.0, 18.1659, 4.75], [450.0, 0.0, 3.0, 18.9737, 5.02], [445.0, 0.0, 3.0, 19.7485, 5.28], [440.0, 0.0, 3.0, 20.494, 5.53], [435.0, 0.4, 1.5, 20.8568, 5.77], [430.0, 0.8, 1.5, 21.2133, 6.01], [425.0, 1.6, 1.5, 21.564, 6.24], [420.0, 2.4, 1.5, 21.909, 6.47], [415.0, 2.4, 1.5, 22.2487, 6.7], [410.0, 1.2, 1.0, 22.4723, 6.92], [405.0, 0.0, 1.0, 22.6937, 7.14], [400.0, 0.0, 1.0, 22.913, 7.36], [395.0, 0.0, 1.0, 23.1302, 7.58], [390.0, 0.0, 1.0, 23.3454, 7.8], [385.0, 0.0, 1.0, 23.5586, 8.01], [380.0, 0.0, 1.0, 23.7699, 8.22], [375.0, 0.0, 1.0, 23.9793, 8.43], [370.0, 0.0, 1.0, 24.1869, 8.64], [365.0, 0.0, 1.0, 24.3927, 8.85], [360.0, 0.0, 1.0, 24.5968, 9.05], [355.0, 0.0, 1.0, 24.7992, 9.25], [350.0, 0.0, 1.0, 25.0, 9.45], [345.0, 0.0, 1.0, 25.1992, 9.65], [340.0, 0.0, 1.0, 25.3968, 9.85], [335.0, 0.0, 1.0, 25.5929, 10.05], [330.0, 0.0, 1.0, 25.7875, 10.24], [325.0, 0.0, 1.0, 25.9807, 10.43], [320.0, 0.0, 1.0, 26.1724, 10.62], [315.0, 0.0, 1.0, 26.3627, 10.81], [310.0, 0.0, 1.0, 26.5517, 11.0], [305.0, 0.0, 1.0, 26.7393, 11.19], [300.0, 0.0, 1.0, 26.9256, 11.38], [295.0, 0.0, 1.0, 27.1107, 11.57], [290.0, 0.0, 0.5, 27.2028, 11.75], [285.0, 0.0, 0.5, 27.2945, 11.93], [280.0, 0.0, 0.5, 27.3859, 12.11], [275.0, 0.0, 0.5, 27.477, 12.29], [270.0, 0.0, 0.5, 27.5678, 12.47], [265.0, 0.0, 0.5, 27.6583, 12.65], [260.0, 0.0, 0.5, 27.7485, 12.83], [255.0, 0.0, 0.5, 27.8384, 13.01], [250.0, 0.0, 0.5, 27.9281, 13.19], [245.0, 0.0, 0.5, 28.0175, 13.37], [240.0, 0.0, 0.5, 28.1066, 13.55], [235.0, 0.0, 0.5, 28.1954, 13.73], [230.0, 0.0, 0.5, 28.2839, 13.91], [225.0, 0.0, 0.5, 28.3722, 14.09], [220.0, 0.0, 0.5, 28.4602, 14.27], [215.0, 0.0, 0.5, 28.5479, 14.45], [210.0, 0.0, 0.5, 28.6353, 14.62], [205.0, 0.0, 0.5, 28.7225, 14.79]]
 print(output)
 print(" ")
 target_path = []
@@ -563,7 +577,6 @@ print(target_path)
 # print(v)
 print(" ")
 print(t)
-
 
 
 

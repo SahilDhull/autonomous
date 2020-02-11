@@ -152,7 +152,7 @@ Fog {
   visibilityRange 700
 }
 DEF DVHC_1 TeslaModel3 {
-  translation 500 0.35 0
+  translation 100 0.35 0
   rotation 0 1 0 -1.5707963267948966
   color 1 0 0
   name "DVHC_1"
