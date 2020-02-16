@@ -1,0 +1,175 @@
+#VRML_SIM R2019a utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0.05948866410505451 -0.9961209647991742 -0.06483920365456802 4.622499062105961
+  position 520.5070786669977 3.4393818157278595 0.11282132272973744
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+CurvedRoadSegment {
+  translation 0 0.02 -20
+  rotation 0 1 0 -1.57083
+  name "curved_road"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 -40
+  rotation 0 1 0 -1.570832
+  name "road_2"
+  width 10.5
+  numberOfLanes 3
+  length 500
+}
+CurvedRoadSegment {
+  translation 500 0.02 -20
+  rotation 0 1 0 1.57083
+  name "curved_road_2"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1"
+  width 10.5
+  numberOfLanes 3
+  length 500
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 529 0.35 0
+  rotation 0 1 0 -1.5707963267948966
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotTop [
+    Camera {
+      width 600
+      height 400
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+}

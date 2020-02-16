@@ -60,8 +60,8 @@ WorldInfo {
   ]
 }
 DEF VIEWPOINT Viewpoint {
-  orientation 0.05948866410505451 -0.9961209647991742 -0.06483920365456802 4.622499062105961
-  position 520.5070786669977 3.4393818157278595 0.11282132272973744
+  orientation 0.2794247340302243 0.939073595058353 0.2001564415059351 4.979911908300238
+  position 448.96706541048945 24.058509708170114 -0.5978963949138603
   near 1
   followSmoothness 0
   lensFlare LensFlare {
@@ -114,7 +114,7 @@ DEF GROUND Solid {
   locked TRUE
 }
 CurvedRoadSegment {
-  translation 0 0.02 -20
+  translation 350 0.02 -20
   rotation 0 1 0 -1.57083
   name "curved_road"
   width 10.5
@@ -128,7 +128,7 @@ StraightRoadSegment {
   name "road_2"
   width 10.5
   numberOfLanes 3
-  length 500
+  length 150
 }
 CurvedRoadSegment {
   translation 500 0.02 -20
@@ -145,14 +145,14 @@ StraightRoadSegment {
   name "road_1"
   width 10.5
   numberOfLanes 3
-  length 500
+  length 150
 }
 Fog {
   color 0.93 0.96 1
   visibilityRange 700
 }
 DEF DVHC_1 TeslaModel3 {
-  translation 100 0.35 0
+  translation 500 0.35 0
   rotation 0 1 0 -1.5707963267948966
   color 1 0 0
   name "DVHC_1"

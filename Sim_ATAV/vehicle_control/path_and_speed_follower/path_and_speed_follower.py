@@ -424,8 +424,8 @@ class PathAndSpeedFollower(BaseCarController):
 
                 global time_index
                 if cur_time_ms<3010:
-                    x = 0.0
-                    self.set_target_speed_and_angle(speed=x,angle=control_steering)
+                    x = 5.0
+                    self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x),angle=control_steering)
                 else:
                     # if(target_t[time_index] <= ((cur_time_ms/1000.0) -3) ):
                     #     time_index = time_index + 1

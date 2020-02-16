@@ -22,7 +22,54 @@ except:
 LIBRARY_PATH.replace('/', os.sep)
 sys.path.append(LIBRARY_PATH)
 
+# --------------------------------------------
+#Added for ML part
 
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils import data
+from torch.utils.data import DataLoader
+import torchvision.transforms as transforms
+import cv2
+# import numpy as np
+import csv
+import pickle
+import random
+import dill
+
+class NetworkLight(nn.Module):
+    def __init__(self):
+        super(NetworkLight, self).__init__()
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(3, 24, 5, stride=2),
+            nn.ELU(),
+            nn.Conv2d(24, 48, 5, stride=2),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.25)
+        )
+        self.linear_layers = nn.Sequential(
+            nn.Linear(in_features=48*18*36 + 1, out_features=50),
+            nn.ELU(),
+            nn.Linear(in_features=50, out_features=10),
+            nn.Linear(in_features=10, out_features=2)
+        )
+        
+    def forward(self, input, vel):
+        input = input.view(input.size(0), 3, 310, 600)
+        output = self.conv_layers(input)
+
+        # Append velocity in the output vector
+        output = output.view(output.size(0), -1)
+        vel = vel.view(vel.size(0),-1)
+        # print(vel.shape)
+        # print(output.shape)
+        output = torch.cat((output,vel),dim = 1)
+        output = self.linear_layers(output)
+        return output
+
+
+# ---------------------------------------------
 print("Vehicle controller will load.")
 
 if len(sys.argv) > 1:
