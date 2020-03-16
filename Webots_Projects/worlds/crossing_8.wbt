@@ -1,0 +1,243 @@
+#VRML_SIM R2019a utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0.12434072629735239 -0.9853250104161303 -0.1169359125003934 4.758987935880593
+  position 368.749378337946 17.624565958634975 3.1889976978146026
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+TrashContainer {
+  translation 311.24000000000007 0 7.990000000000004
+}
+TrashContainer {
+  translation 313.3700000000001 0 7.990000000000004
+  name "trash container(1)"
+}
+SimpleBuilding {
+  translation 319.93 0 -16.740000000000006
+}
+Museum {
+  translation 281.2299999999998 0 -22.35
+}
+FastFoodRestaurant {
+  translation 311.90000075615546 0 18.010000000000034
+  rotation 0 1 0 3.141592605640827
+}
+StraightRoadSegment {
+  translation 300 0.02 15.4
+  name "road(1)"
+  width 10.5
+  length 200
+}
+StraightRoadSegment {
+  translation 300 0.02 -15.4
+  rotation 0 1 0 3.14
+  name "road(2)"
+  width 10.5
+  length 200
+}
+CurvedRoadSegment {
+  translation 0 0.02 -20
+  rotation 0 1 0 -1.57083
+  name "curved_road"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+CurvedRoadSegment {
+  translation 500 0.02 -20
+  rotation 0 1 0 1.57083
+  name "curved_road_2"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1"
+  width 10.5
+  length 184.6
+}
+StraightRoadSegment {
+  translation 284.6 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 10.5
+  length 190
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 378.4899999999998 0.35 1.8800000000000079
+  rotation 0 1 0 -1.5707963267948966
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotTop [
+    Camera {
+      width 600
+      height 400
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+}
+Forest {
+  translation 272.11000000000024 0 16.540000000000017
+}
+BusStop {
+  translation 320.70250681778464 0 6.950089698268172
+  rotation 0 1 0 3.141592605640827
+}
+Atm {
+  translation 325.0800000000001 0 7.4099999999999975
+  rotation 0 1 0 3.141592605640827
+}
+Roundabout {
+  translation 300 0.02 0
+  rotation 0 1 0 0.78
+  outerRadius 10.5
+  startRoadsWidth 10.5
+}
+Fountain {
+  translation 300.19000000000017 0 0
+  height 2.5
+  radius 2
+}
+Forest {
+  translation 284.52589528982185 0 41.55690182320262
+  rotation 0 -1 0 1.5707963603591737
+}
+OldBench {
+  translation 292.2400000000002 0 20.699999999999992
+  rotation 0 0.9999999999999999 0 4.712388966
+}
+OldBench {
+  translation 292.240000036825 0 18.139999999999997
+  rotation 0 0.9999999999999999 0 4.712388966
+  name "old bench(1)"
+}
+OldBench {
+  translation 292.2400000740814 0 15.550000000000004
+  rotation 0 0.9999999999999999 0 4.712388966
+  name "old bench(2)"
+}

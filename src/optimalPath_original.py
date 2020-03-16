@@ -1,4 +1,6 @@
-##Remaining tasks: -ve value of velocity, maxlimit of velocity, 0-acceleration
+#Need to Update Obstacle position for 150m 
+
+
 import numpy as np
 import math
 import copy
@@ -15,7 +17,7 @@ from vel_acc_to_throttle import *
 
 
 lock = threading.Lock()
-inf = 1e9
+inf = 1e20
 No_of_threads = 11
 
 acc= {}
@@ -204,15 +206,16 @@ def cost(c1, pt1,pt2, off=0.0):
     
     static_cost =  c1 + math.sqrt((pt2[0][0]-pt1[0][0])**2 + (pt2[0][1]-pt1[0][1])**2) + 10.0/r + 1.0*abs(off) + 0.1*math.exp(-0.1*math.sqrt((pt2[0][0]-obstacle_position[0])**2 + (pt2[0][1]-obstacle_position[1])**2))
 
-    dynamic_cost = 15.0*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.7e-10*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 1.0*(((pt2[2])**2)/r)
+    dynamic_cost = 15.0*(pt2[3]-pt1[3]) + (pt2[2]**2)*0.0 + 0.0*(pt2[1]**2) + 1.7e-2*(((pt2[1]-pt1[1])/(pt2[3]-pt1[3]))**2) + 1.0*(((pt2[2])**2)/r)
     
     return static_cost + dynamic_cost + check_colliding(pt2)*inf
-
+    #1.7e0 to 1.7e-2
     #off = 1 or 0.5
+
 def Grid1(cur_pt,dist_to_cover):
     global grid_points
     x1 = round(cur_pt[0],2)
-    x2 = max(x1-dist_to_cover,0) ##path to travel in first part of the road
+    x2 = max(x1-dist_to_cover,350.0) ##path to travel in first part of the road
     for i in np.arange(x1,x2,-x_step):
         gp = []
         for j in np.arange(w,-w,-y_step):
@@ -222,7 +225,7 @@ def Grid1(cur_pt,dist_to_cover):
 
 def Grid2(cur_pt,dist_to_cover):
     global grid_points
-    theta_covered = math.atan(abs(cur_pt[0])/(Radius_of_road+cur_pt[1]))
+    theta_covered = math.atan(abs(350-cur_pt[0])/(Radius_of_road+cur_pt[1]))
     if(theta_covered<0):
         theta_covered = theta_covered + math.pi
     theta_to_cover = dist_to_cover/Radius_of_road
@@ -232,7 +235,7 @@ def Grid2(cur_pt,dist_to_cover):
         for j in np.arange(Radius_of_road+w,Radius_of_road-w,-y_step):
             x_coord = round(-j*math.sin(theta),2)
             y_coord = round(-Radius_of_road+j*math.cos(theta),2)
-            gp.append([x_coord,y_coord,math.pi+theta])
+            gp.append([350.0+x_coord,y_coord,math.pi+theta])
         grid_points.append(gp)
     return (theta_covered + theta_to_cover - final_theta)*Radius_of_road 
 
@@ -268,29 +271,29 @@ def Grid4(cur_pt,dist_to_cover):
 def calculate_grid(cur_pt,dist_to_cover):
     global grid_points
     grid_points = []
-    if(cur_pt[0]>0 and cur_pt[0]<=500 and cur_pt[1]>-20.0):  ##check in first part of the road
+    if(cur_pt[0]>350.0 and cur_pt[0]<=500 and cur_pt[1]>-20.0):  ##check in first part of the road
         remaining_dist = Grid1(cur_pt,dist_to_cover)
-        if(remaining_dist > 0):
-            remaining_dist = Grid2([0.0,0.0],remaining_dist)
-        if(remaining_dist > 0):
-            remaining_dist = Grid3([0.0,-2*Radius_of_road],remaining_dist)
-        if(remaining_dist > 0):
+        if(remaining_dist >= 5):
+            remaining_dist = Grid2([350.0,0.0],remaining_dist)
+        if(remaining_dist >= 5):
+            remaining_dist = Grid3([350.0,-2*Radius_of_road],remaining_dist)
+        if(remaining_dist >= 5):
             remaining_dist = Grid4([500.0,-2*Radius_of_road],remaining_dist)
-    elif(cur_pt[0]<=0):
+    elif(cur_pt[0]<=350.0):
         remaining_dist = Grid2(cur_pt,dist_to_cover)
-        if(remaining_dist>0):
-            remaining_dist = Grid3([0.0,-2*Radius_of_road],remaining_dist)
-        if(remaining_dist > 0):
+        if(remaining_dist >= 5):
+            remaining_dist = Grid3([350.0,-2*Radius_of_road],remaining_dist)
+        if(remaining_dist >= 5):
             remaining_dist = Grid4([500.0,-2*Radius_of_road],remaining_dist)
-    elif(cur_pt[0]>=0 and cur_pt[0]<500 and cur_pt[1]<-20.0):
+    elif(cur_pt[0]>=350.0 and cur_pt[0]<500 and cur_pt[1]<-20.0):
         remaining_dist = Grid3(cur_pt,dist_to_cover)
-        if(remaining_dist > 0):
+        if(remaining_dist >= 5):
             remaining_dist = Grid4([500.0,-2*Radius_of_road],remaining_dist)
-        if(remaining_dist > 0):
+        if(remaining_dist >= 5):
             remaining_dist = Grid1([500.0,0.0],remaining_dist)
     else:
         remaining_dist = Grid4(cur_pt,dist_to_cover)    
-        if(remaining_dist > 0):
+        if(remaining_dist >= 5):
             remaining_dist = Grid1([500.0,0.0],remaining_dist)
 
 
@@ -299,6 +302,7 @@ def computeTargetPath(cur_pt, dist_to_cover):
     
     calculate_grid(cur_pt,dist_to_cover)
     global grid_points
+    
     global c
     global p
     global actual_vel
@@ -330,7 +334,7 @@ def computeTargetPath(cur_pt, dist_to_cover):
     actual_tim[(0,ind2,i3,i4)] = cur_pt[4]
     actual_vel[(0,ind2,i3,i4)] = cur_pt[3]
     prev_acc[(0,ind2,i3,i4)] = cur_pt[2]
-    cur_theta[(ind2,i3,i4)] = cur_pt[5]
+    cur_theta[(0,ind2,i3,i4)] = cur_pt[5]
 
     global velocities
     global times
@@ -409,7 +413,7 @@ def computeTargetPath(cur_pt, dist_to_cover):
                 actual_vel[(i+1,j,ind_v,ind_t)] = temp_vel[(i+1,j,v,t)]
                 actual_tim[(i+1,j,ind_v,ind_t)] = temp_tim[(i+1,j,v,t)]
                 prev_acc[(i+1,j,ind_v,ind_t)] = temp_acc[(i+1,j,v,t)]
-                cur_theta[(j,ind_v,ind_t)] = temp_theta[(j,v,t)]
+                cur_theta[(i+1,j,ind_v,ind_t)] = temp_theta[(j,v,t)]
                 if(i==Y-2) and (cf>c[(j,ind_v,ind_t)]):
                     cf = c[(j,ind_v,ind_t)]
                     final_pos = (i+1,j,ind_v,ind_t)
@@ -431,7 +435,7 @@ def computeTargetPath(cur_pt, dist_to_cover):
     travel_path = []
     (i,j,ind2,ind3) = final_pos
     while ( (p[(i,j,ind2,ind3)]) != -1 ):
-        travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),prev_acc[(i,j,ind2,ind3)],actual_vel[(i,j,ind2,ind3)],actual_tim[(i,j,ind2,ind3)]]] + travel_path
+        travel_path = [[float(grid_points[i][j][0]),float(grid_points[i][j][1]),prev_acc[(i,j,ind2,ind3)],actual_vel[(i,j,ind2,ind3)],actual_tim[(i,j,ind2,ind3)],cur_theta[(i,j,ind2,ind3)] ]] + travel_path
         (i,j,ind2,ind3) = (p[(i,j,ind2,ind3)])
     
     return travel_path
@@ -508,7 +512,7 @@ def parallel_func(ind4,i,X):
 
                 # curtheta = grid_points[i+1][k][2] - math.atan((k-j)*y_step/x_step)
                 
-                cur_cost = cost(c[(j,ind2,ind3)],(grid_points[i][j],prev_acc[(i,j,ind2,ind3)],actual_vel[(i,j,ind2,ind3)],actual_tim[(i,j,ind2,ind3)], cur_theta[(j,ind2,ind3)]),(grid_points[i+1][k],a_f,v_f,t_f,curtheta),off=abs(w-k*y_step))
+                cur_cost = cost(c[(j,ind2,ind3)],(grid_points[i][j],prev_acc[(i,j,ind2,ind3)],actual_vel[(i,j,ind2,ind3)],actual_tim[(i,j,ind2,ind3)], cur_theta[(i,j,ind2,ind3)]),(grid_points[i+1][k],a_f,v_f,t_f,curtheta),off=abs(w-k*y_step))
                 if(cur_cost > inf):
                     continue
                 velocities.append(v_f)
@@ -530,25 +534,33 @@ def parallel_func(ind4,i,X):
 
 total_distance_covered = 0
 # cur_pt = [16.77,0.0,0.5,34.45,26.0, math.pi]
-# cur_pt =  [500.0, 0.0, 0.0, 0.0, 0.0, math.pi]
-cur_pt = [85.0, 0.0, 0.0, 16.4317, 26.97, math.pi]
+cur_pt =  [500.0, 0.0, 0.0, 20.0, 0.0, math.pi]
+# cur_pt =  [405.0, 0.0, 1.0, 22.6937, 7.14, 3.141592653589793]
 # cur_pt = [[405.0, 0.0, math.pi], 1.5, 16.583, 8.9, math.pi]
 # c = check_colliding(cur_pt)
 # print(c)
 
 
 path = [cur_pt]
-while(total_distance_covered < 50):
-    path = path + computeTargetPath(cur_pt,200)
-    # print("path=====================")
-    # print(path)
-    total_distance_covered = 100 + total_distance_covered
+while(total_distance_covered < 200):
+    path = path + computeTargetPath(cur_pt,100)
+    total_distance_covered = 50 + total_distance_covered
     cur_pt = path[-1]
     actual_vel = {}
     actual_tim = {}
     prev_acc = {}
     c = {}
     p = {}
+    
+    path = path + computeTargetPath(cur_pt,50+Radius_of_road*math.pi)
+    total_distance_covered = 50 + total_distance_covered
+    cur_pt = path[-1]
+    actual_vel = {}
+    actual_tim = {}
+    prev_acc = {}
+    c = {}
+    p = {}
+    
     # print(cur_pt)
     # print(path)
 

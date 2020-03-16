@@ -11,41 +11,47 @@ import pickle
 import random
 import dill
 
-file_path = './'
-image_path = file_path + 'images/'
+file_path = './images/correction/straight/'
+image_path = file_path 
 pkl_file = file_path + 'control_throttle.pkl'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
 
 
 class NetworkLight(nn.Module):
-	def __init__(self):
-		super(NetworkLight, self).__init__()
-		self.conv_layers = nn.Sequential(
+
+    def __init__(self):
+        super(NetworkLight, self).__init__()
+        self.conv_layers = nn.Sequential(
             nn.Conv2d(3, 24, 5, stride=2),
             nn.ELU(),
             nn.Conv2d(24, 48, 5, stride=2),
             nn.MaxPool2d(4, stride=4),
-            nn.Dropout(p=0.25)
+            nn.Dropout(p=0.3)
         )
-		self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=48*18*36 + 1, out_features=50),
+        self.linear_layers = nn.Sequential(
+            nn.Linear(in_features=48*18*36 + 3, out_features=90),
             nn.ELU(),
-            nn.Linear(in_features=50, out_features=10),
+            nn.Dropout(p=0.3),
+            nn.Linear(in_features=90, out_features=10),
+            nn.Dropout(p=0.3),
             nn.Linear(in_features=10, out_features=2)
-		)
+        )
         
-	def forward(self, input, vel):
-		input = input.view(input.size(0), 3, 310, 600)
-		output = self.conv_layers(input)
 
-		# Append velocity in the output vector
-		output = output.view(output.size(0), -1)
-		vel = vel.view(vel.size(0),-1)
-		# print(vel.shape)
-		# print(output.shape)
-		output = torch.cat((output,vel),dim = 1)
-		output = self.linear_layers(output)
-		return output
+    def forward(self, input, vel, direction):
+        input = input.view(input.size(0), 3, 310, 600)
+        output = self.conv_layers(input)
+        
+        # Append velocity in the output vector
+        output = output.view(output.size(0), -1)
+        vel = vel.view(vel.size(0),-1)
+        direction = direction.view(direction.size(0),-1)
+        # print(vel.shape)
+        # print(output.shape)
+        output = torch.cat((output,direction),dim = 1)
+        output = self.linear_layers(output)
+        return output
+
 
 class Dataset2(data.Dataset):
     def __init__(self, samples, transform=None):
@@ -85,8 +91,21 @@ def testing(model, test_generator):
 ind = 87
 def MLmodel(sample_test):
 	
+	#--------Remove this later on----------------------------------------
+	with open(pkl_file, 'rb') as handle:
+	    samples = pickle.load(handle)
+
+	
+
+	samples_list = [ [k, v[0], v[1], v[2], v[3]] for k, v in samples.items() ]
+	print(samples_list[402])
+
+	print(len(samples_list))
 
 
+	# for i in np.arange(0,len(samples_list),50):
+	# 	print(samples_list[i])
+	'''
 	eval_model = NetworkLight()
 	eval_state = torch.load(file_path + 'model.h5')
 	eval_model = eval_state['model']
@@ -95,18 +114,16 @@ def MLmodel(sample_test):
 
 
 
-	#--------Remove this later on----------------------------------------
-	with open(pkl_file, 'rb') as handle:
-	    samples = pickle.load(handle)
 
-	samples_list = [ [k, v[0], v[1], v[2]] for k, v in samples.items() ]
+	# for i in range(samples_list):
+	# 	if samples_list[i][3] < 0:
 
-	# print(samples_list[ind])
-	# print(samples_list[0][:])
-	for ind,k in enumerate(samples_list):
-		if k[3]>0.2:
-			print("ind="+str(ind)+"value="+str(k[3]))
-	#--------------------------------------------------
+	# # print(samples_list[ind])
+	# # print(samples_list[0][:])
+	# for ind,k in enumerate(samples_list):
+	# 	if k[3]<-0.01:
+	# 		print("ind="+str(ind)+"value="+str(k[3]))
+	# # --------------------------------------------------
 
 
 
@@ -144,6 +161,13 @@ def MLmodel(sample_test):
 	Result = testing(eval_model, test_generator)
 	# print(Result)
 	return float(Result[0][0]),float(Result[0][1])
+	'''
 
-ind = 98
-print(MLmodel(["img_"+str(ind+1)+".png",20.0]))
+
+# for ind in np.arange(100,180,1):
+ind = 2
+# throtte,angle= MLmodel(["img_"+str(ind+1)+".png",20.0])
+# print(angle)
+MLmodel(["img_"+str(ind+1)+".png",20.0])
+
+# print(MLmodel(["test_img.png",5]))

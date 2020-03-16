@@ -327,7 +327,7 @@ def calculate_grid(cur_pt,dist_to_cover):
         if(remaining_dist > 0):
             remaining_dist = Grid1([500.0,0.0],remaining_dist)
     else:
-        remaining_dist = Grid4(cur_pt,dist_to_cover)    
+        remaining_dist = Grid4([500.0,-2*Radius_of_road],dist_to_cover)    
         if(remaining_dist > 0):
             remaining_dist = Grid1([500.0,0.0],remaining_dist)
 

@@ -423,15 +423,15 @@ class PathAndSpeedFollower(BaseCarController):
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
                 global time_index
-                if cur_time_ms<3010:
-                    x = 5.0
+                if cur_time_ms<10:
+                    x = 0.0
                     self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x),angle=control_steering)
                 else:
                     # if(target_t[time_index] <= ((cur_time_ms/1000.0) -3) ):
                     #     time_index = time_index + 1
                 
                     # self.set_throttle_and_steering_angle(throttle_value(cur_v,cur_a), control_steering)
-                    x = 5.0 
+                    x = 15.0 
                     self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(x),angle=control_steering)
             
                 # print(x)

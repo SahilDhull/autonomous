@@ -39,6 +39,7 @@ import random
 import dill
 
 class NetworkLight(nn.Module):
+
     def __init__(self):
         super(NetworkLight, self).__init__()
         self.conv_layers = nn.Sequential(
@@ -46,25 +47,29 @@ class NetworkLight(nn.Module):
             nn.ELU(),
             nn.Conv2d(24, 48, 5, stride=2),
             nn.MaxPool2d(4, stride=4),
-            nn.Dropout(p=0.25)
+            nn.Dropout(p=0.3)
         )
         self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=48*18*36 + 1, out_features=50),
+            nn.Linear(in_features=48*18*36 + 3, out_features=90),
             nn.ELU(),
-            nn.Linear(in_features=50, out_features=10),
+            nn.Dropout(p=0.3),
+            nn.Linear(in_features=90, out_features=10),
+            nn.Dropout(p=0.3),
             nn.Linear(in_features=10, out_features=2)
         )
         
-    def forward(self, input, vel):
+
+    def forward(self, input, vel, direction):
         input = input.view(input.size(0), 3, 310, 600)
         output = self.conv_layers(input)
-
+        
         # Append velocity in the output vector
         output = output.view(output.size(0), -1)
         vel = vel.view(vel.size(0),-1)
+        direction = direction.view(direction.size(0),-1)
         # print(vel.shape)
         # print(output.shape)
-        output = torch.cat((output,vel),dim = 1)
+        output = torch.cat((output,direction),dim = 1)
         output = self.linear_layers(output)
         return output
 
