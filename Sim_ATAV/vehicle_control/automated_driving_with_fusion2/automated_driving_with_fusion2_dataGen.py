@@ -44,7 +44,7 @@ import cv2
 import csv
 import pickle
 import random
-import dill
+# import dill
 
 
 
@@ -53,7 +53,7 @@ exp_out = [[]]
 time_index = 0
 #change heading when changing left to right/straight
 folder_cnt = 4
-img_cnt = 694
+img_cnt = 5000
 data_dict = {}
 inf = 1e9
 
