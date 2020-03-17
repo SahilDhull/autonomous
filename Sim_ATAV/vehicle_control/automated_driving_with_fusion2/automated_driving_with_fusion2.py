@@ -53,12 +53,13 @@ exp_out = [[]]
 time_index = 0
 #change heading when changing left to right/straight
 folder_cnt = 4
-img_cnt = 5000
+i = 2
+img_cnt = 0 + i*55
 data_dict = {}
 inf = 1e9
 
 # file_path = '../../../correction/Scenario'+ str(folder_cnt) + '/'
-file_path = '../../../images/correction/straight/'
+file_path = '../../../images/correction/left/'
 image_path = file_path
 pkl_file = file_path + 'control_throttle.pkl'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
@@ -629,9 +630,14 @@ class PathAndSpeedFollower(BaseCarController):
 
         out_file = pkl_file
         
-        
-        with open(out_file, 'rb') as handle:
-            prevdict = pickle.load(handle)
+        try:
+            prevdict = pickle.load(open(out_file, "rb"))
+        except (OSError, IOError) as e:
+            prevdict = {}
+            pickle.dump(prevdict, open(out_file, "wb"))
+
+        # with open(out_file, 'rb') as handle:
+        #     prevdict = pickle.load(handle)
         
         # print(prevdict)
         prevdict.update(data_dict)
@@ -639,6 +645,7 @@ class PathAndSpeedFollower(BaseCarController):
         # print(prevdict)
         # with open(out_file, 'wb') as handle:
         #     pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
 
         with open(out_file, 'wb') as handle:
             pickle.dump(prevdict, handle, protocol=pickle.HIGHEST_PROTOCOL)

@@ -103,11 +103,11 @@ class Dataset2(data.Dataset):
     def __len__(self):
         return len(self.samples)
 
-left_model = NetworkLight()
-left_state = torch.load(file_path + 'left_model3.h5')
-left_model = left_state['model']
-left_model.float()
-left_model.eval()
+# left_model = NetworkLight()
+# left_state = torch.load(file_path + 'left_model3.h5')
+# left_model = left_state['model']
+# left_model.float()
+# left_model.eval()
 
 
 # right_model = NetworkLight()
@@ -120,7 +120,7 @@ st_model = NetworkLight()
 # st_state = torch.load(file_path + 'st_model3.h5')
 st_state = torch.load(file_path + 'model.h5')
 st_model = st_state['model']
-st_model.float()
+st_model.float().to(device)
 st_model.eval()
 
 

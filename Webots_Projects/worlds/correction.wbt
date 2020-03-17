@@ -1,4 +1,4 @@
-#VRML_SIM R2019a utf8
+#VRML_SIM R2019b utf8
 WorldInfo {
   info [
     "Empty world."
@@ -60,8 +60,8 @@ WorldInfo {
   ]
 }
 DEF VIEWPOINT Viewpoint {
-  orientation 0.5824991401080527 -0.7061466418573185 -0.4025564208493155 4.7339474013828635
-  position 429.85472617165317 148.08366037989487 16.275437546153498
+  orientation -0.06587289831366223 -0.7954855848886828 -0.6023814783856393 2.9680502597390213
+  position 306.50273948246564 48.66463812580981 -14.368264285919585
   near 1
   followSmoothness 0
   lensFlare LensFlare {
@@ -179,8 +179,8 @@ Fog {
   visibilityRange 700
 }
 DEF DVHC_1 TeslaModel3 {
-  translation 359.84019351230376 0.35 -0.4001959437671664
-  rotation 0 1 0 4.450589574205103
+  translation 312.495 0.35 4.07918
+  rotation 0 -1 0 1.57083
   color 1 0 0
   name "DVHC_1"
   controller "vehicle_controller"
