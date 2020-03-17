@@ -53,11 +53,11 @@ exp_out = [[]]
 time_index = 0
 #change heading when changing left to right/straight
 folder_cnt = 4
-i = 0
-img_cnt = 0 + i*55
+img_cnt = 1850
 data_dict = {}
 inf = 1e9
-save = False
+save = True
+# save = False
 
 # file_path = '../../../correction/Scenario'+ str(folder_cnt) + '/'
 file_path = '../../../images/correction/left/'
