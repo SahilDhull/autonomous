@@ -61,7 +61,7 @@ WorldInfo {
 }
 DEF VIEWPOINT Viewpoint {
   orientation -0.06587289831366223 -0.7954855848886828 -0.6023814783856393 2.9680502597390213
-  position 306.50273948246564 48.66463812580981 -14.368264285919585
+  position 312.95062934110126 49.82741621629803 -11.567287958117456
   near 1
   followSmoothness 0
   lensFlare LensFlare {
@@ -179,7 +179,7 @@ Fog {
   visibilityRange 700
 }
 DEF DVHC_1 TeslaModel3 {
-  translation 315 0.35 3.83918
+  translation 320 0.35 3.83927
   rotation 0 -1 0 1.57083
   color 1 0 0
   name "DVHC_1"

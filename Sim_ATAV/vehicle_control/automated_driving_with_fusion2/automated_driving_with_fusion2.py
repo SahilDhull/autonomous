@@ -57,7 +57,7 @@ i = 0
 img_cnt = 0 + i*55
 data_dict = {}
 inf = 1e9
-save = True
+save = False
 
 # file_path = '../../../correction/Scenario'+ str(folder_cnt) + '/'
 file_path = '../../../images/correction/left/'
