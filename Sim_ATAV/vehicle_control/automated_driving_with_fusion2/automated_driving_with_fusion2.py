@@ -53,10 +53,11 @@ exp_out = [[]]
 time_index = 0
 #change heading when changing left to right/straight
 folder_cnt = 4
-i = 2
+i = 0
 img_cnt = 0 + i*55
 data_dict = {}
 inf = 1e9
+save = True
 
 # file_path = '../../../correction/Scenario'+ str(folder_cnt) + '/'
 file_path = '../../../images/correction/left/'
@@ -477,7 +478,8 @@ class PathAndSpeedFollower(BaseCarController):
                     if cur_time_ms%100==0:
                         global img_cnt
                         img_name = "img_"+str(img_cnt)+".png"
-                        self.camera.saveImage(image_path+img_name,1)
+                        if save:
+                            self.camera.saveImage(image_path+img_name,1)
                         img_cnt = img_cnt + 1
                         data_dict[img_name] = [cur_speed_ms,target_throttle[time_index],control_steering, heading]
                         # print(heading)
@@ -629,26 +631,29 @@ class PathAndSpeedFollower(BaseCarController):
             compute_and_apply_control()
 
         out_file = pkl_file
+
         
-        try:
-            prevdict = pickle.load(open(out_file, "rb"))
-        except (OSError, IOError) as e:
-            prevdict = {}
-            pickle.dump(prevdict, open(out_file, "wb"))
 
-        # with open(out_file, 'rb') as handle:
-        #     prevdict = pickle.load(handle)
-        
-        # print(prevdict)
-        prevdict.update(data_dict)
+        if save:
+            try:
+                prevdict = pickle.load(open(out_file, "rb"))
+            except (OSError, IOError) as e:
+                prevdict = {}
+                pickle.dump(prevdict, open(out_file, "wb"))
 
-        # print(prevdict)
-        # with open(out_file, 'wb') as handle:
-        #     pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            # with open(out_file, 'rb') as handle:
+            #     prevdict = pickle.load(handle)
+            
+            # print(prevdict)
+            prevdict.update(data_dict)
+
+            # print(prevdict)
+            # with open(out_file, 'wb') as handle:
+            #     pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
-        with open(out_file, 'wb') as handle:
-            pickle.dump(prevdict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            with open(out_file, 'wb') as handle:
+                pickle.dump(prevdict, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
         # Clean up
         del self.classifier
