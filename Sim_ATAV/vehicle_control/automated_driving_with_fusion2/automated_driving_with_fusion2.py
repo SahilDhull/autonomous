@@ -46,27 +46,16 @@ import pickle
 import random
 # import dill
 
-
-
-
-exp_out = [[]]
-time_index = 0
-#change heading when changing left to right/straight
-folder_cnt = 4
-img_cnt = 1850
-data_dict = {}
-inf = 1e9
-save = True
-# save = False
-
-# file_path = '../../../correction/Scenario'+ str(folder_cnt) + '/'
-file_path = '../../../images/correction/left/'
-image_path = file_path
+file_path = '../../../'
+image_path = file_path + 'images/'
 pkl_file = file_path + 'control_throttle.pkl'
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
 
 
+
+
 class NetworkLight(nn.Module):
+
     def __init__(self):
         super(NetworkLight, self).__init__()
         self.conv_layers = nn.Sequential(
@@ -74,27 +63,32 @@ class NetworkLight(nn.Module):
             nn.ELU(),
             nn.Conv2d(24, 48, 5, stride=2),
             nn.MaxPool2d(4, stride=4),
-            nn.Dropout(p=0.25)
+            nn.Dropout(p=0.3)
         )
         self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=48*18*36 + 1, out_features=50),
+            nn.Linear(in_features=48*18*36 + 3, out_features=90),
             nn.ELU(),
-            nn.Linear(in_features=50, out_features=10),
+            nn.Dropout(p=0.3),
+            nn.Linear(in_features=90, out_features=10),
+            nn.Dropout(p=0.3),
             nn.Linear(in_features=10, out_features=2)
         )
         
-    def forward(self, input, vel):
+
+    def forward(self, input, vel, direction):
         input = input.view(input.size(0), 3, 310, 600)
         output = self.conv_layers(input)
-
+        
         # Append velocity in the output vector
         output = output.view(output.size(0), -1)
         vel = vel.view(vel.size(0),-1)
+        direction = direction.view(direction.size(0),-1)
         # print(vel.shape)
         # print(output.shape)
-        output = torch.cat((output,vel),dim = 1)
+        output = torch.cat((output,direction),dim = 1)
         output = self.linear_layers(output)
         return output
+
 
 class Dataset2(data.Dataset):
     def __init__(self, samples, transform=None):
@@ -106,10 +100,46 @@ class Dataset2(data.Dataset):
         img_name = image_path + batch_samples[0]
         center_img = read(img_name)
         center_img = self.transform(center_img)
-        return (center_img, batch_samples[1])
+        return (center_img, batch_samples[1], batch_samples[2])
       
     def __len__(self):
         return len(self.samples)
+
+
+crossing_dir = -1
+model_val = 2
+
+############ Model 1 ###############
+
+if model_val == 1:
+    model1 = NetworkLight()
+    state1 = torch.load(file_path + 'models/model1_39_ep.h5')
+    model1 = state1['model']
+    model1.float().to(device)
+    model1.eval()
+
+
+############ Model 2 ###############
+
+elif model_val == 2:
+    left_model = NetworkLight()
+    left_state = torch.load(file_path + 'models/m2_left_30.h5')
+    left_model = left_state['model']
+    left_model.float().to(device)
+    left_model.eval()
+
+    # right_model = NetworkLight()
+    # right_state = torch.load(file_path + 'models/right_model2.h5')
+    # right_model = right_state['model']
+    # right_model.float().to(device)
+    # right_model.eval()
+
+    st_model = NetworkLight()
+    st_state = torch.load(file_path + 'models/earlier_models/st_model2.h5')
+    st_model = st_state['model']
+    st_model.float().to(device)
+    st_model.eval()
+
 
 def read(name):
     current_image = cv2.imread(name)
@@ -117,8 +147,8 @@ def read(name):
     return current_image
 
 def toDevice(datas, device):
-    imgs, vel = datas
-    return imgs.float().to(device), vel.float().to(device)
+    imgs, vel, one_hot = datas
+    return imgs.float().to(device), vel.float().to(device), one_hot.float().to(device)
 
 def testing(model, test_generator):
     model.eval()
@@ -126,20 +156,20 @@ def testing(model, test_generator):
         for local_batch, data in enumerate(test_generator):
             data = toDevice(data, device)
             # print(data)
-            imgs, vel = data
+            imgs, vel, one_hot = data
             with torch.no_grad():
-                outputs = model(imgs,vel)
+                outputs = model(imgs,vel, one_hot)
     return outputs
 
-def MLmodel(sample_test):
+def MLmodel(sample_test, eval_model):
     
 
 
-    eval_model = NetworkLight()
-    eval_state = torch.load(file_path + 'model.h5')
-    eval_model = eval_state['model']
-    eval_model.float()
-    eval_model.eval()
+    # eval_model = NetworkLight()
+    # eval_state = torch.load(file_path + 'model.h5')
+    # eval_model = eval_state['model']
+    # eval_model.float()
+    # eval_model.eval()
 
 
 
@@ -190,20 +220,16 @@ def MLmodel(sample_test):
 # Our global variables
 target_throttle = [0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1, 0.15, 0.3, 0.55, 0.65, 0.75, 0.85, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 0.65, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1]
 
-
-
-
-
-
-
 target_t = [1.58, 2.23, 2.73, 3.15, 3.52, 3.86, 4.17, 4.47, 4.75, 5.02, 5.28, 5.53, 5.77, 6.01, 6.24, 6.47, 6.7, 6.92, 7.14, 7.36, 7.58, 7.8, 8.02, 8.26, 8.51, 8.78, 9.07, 9.39, 9.74, 10.14, 10.58, 11.08, 11.68, 12.39, 13.14, 13.89, 14.64, 15.39, 16.14, 16.89, 17.68, 18.47, 19.15, 19.7, 20.15, 20.54, 20.89, 21.21, 21.51, 21.8, 22.08, 22.34, 22.59, 22.84, 23.08, 23.32, 23.55, 23.78, 24.01, 24.23, 24.45, 24.67, 24.89, 25.11, 25.33, 25.57, 25.82, 26.09, 26.38, 26.7, 27.05, 27.42, 27.83, 28.29, 28.82, 29.47, 30.26, 31.11, 31.96, 32.81, 33.66, 34.51, 35.43]
 
+exp_out = [[]]
 
+time_index = 0
+img_cnt = 2450
+data_dict = {}
+str_angle = 0.0
 
-
-
-
-
+inf = 1e9
 
 
 def debug_print(print_str):
@@ -443,7 +469,7 @@ class PathAndSpeedFollower(BaseCarController):
                 #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
                 #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
 
-
+                global str_angle
                 if cur_time_ms<3010:
                     x = 0.0
                     self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=control_steering)
@@ -468,25 +494,52 @@ class PathAndSpeedFollower(BaseCarController):
                     #             inc = -0.05
                     #         else:
                     #             inc = 0.0
-                    x = 3.0
-                    self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=control_steering)
-                
+
+
                     # if(target_throttle[time_index])
-                    heading = 0
-                    # if cur_position[0]>=290.0 and cur_position[0]<=340.0 and cur_position[1]<=20:
-                    #     heading = 1
+                    x = 3.0
+                    direction = 0
+                    if crossing_dir==-1:
+                        if cur_position[0]<=320.0 and cur_position[1]<=15:
+                            direction = -1
+
+                    if direction==-1:
+                        one_hot = [1,0,0]
+                    elif direction==1:
+                        one_hot = [0,0,1]
+                    else:
+                        one_hot = [0,1,0]
+                    one_hot = torch.FloatTensor(one_hot)
+                      
+                    
                     if cur_time_ms%100==0:
                         global img_cnt
-                        img_name = "img_"+str(img_cnt)+".png"
-                        if save:
-                            self.camera.saveImage(image_path+img_name,1)
+                        img_name = "test_img.png"
+                        self.camera.saveImage("../../../images/"+img_name,1)
                         img_cnt = img_cnt + 1
-                        data_dict[img_name] = [cur_speed_ms,target_throttle[time_index],control_steering, heading]
-                        # print(heading)
-                        # throttle, angle = MLmodel([img_name,cur_speed_ms])
-                        # print("throttle: "+str(throttle)+" angle: "+str(angle))
+
+                        # Model 1
+                        if model_val == 1:
+                            throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], model1)
+
+
+                        # Model 2
+                        elif model_val == 2:
+                            if(direction == -1):
+                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], left_model)
+                            elif(direction == 1):
+                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], right_model)
+                            else:
+                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], st_model)
+                        
+                            
+                        print("throttle: "+str(throttle)+" angle: "+str(str_angle))
+                        # print(direction)
                         # data_dict[img_name] = [cur_speed_ms,target_throttle[time_index],control_steering]
-                        # self.set_throttle_and_steering_angle(throttle, angle)
+                        # self.set_throttle_and_steering_angle(throttle, str_angle)
+                        self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=str_angle)
+                
+
                 # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(min(max_speed_limit,
                 #                                                                              current_target_speed)),
                 #                                 angle=control_steering)
@@ -630,30 +683,17 @@ class PathAndSpeedFollower(BaseCarController):
             #---------Dynamic Path computation end--------------------
             compute_and_apply_control()
 
-        out_file = pkl_file
-
+        # out_file = "../../../control_throttle.pkl"
         
+        # with open(out_file, 'rb') as handle:
+        #     prevdict = pickle.load(handle)
+        
+        # # print(prevdict)
+        # prevdict.update(data_dict)
 
-        if save:
-            try:
-                prevdict = pickle.load(open(out_file, "rb"))
-            except (OSError, IOError) as e:
-                prevdict = {}
-                pickle.dump(prevdict, open(out_file, "wb"))
-
-            # with open(out_file, 'rb') as handle:
-            #     prevdict = pickle.load(handle)
-            
-            # print(prevdict)
-            prevdict.update(data_dict)
-
-            # print(prevdict)
-            # with open(out_file, 'wb') as handle:
-            #     pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-
-            with open(out_file, 'wb') as handle:
-                pickle.dump(prevdict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # # print(prevdict)
+        # with open(out_file, 'wb') as handle:
+        #     pickle.dump(prevdict, handle)
 
         # Clean up
         del self.classifier

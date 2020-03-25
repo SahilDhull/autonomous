@@ -168,7 +168,7 @@ def computeTargetPath():
 
     return travel_path
 
-def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=8000, for_matlab=False):
+def run_test(ego_init_speed_m_s=10.0, ego_x_pos=20.0, pedestrian_speed=3.0, sim_duration=50000, for_matlab=False):
     """Runs a test with the given arguments"""
 
     sim_environment = SimEnvironment()
