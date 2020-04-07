@@ -49,10 +49,7 @@ import random
 file_path = '../../../'
 image_path = file_path + 'images/'
 pkl_file = file_path + 'control_throttle.pkl'
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
-
-
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 class NetworkLight(nn.Module):
 
@@ -66,54 +63,72 @@ class NetworkLight(nn.Module):
             nn.Dropout(p=0.3)
         )
         self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=48*18*36 + 3, out_features=90),
+            nn.Linear(in_features=3459, out_features=90),
             nn.ELU(),
             nn.Dropout(p=0.3),
             nn.Linear(in_features=90, out_features=10),
             nn.Dropout(p=0.3),
-            nn.Linear(in_features=10, out_features=2)
+            nn.Linear(in_features=10, out_features=1)
         )
         
 
-    def forward(self, input, vel, direction):
-        input = input.view(input.size(0), 3, 310, 600)
-        output = self.conv_layers(input)
+    def forward(self, input1, input2, input3, direction):
+        input1 = input1.view(input1.size(0), 3, 60, 150)
+        input2 = input2.view(input2.size(0), 3, 60, 150)
+        input3 = input3.view(input3.size(0), 3, 60, 150)
+
+        output1 = self.conv_layers(input1)
+        output2 = self.conv_layers(input2)
+        output3 = self.conv_layers(input3)
         
-        # Append velocity in the output vector
-        output = output.view(output.size(0), -1)
-        vel = vel.view(vel.size(0),-1)
+        output1 = output1.view(output1.size(0), -1)
+        output2 = output2.view(output2.size(0), -1)
+        output3 = output3.view(output3.size(0), -1)
+        
         direction = direction.view(direction.size(0),-1)
-        # print(vel.shape)
-        # print(output.shape)
+
+        output = torch.cat((output1,output2),dim = 1)
+        output = torch.cat((output,output3),dim = 1)
         output = torch.cat((output,direction),dim = 1)
+
+        # print(output.size(1))
+
         output = self.linear_layers(output)
+
         return output
 
+class Dataset(data.Dataset):
 
-class Dataset2(data.Dataset):
     def __init__(self, samples, transform=None):
         self.samples = samples
         self.transform = transform
 
     def __getitem__(self, index):
         batch_samples = self.samples[index]
-        img_name = image_path + batch_samples[0]
-        center_img = read(img_name)
-        center_img = self.transform(center_img)
-        return (center_img, batch_samples[1], batch_samples[2])
+
+        img1 = read(image_path + batch_samples[0])
+        img2 = read(image_path + batch_samples[1])
+        img3 = read(image_path + batch_samples[2])
+
+        img1 = self.transform(img1)
+        img2 = self.transform(img2)
+        img3 = self.transform(img3)
+        
+        return (img1, img2, img3 , batch_samples[3])
       
     def __len__(self):
         return len(self.samples)
+                                  
+                                                                    
 
-
-crossing_dir = -1
-model_val = 2
+crossing_dir = 0
+model_val = 1
 
 ############ Model 1 ###############
 
 if model_val == 1:
     model1 = NetworkLight()
-    state1 = torch.load(file_path + 'models/model1_39_ep.h5')
+    state1 = torch.load(file_path + 'models/3camera/model1/m1_60.h5')
     model1 = state1['model']
     model1.float().to(device)
     model1.eval()
@@ -123,7 +138,7 @@ if model_val == 1:
 
 elif model_val == 2:
     left_model = NetworkLight()
-    left_state = torch.load(file_path + 'models/m2_left_30.h5')
+    left_state = torch.load(file_path + 'models/3camera/model2/m2_left_15.h5')
     left_model = left_state['model']
     left_model.float().to(device)
     left_model.eval()
@@ -135,7 +150,7 @@ elif model_val == 2:
     # right_model.eval()
 
     st_model = NetworkLight()
-    st_state = torch.load(file_path + 'models/earlier_models/st_model2.h5')
+    st_state = torch.load(file_path + 'models/3camera/model2/m2_st_30.h5')
     st_model = st_state['model']
     st_model.float().to(device)
     st_model.eval()
@@ -143,12 +158,12 @@ elif model_val == 2:
 
 def read(name):
     current_image = cv2.imread(name)
-    current_image = current_image[65:-25, :, :]
+    current_image = current_image[35:-5, :, :]
     return current_image
 
 def toDevice(datas, device):
-    imgs, vel, one_hot = datas
-    return imgs.float().to(device), vel.float().to(device), one_hot.float().to(device)
+    img1, img2, img3, one_hot = datas
+    return img1.float().to(device), img2.float().to(device), img3.float().to(device), one_hot.float().to(device)
 
 def testing(model, test_generator):
     model.eval()
@@ -156,30 +171,12 @@ def testing(model, test_generator):
         for local_batch, data in enumerate(test_generator):
             data = toDevice(data, device)
             # print(data)
-            imgs, vel, one_hot = data
+            img1, img2, img3, one_hot = data
             with torch.no_grad():
-                outputs = model(imgs,vel, one_hot)
+                outputs = model(img1, img2, img3, one_hot)
     return outputs
 
 def MLmodel(sample_test, eval_model):
-    
-
-
-    # eval_model = NetworkLight()
-    # eval_state = torch.load(file_path + 'model.h5')
-    # eval_model = eval_state['model']
-    # eval_model.float()
-    # eval_model.eval()
-
-
-
-    #--------Remove this later on----------------------------------------
-    # with open(pkl_file, 'rb') as handle:
-    #     samples = pickle.load(handle)
-
-    # samples_list = [ [k, v[0], v[1], v[2]] for k, v in samples.items() ]
-    #--------------------------------------------------
-
 
 
     transformations = transforms.Compose([transforms.Lambda(lambda x: (x / 255.0) - 0.5)])
@@ -190,7 +187,8 @@ def MLmodel(sample_test, eval_model):
 
       
     # print(samples_list[0])
-    test_set = Dataset2([sample_test], transformations)
+    # print(sample_test)
+    test_set = Dataset([sample_test], transformations)
     test_generator = DataLoader(test_set, **params)
 
 
@@ -212,10 +210,11 @@ def MLmodel(sample_test, eval_model):
     # for local_batch, data in enumerate(test_generator):
     # data = toDevice(data, device)
     # print(data)       
-            
+    # print(test_generator)
     Result = testing(eval_model, test_generator)
     # print(Result)
-    return float(Result[0][0]),float(Result[0][1])
+    # print(Result.size())
+    return float(Result)
 
 # Our global variables
 target_throttle = [0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1, 0.15, 0.3, 0.55, 0.65, 0.75, 0.85, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 0.65, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1]
@@ -283,8 +282,14 @@ class PathAndSpeedFollower(BaseCarController):
         self.slow_at_intersection = slow_at_intersection in ('True', 'true', 'yes', 'Yes')
         self.is_direct_speed_control = is_direct_speed_control in ('True', 'true', 'yes', 'Yes')
         self.use_fusion = use_fusion in ('True', 'true', 'yes', 'Yes')
-        self.camera_device_name = 'camera'
-        self.camera = None
+        # ------- changed  ----------------
+        self.camera_device_name_top = 'camerat'
+        self.camerat = None
+        self.camera_device_name_left = 'cameral'
+        self.cameral = None
+        self.camera_device_name_right = 'camerar'
+        self.camerar = None
+        # -------------------------------------
         self.compass_device_name = 'compass'
         self.compass = None
         self.display_device_name = 'display'
@@ -331,9 +336,17 @@ class PathAndSpeedFollower(BaseCarController):
     def start_devices(self):
         """Start the devices on the car and initialize objects like classifier."""
         # Start camera and the sensors:
-        self.camera = self.getCamera(self.camera_device_name)
-        if self.camera is not None:
-            self.camera.enable(self.CLASSIFIER_PERIOD_MS)
+        self.camerat = self.getCamera(self.camera_device_name_top)
+        self.camerar = self.getCamera(self.camera_device_name_right)
+        self.cameral = self.getCamera(self.camera_device_name_left)
+        
+        if self.camerat is not None:
+            self.camerat.enable(self.CLASSIFIER_PERIOD_MS)
+        if self.cameral is not None:
+            self.cameral.enable(self.CLASSIFIER_PERIOD_MS)
+        if self.camerar is not None:
+            self.camerar.enable(self.CLASSIFIER_PERIOD_MS)
+
         self.camera_info_display = CameraInfoDisplay(self.display)
           
         self.gps = self.getGPS(self.gps_device_name)
@@ -443,64 +456,15 @@ class PathAndSpeedFollower(BaseCarController):
 
             if self.is_direct_speed_control:
 
-                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(10.0), angle=control_steering)
-                
-                '''
-                v = 0.1
-                t = 0.3
-                global t1, v1, flag
-
-                if cur_time_ms==100:
-                    self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(v), angle=control_steering)
-                elif cur_time_ms>=5000:
-                    self.set_throttle(t)
-                # if cur_time_ms%200==0:
-                #     print("time: "+str(cur_time_ms)+" vel: "+str(cur_speed_ms))
-                if abs(round(cur_speed_ms,0)-cur_speed_ms)<0.01:
-                    t1 = cur_time_ms
-                    v1 = cur_speed_ms
-                    # print ("--> "+str(t1))
-                if cur_time_ms-t1 in (100,200,300,400,500,600,700,800,900,1000):
-                    a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
-                    # print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
-                '''
-
-                # if cur_time_ms-t1 == 1000:
-                #     a = ((cur_speed_ms-v1)/(cur_time_ms-t1))*1000
-                #     print("time: "+str(cur_time_ms)+" diff: "+str(cur_time_ms-t1)+" speed: "+str(round(v1,2)) + " acc: "+str(round(a,2)))
-
                 global str_angle
                 if cur_time_ms<3010:
                     x = 0.0
                     self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=control_steering)
                 else:
-                    # global time_index
-                    # if(target_t[time_index] < ((cur_time_ms/1000.0) -4) ):
-                    #     time_index = time_index + 1
-                    # x2 = exp_out[time_index][0]
-                    # y2 = exp_out[time_index][1]
-                    # inc = 0.0
-                    # if(time_index>0):
-                    #     t1 = exp_out[time_index-1][4]
-                    #     dt = cur_time_ms/1000.0 - 3 - t1
-                    #     x1 = exp_out[time_index-1][0]
-                    #     u1 = exp_out[time_index-1][3]
-                    #     a2 = exp_out[time_index][2]
-                    #     dx = u1*dt + 0.5*a2*dt*dt
-                    #     if(abs(x2-x1)==5.0):
-                    #         if( (dx-0.5)/abs(x2-x1)>(cur_position[1]-x1)/(x2-x1) ):
-                    #             inc = 0.05
-                    #         elif( (dx+0.5)/abs(x2-x1)<(cur_position[1]-x1)/(x2-x1) ):
-                    #             inc = -0.05
-                    #         else:
-                    #             inc = 0.0
-
-
-                    # if(target_throttle[time_index])
                     x = 3.0
                     direction = 0
                     if crossing_dir==-1:
-                        if cur_position[0]<=320.0 and cur_position[1]<=15:
+                        if cur_position[0]<=320.0 and cur_position[1]<=10:
                             direction = -1
 
                     if direction==-1:
@@ -513,28 +477,27 @@ class PathAndSpeedFollower(BaseCarController):
                       
                     
                     if cur_time_ms%100==0:
-                        global img_cnt
-                        img_name = "test_img.png"
-                        self.camera.saveImage("../../../images/"+img_name,1)
-                        img_cnt = img_cnt + 1
+                        self.cameral.saveImage(image_path + 'img1.png',1)
+                        self.camerat.saveImage(image_path + 'img2.png',1)
+                        self.camerar.saveImage(image_path + 'img3.png',1)
+                        # img_cnt = img_cnt + 1
 
                         # Model 1
                         if model_val == 1:
-                            throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], model1)
+                            str_angle = MLmodel(['img1.png', 'img2.png', 'img3.png', one_hot], model1)
 
 
                         # Model 2
                         elif model_val == 2:
                             if(direction == -1):
-                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], left_model)
+                                str_angle = MLmodel(['img1.png', 'img2.png', 'img3.png', one_hot], left_model)
                             elif(direction == 1):
-                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], right_model)
+                                str_angle = MLmodel(['img1.png', 'img2.png', 'img3.png', one_hot], right_model)
                             else:
-                                throttle, str_angle = MLmodel([img_name,cur_speed_ms, one_hot], st_model)
+                                str_angle = MLmodel(['img1.png', 'img2.png', 'img3.png', one_hot], st_model)
                         
                             
-                        print("throttle: "+str(throttle)+" angle: "+str(str_angle))
-                        # print(direction)
+                        print(" angle: "+str(str_angle))
                         # data_dict[img_name] = [cur_speed_ms,target_throttle[time_index],control_steering]
                         # self.set_throttle_and_steering_angle(throttle, str_angle)
                         self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=str_angle)
@@ -643,57 +606,7 @@ class PathAndSpeedFollower(BaseCarController):
                     self.path_following_tools.populate_the_path_with_details()
                     # print(self.path_following_tools.target_path)
 
-            #----------Dynamic Path computation starts-------------------------
-            '''
-            if(cur_time_ms == 10):
-                cur_position = get_self_position()
-                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,))
-                t1.start() 
-
-            
-            global suboptimalPath
-            if (cur_time_ms == 8000):
-                t1.join()
-                self.path_following_tools.target_path = None
-                self.path_following_tools.path_details = None
-                for pt in suboptimalPath:
-                    self.path_following_tools.add_point_to_path(pt)
-
-                self.path_following_tools.smoothen_the_path()
-                self.path_following_tools.populate_the_path_with_details()
-                 
-                cur_position = suboptimalPath[-1]
-                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,)) 
-                t1.start()
-
-            elif (cur_time_ms % 8000 == 0):
-                t1.join()
-            
-                # print(suboptimalPath)
-                # cur_position = get_self_position()
-                # (cur_seg,line_seg,nearest_pos,dis) = self.path_following_tools.get_current_segment(cur_position,0,self.path_following_tools.target_path)
-                
-                self.path_following_tools.target_path = self.path_following_tools.future_target_path
-                self.path_following_tools.path_details = self.path_following_tools.future_path_details
-
-                cur_position = suboptimalPath[-1]
-                t1 = threading.Thread(target=self.computeTargetPath, args=(cur_position,)) 
-                t1.start()
-            '''
-            #---------Dynamic Path computation end--------------------
             compute_and_apply_control()
-
-        # out_file = "../../../control_throttle.pkl"
-        
-        # with open(out_file, 'rb') as handle:
-        #     prevdict = pickle.load(handle)
-        
-        # # print(prevdict)
-        # prevdict.update(data_dict)
-
-        # # print(prevdict)
-        # with open(out_file, 'wb') as handle:
-        #     pickle.dump(prevdict, handle)
 
         # Clean up
         del self.classifier

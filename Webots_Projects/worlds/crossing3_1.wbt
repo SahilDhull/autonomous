@@ -1,0 +1,226 @@
+#VRML_SIM R2019b utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0.04326904747620764 0.8284214161733375 0.5584315058768298 3.2697942221470617
+  position 294.9694946197863 128.57981268912295 -44.03199276549432
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+SimpleBuilding {
+  translation 315.94 0 -15.579999999999991
+}
+Museum {
+  translation 287.20999999999975 0 -22.39000000000001
+}
+FastFoodRestaurant {
+  translation 311.90000000000015 0 33.78
+  rotation 0 1 0 3.141592605640827
+}
+Hotel {
+  translation 287.3599999999985 0 13.000000000000004
+}
+CommercialBuilding {
+  translation 317.2199999999998 0 16.890000000000004
+}
+StraightRoadSegment {
+  translation 300 0.02 10
+  name "road(1)"
+  width 10.5
+  length 200
+}
+StraightRoadSegment {
+  translation 300 0.02 -10
+  rotation 0 1 0 3.14
+  name "road(2)"
+  width 10.5
+  length 200
+}
+CurvedRoadSegment {
+  translation 0 0.02 -20
+  rotation 0 1 0 -1.57083
+  name "curved_road"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+CurvedRoadSegment {
+  translation 500 0.02 -20
+  rotation 0 1 0 1.57083
+  name "curved_road_2"
+  width 10.5
+  numberOfLanes 3
+  curvatureRadius 20
+  totalAngle 3.14159
+}
+StraightRoadSegment {
+  translation 500 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1"
+  width 10.5
+  length 190
+}
+StraightRoadSegment {
+  translation 290 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 10.5
+  length 190
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 324.78 0.35 0.11
+  rotation 0 1 0 -2.094395307179586
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotTop [
+    Camera {
+      name "camerat"
+      width 150
+      height 100
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+  sensorsSlotLeft [
+    Camera {
+      name "cameral"
+      width 150
+      height 100
+    }
+  ]
+  sensorsSlotRight [
+    Camera {
+      name "camerar"
+      width 150
+      height 100
+    }
+  ]
+}
+RoadIntersection {
+  translation 300 0.02 0
+  rotation 0 1 0 -0.785
+  roadsWidth 10.5
+}
+Warehouse {
+  translation 288.4100008908432 0 36.57000051952702
+  rotation 0 1 0 4.712388927640827
+}

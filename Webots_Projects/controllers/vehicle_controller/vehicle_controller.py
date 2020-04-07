@@ -50,29 +50,39 @@ class NetworkLight(nn.Module):
             nn.Dropout(p=0.3)
         )
         self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=48*18*36 + 3, out_features=90),
+            nn.Linear(in_features=3459, out_features=90),
             nn.ELU(),
             nn.Dropout(p=0.3),
             nn.Linear(in_features=90, out_features=10),
             nn.Dropout(p=0.3),
-            nn.Linear(in_features=10, out_features=2)
+            nn.Linear(in_features=10, out_features=1)
         )
         
 
-    def forward(self, input, vel, direction):
-        input = input.view(input.size(0), 3, 310, 600)
-        output = self.conv_layers(input)
-        
-        # Append velocity in the output vector
-        output = output.view(output.size(0), -1)
-        vel = vel.view(vel.size(0),-1)
-        direction = direction.view(direction.size(0),-1)
-        # print(vel.shape)
-        # print(output.shape)
-        output = torch.cat((output,direction),dim = 1)
-        output = self.linear_layers(output)
-        return output
+    def forward(self, input1, input2, input3, direction):
+        input1 = input1.view(input1.size(0), 3, 60, 150)
+        input2 = input2.view(input2.size(0), 3, 60, 150)
+        input3 = input3.view(input3.size(0), 3, 60, 150)
 
+        output1 = self.conv_layers(input1)
+        output2 = self.conv_layers(input2)
+        output3 = self.conv_layers(input3)
+        
+        output1 = output1.view(output1.size(0), -1)
+        output2 = output2.view(output2.size(0), -1)
+        output3 = output3.view(output3.size(0), -1)
+        
+        direction = direction.view(direction.size(0),-1)
+
+        output = torch.cat((output1,output2),dim = 1)
+        output = torch.cat((output,output3),dim = 1)
+        output = torch.cat((output,direction),dim = 1)
+
+        # print(output.size(1))
+
+        output = self.linear_layers(output)
+
+        return output
 
 # ---------------------------------------------
 print("Vehicle controller will load.")
