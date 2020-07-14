@@ -1,0 +1,56 @@
+learning rate = 1e-4
+correction weight = straight weight
+epochs = 50
+
+
+Phase: train # of data: 5964
+epoch: 0, train loss: 0.01090
+epoch: 1, train loss: 0.00781
+epoch: 2, train loss: 0.00650
+epoch: 3, train loss: 0.00575
+epoch: 4, train loss: 0.00452
+epoch: 5, train loss: 0.00371
+epoch: 6, train loss: 0.00320
+epoch: 7, train loss: 0.00274
+epoch: 8, train loss: 0.00251
+epoch: 9, train loss: 0.00192
+epoch: 10, train loss: 0.00180
+epoch: 11, train loss: 0.00169
+epoch: 12, train loss: 0.00147
+epoch: 13, train loss: 0.00133
+epoch: 14, train loss: 0.00115
+epoch: 15, train loss: 0.00097
+epoch: 16, train loss: 0.00098
+epoch: 17, train loss: 0.00103
+epoch: 18, train loss: 0.00098
+epoch: 19, train loss: 0.00088
+epoch: 20, train loss: 0.00094
+epoch: 21, train loss: 0.00090
+epoch: 22, train loss: 0.00102
+epoch: 23, train loss: 0.00098
+epoch: 24, train loss: 0.00107
+epoch: 25, train loss: 0.00106
+epoch: 26, train loss: 0.00104
+epoch: 27, train loss: 0.00089
+epoch: 28, train loss: 0.00086
+epoch: 29, train loss: 0.00103
+epoch: 30, train loss: 0.00085
+epoch: 31, train loss: 0.00091
+epoch: 32, train loss: 0.00093
+epoch: 33, train loss: 0.00082
+epoch: 34, train loss: 0.00087
+epoch: 35, train loss: 0.00085
+epoch: 36, train loss: 0.00103
+epoch: 37, train loss: 0.00075
+epoch: 38, train loss: 0.00087
+epoch: 39, train loss: 0.00088
+epoch: 40, train loss: 0.00094
+epoch: 41, train loss: 0.00084
+epoch: 42, train loss: 0.00092
+epoch: 43, train loss: 0.00087
+epoch: 44, train loss: 0.00080
+epoch: 45, train loss: 0.00078
+epoch: 46, train loss: 0.00087
+epoch: 47, train loss: 0.00104
+epoch: 48, train loss: 0.00078
+epoch: 49, train loss: 0.00079

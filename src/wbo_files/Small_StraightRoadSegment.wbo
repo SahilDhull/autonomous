@@ -1,0 +1,8 @@
+#VRML_OBJ R2019b utf8
+StraightRoadSegment {
+  translation -12 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(2)"
+  width 15
+  length 50
+}

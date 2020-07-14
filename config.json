@@ -1,0 +1,68 @@
+{
+    "cuda": {
+        "use": true
+    },
+    "front": true,
+    "tomtom": false,
+    "direction":true,
+    "multi_camera": {
+        "right_left": true,
+        "rear": false
+    },
+    "here": {
+        "number": 1,
+        "frequency": 1,
+        "groups": [1,2,3,4,5,6]
+    },
+    "model":{
+        "save_path":"CNN/models/right_turn_and_straight/3_camera/",
+        "type": "3_camera",
+        "test_epoch": 99
+    },
+    "data_loader": {
+        "historic":{
+            "number": 4,
+            "frequency": 3
+        },
+        "data_dir": "./",
+        "train":{
+            "csv_name": "right_turn_and_straight.csv",
+            "batch_size": 15,
+            "shuffle": true,
+            "num_workers": 2
+        },
+        "validation": {
+            "csv_name": "z3_val.csv",
+            "batch_size": 2,
+            "shuffle": true,
+            "num_workers": 2
+        },
+        "test": {
+            "csv_name": "z3_test.csv",
+            "batch_size": 2,
+            "shuffle": false,
+            "num_workers": 1
+        }
+    },
+    "target":{
+        "normalize": false,
+        "mean": {"canSteering": 0.008375078057317157,
+                "canSpeed": 7.658580639827564},
+        "std": {"canSteering": 0.12390712619767003,
+                "canSpeed": 6.609155927186366}
+    },
+    "image": {
+        "norm": {
+            "mean": [
+                0.4443069311879691,
+                0.44355877047930287,
+                0.44472938612018881
+            ],
+            "std": [
+                0.084803636530148815,
+                0.084356488922100445,
+                0.086008411332264681
+            ]
+        }
+    }
+}

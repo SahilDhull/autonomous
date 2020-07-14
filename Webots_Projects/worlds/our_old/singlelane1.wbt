@@ -1,0 +1,265 @@
+#VRML_SIM R2019a utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation 0.5898416668098881 -0.6641860065642893 -0.4592861382396758 4.554042567981326
+  position 335.30638363953057 79.05849320155568 19.214555422862166
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+StraightRoadSegment {
+  translation 305 0.02 4.99
+  name "road(1)"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  length 200
+}
+StraightRoadSegment {
+  translation 305 0.02 -5
+  rotation 0 1 0 3.14
+  name "road(2)"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  length 200
+}
+CurvedRoadSegment {
+  translation 310 0.02 5
+  rotation 0 1 0 3.14
+  name "curved_road"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 5
+  totalAngle 1.59
+}
+CurvedRoadSegment {
+  translation 310 0.016 -5
+  rotation 0 1 0 -1.57
+  name "curved_road(1)"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 5
+  totalAngle 1.59
+}
+StraightRoadSegment {
+  translation 500 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  length 190
+}
+StraightRoadSegment {
+  translation 307 0.018 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 6
+  numberOfLanes 1
+  rightBorder FALSE
+  leftBorder FALSE
+  length 190
+}
+Fog {
+  color 0.93 0.96 1
+  visibilityRange 700
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 319.1204780107554 0.3500001673423043 -0.2263596363667582
+  rotation -3.5529276077540917e-09 0.9999999999999999 1.3259716435615295e-08 4.7123885569713435
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotTop [
+    Camera {
+      width 600
+      height 400
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+}
+Warehouse {
+  translation 288.41000165088224 0 22.160000519527042
+  rotation 0 1 0 4.712388927640827
+}
+Cypress {
+  translation 320.33999999999986 0 3.0199999999999987
+}
+Cypress {
+  translation 323.15999999999997 0 3.3499999999999996
+  name "cypress tree(1)"
+}
+Cypress {
+  translation 324.57999999999987 0 3.6799999999999997
+  name "cypress tree(2)"
+}
+Cypress {
+  translation 326.3899999999997 0 3.7
+  name "cypress tree(3)"
+}
+Cypress {
+  translation 316.87999999999977 0 3.4799999999999978
+  name "cypress tree(4)"
+}
+Cypress {
+  translation 315.4399999999997 0 3.5999999999999996
+  name "cypress tree(5)"
+}
+Cypress {
+  translation 312.9899999999998 0 3.420000000000004
+  name "cypress tree(6)"
+}
+Cypress {
+  translation 312.9899999999998 0 5.31
+  name "cypress tree(7)"
+}
+Cypress {
+  translation 308.92999999999984 0 9.139999999999997
+  name "cypress tree(8)"
+}
+Cypress {
+  translation 309.4099999999996 0 11.070000000000002
+  name "cypress tree(9)"
+}
+Cypress {
+  translation 308.9399999999999 0 13.54
+  name "cypress tree(10)"
+}
+Cypress {
+  translation 308.92999999999967 0 16.610000000000003
+  name "cypress tree(11)"
+}
+Cypress {
+  translation 308.6199999999997 0 21.720000000000002
+  name "cypress tree(12)"
+}
+Cypress {
+  translation 307.99999999999966 0 23.040000000000003
+  name "cypress tree(13)"
+}
+Cypress {
+  translation 307.7299999999996 0 24.730000000000008
+  name "cypress tree(14)"
+}

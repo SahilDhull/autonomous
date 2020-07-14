@@ -1,0 +1,55 @@
+#VRML_OBJ R2019b utf8
+DEF DVHC_1 TeslaModel3 {
+  translation 318 0.35 1.88
+  rotation 0 1 0 -1.5707953071795862
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 25.0 True 3.5 1 False False"
+  sensorsSlotRear [
+    Camera {
+      translation 0 0 -0.07
+      name "camera_rear"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotTop [
+    Camera {
+      translation 0 0 -0.5
+      rotation 1 0 0 0
+      name "camera_front"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+  sensorsSlotLeft [
+    Camera {
+      translation 0.200001 0 0.84
+      rotation 0 1 0 -1.5707953071795862
+      name "camera_left"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotRight [
+    Camera {
+      translation -0.2 0 0.85
+      rotation 0 1 0 1.57079
+      name "camera_right"
+      width 240
+      height 135
+    }
+  ]
+}

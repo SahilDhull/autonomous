@@ -100,7 +100,8 @@ class PathFollowingTools(object):
             nearest_pos_on_path = target_path.interpolate(target_path.project(geom.Point(vhc_pos)))
             min_line_segment = geom.LineString(target_path.coords[0:2])
             closest_line_segment_ind = None
-            for pt_ind in range(len(target_path.coords) - 1):
+            # for pt_ind in range(len(target_path.coords) - 1):
+            for pt_ind in range(2):
                 segment_ind = (pt_ind + last_segment_ind) % (len(target_path.coords) - 1)
                 line_segment = geom.LineString(target_path.coords[segment_ind:segment_ind + 2])
                 dist = nearest_pos_on_path.distance(line_segment)
@@ -270,6 +271,8 @@ class PathFollowingTools(object):
                     for new_point in new_points[1:]:
                         self.add_point_to_path(new_point, location=insert_location)
                         insert_location += 1
+
+            # print(self.target_path)
 
     def smoothen_the_future_path(self, turn_radius=10.0, step_size=1.0):
         """Converts linear segments to Dubins path where necessary."""

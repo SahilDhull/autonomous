@@ -1,0 +1,243 @@
+#VRML_SIM R2019b utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation -0.002965305445444593 0.9222693721766146 0.3865364305063215 3.1274425526215315
+  position 55.86106288439688 65.41359916295936 -57.87058934303516
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+Church {
+  translation 3.8291e-05 0 -14.43
+  rotation 0 1 0 3.14159
+}
+RangeRoverSportSVR {
+  translation 34.88 0.4 -8.74002
+  rotation 0 1 0 -1.5707953071795862
+  name "vehicle(2)"
+}
+BmwX5 {
+  translation 0.33 0.4 7.82003
+  rotation 0 1 0 1.5708
+}
+Bus {
+  translation -11.12 0.55 8.27002
+  rotation 0 1 0 1.5708
+  name "vehicle(1)"
+}
+LargeResidentialTower {
+  translation 20.68 0 -14.37
+  name "residential tower(1)"
+}
+FastFoodRestaurant {
+  translation 13.68 0 12.31
+  rotation 0 1 0 1.5708
+}
+BungalowStyleHouse {
+  translation 64.37 0 -16.72
+}
+ComposedHouse {
+  translation 50.48 0 -12.89
+}
+GasStation {
+  translation 122.14 0 19.95
+}
+Hotel {
+  translation 92.04 0 14.02
+}
+Carwash {
+  translation 84.46 0 -10.7
+}
+ModernHouse {
+  translation 140.55 0 -17.25
+  rotation 0 1 0 -1.5707953071795862
+}
+HollowBuilding {
+  translation 112.66 0 -22.75
+}
+SmallResidentialTower {
+  translation 139.73 0 9.18
+}
+StripBuilding {
+  translation 23.1 0 8.44
+  length 50
+}
+CyberboticsTower {
+  translation 160.5 0 16.91
+}
+AdvertisingBoard {
+  translation 180.4 2.31 12.93
+}
+Auditorium {
+  translation 176.74 0 -31.91
+  rotation 0 1 0 1.5708
+}
+StraightRoadSegment {
+  translation 200 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 10.5
+  length 500
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 85.2284 0.35 -2.18788
+  rotation 0 -1 0 1.57356
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 15.0 True 3.5 1 False False"
+  sensorsSlotRear [
+    Camera {
+      translation 0 0.33 -0.06999997151831415
+      rotation 0 -1 0 3.14159291251421
+      name "camera_rear"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotTop [
+    Camera {
+      translation -0.0028734179266617643 -0.7600000000000002 -2.524383533372951
+      rotation 0 -1 0 6.279999999999946
+      name "camera_front"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+  sensorsSlotLeft [
+    Camera {
+      translation 0.4200009999998888 0.44999999999999996 0.8399997787533655
+      rotation 0.1298763235260767 -0.9865092399698802 -0.09965771440986874 4.437492242934935
+      name "camera_left"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotRight [
+    Camera {
+      translation -0.0733463362487372 -0.18519690390088187 0.506621667819262
+      rotation -0.07405695697679596 -0.9826458413392312 -0.17006680340987065 1.656122940718285
+      name "camera_right"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
+}

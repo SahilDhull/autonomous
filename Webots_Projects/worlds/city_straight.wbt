@@ -1,0 +1,644 @@
+#VRML_SIM R2019b utf8
+WorldInfo {
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+DEF VIEWPOINT Viewpoint {
+  orientation -0.5883575589746124 0.5647526197794803 0.5786966919290703 2.1159117783492034
+  position 143.66124839866205 321.06606239263334 -82.54713849029811
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+DirectionalLight {
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
+}
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 4000 4000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+StripBuilding {
+  translation 167.56 0 34.0099
+  rotation 0 1 0 -1.5707953071795862
+  name "strip building(1)"
+  length 50
+}
+ModernSuburbanHouse {
+  translation 130.19 0 -19.31
+  name "suburban house(1)"
+}
+ModernSuburbanHouse {
+  translation 123.22 0 -43.09
+  name "suburban house(2)"
+}
+TheThreeTowers {
+  translation 140.17 0 16.69
+}
+SuburbanHouse {
+  translation -60.7401 0 -84.6998
+  rotation 0 1 0 -3.1415853071795863
+}
+ResidentialTower {
+  translation -1.5 0 -15.01
+  name "residential tower(4)"
+}
+Warehouse {
+  translation 63.8 0 -113.94
+}
+SmallResidentialBuilding {
+  translation -79.04 0 -50.62
+  rotation 0 1 0 -1.5707953071795862
+  name "residential building(1)"
+}
+HollowBuilding {
+  translation 79.48 0 -88.8
+}
+ModernHouse {
+  translation -22.23 0 -85.55
+  name "modern house(1)"
+}
+Museum {
+  translation 8.13 0 -82.95
+  rotation 0 1 0 1.5708
+}
+SmallResidentialTower {
+  translation 10.8 0 -115.46
+  name "residential tower(3)"
+}
+SmallResidentialTower {
+  translation 116.81 0 -115.46
+  name "residential tower(5)"
+}
+SmallResidentialTower {
+  translation 128.27 0 -115.46
+  name "residential tower(6)"
+}
+StripBuilding {
+  translation 95.6099 0 -10.17
+  rotation 0 1 0 3.14159
+  length 80
+}
+BungalowStyleHouse {
+  translation -18.57 0 -31.91
+  rotation 0 1 0 -1.5707953071795862
+}
+Windmill {
+  translation 35.44 0 -10.3
+}
+ComposedHouse {
+  translation -23.58 0 -14.25
+  rotation 0 1 0 3.14159
+}
+LargeResidentialTower {
+  translation -54.81 0 -15.32
+}
+LargeResidentialTower {
+  translation -7.4 0 -48.94
+  name "residential tower(1)"
+}
+LargeResidentialTower {
+  translation -50.05 0 -48.75
+  name "residential tower(2)"
+}
+Hotel {
+  translation -28.65 0 -49.22
+}
+Hotel {
+  translation 15.45 0 -49.22
+  name "hotel(1)"
+}
+Hotel {
+  translation 104.71 0 -47.65
+  name "hotel(2)"
+}
+MotelReception {
+  translation -1.17027 0 12.8499
+  rotation 0 -1 0 -1.5708053071795867
+}
+MotelReception {
+  translation 120.719 0 -78.5212
+  rotation 0 -1 0 -1.5708053071795867
+  name "motel reception(1)"
+}
+ModernHouse {
+  translation 103.14 0 -82.77
+}
+ModernHouse {
+  translation 154.67 0 -22.07
+  name "modern house(2)"
+}
+SmallManor {
+  translation -19.27 0 22
+  rotation 0 1 0 -1.5707953071795862
+}
+SmallManor {
+  translation 45.21 0 -79.8
+  rotation 0 1 0 -1.5707953071795862
+  name "small manor(1)"
+}
+StoneFountain {
+  translation -10.13 0 26.3
+}
+IntermodalOfficeContainer {
+  translation 9.95 0 33.63
+  rotation 0 1 0 1.5708
+}
+HouseWithGarage {
+  translation 71.7801 0 -47.53
+  rotation 0 1 0 3.14159
+}
+HouseWithGarage {
+  translation 158.92 0 -46.4999
+  rotation 0 1 0 3.14159
+  name "house with garage(1)"
+}
+ClothRecyclingContainer {
+  translation 33.12 0 10.84
+}
+BusStop {
+  translation 26.68 0 10.71
+}
+Oak {
+  translation -38.48 0 12.51
+}
+Oak {
+  translation 19.47 0 12.51
+  name "oak tree(1)"
+}
+AdvertisingBoard {
+  translation -44.86 1.92 9.47
+  name "advertising board(1)"
+}
+Bench {
+  translation -36.26 0 9.28
+}
+Bench {
+  translation -39.83 0 9.28
+  name "bench(1)"
+}
+Bench {
+  translation 19.28 0 9.28
+  name "bench(2)"
+}
+ToyotaPriusSimple {
+  translation -32.73 0.4 9.41
+  name "vehicle(6)"
+}
+Atm {
+  translation -29.07 0 8.96
+}
+ResidentialBuilding {
+  translation -58.4001 0 20.18
+  rotation 0 -1 0 -5.307179586466759e-06
+}
+GasStation {
+  translation -23.81 0.19 80.3
+  rotation 0 1 0 -1.5707953071795862
+}
+GasStation {
+  translation 155.96 0.19 -87.14
+  rotation 0 1 0 -1.5707953071795862
+  name "gas station(1)"
+}
+MotorbikeSimple {
+  translation 14.06 1.59 59.07
+  rotation 0 1 0 -1.5707953071795862
+  name "vehicle(4)"
+}
+Bus {
+  translation 16.91 1.57 63.5
+  rotation 0 1 0 -1.5707953071795862
+  name "vehicle(3)"
+}
+CitroenCZeroSimple {
+  translation 16.3316 1.28215 67.97
+  rotation 2.09385e-07 -1 3.59841e-07 1.5708
+  name "vehicle(2)"
+}
+UnevenTerrain {
+  translation 33.29 -1.59 70.81
+}
+BmwX5 {
+  translation -9.64999 0.4 11.73
+  rotation 0 1 0 -1.5707953071795862
+}
+BmwX5 {
+  translation 16.23 1.27 72.47
+  rotation 0 1 0 -1.5707953071795862
+  name "vehicle(1)"
+}
+Pedestrian {
+  translation -8.59 1.27 9.18
+}
+AdvertisingBoard {
+  translation 79.54 5.79 7.38
+}
+FastFoodRestaurant {
+  translation -13.67 0 42.84
+}
+FastFoodRestaurant {
+  translation 104.37 0 15.3
+  rotation 0 1 0 3.14159
+  name "fast food restaurant(2)"
+}
+FastFoodRestaurant {
+  translation 34.88 0 -49.23
+  rotation 0 1 0 1.5708
+  name "fast food restaurant(1)"
+}
+Carwash {
+  translation -18.95 0 11.74
+}
+Carwash {
+  translation -38.97 0 -77.1
+  name "carwash(1)"
+}
+Carwash {
+  translation 107.98 0 -12.07
+  name "carwash(2)"
+}
+Auditorium {
+  translation 78.12 0 25
+}
+BigGlassTower {
+  translation 12.82 0 15.56
+}
+BigGlassTower {
+  translation 43.07 0 15.56
+  name "big glass tower(1)"
+}
+StraightRoadSegment {
+  translation 0 0.02 12
+  name "road_1(3)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation 0 0.02 -52
+  name "road_1(8)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation 0 0.02 -116
+  name "road_1(14)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation 178 0.02 -52
+  name "road_1(23)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation 104 0.02 -116
+  name "road_1(13)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation 178 0.02 -116
+  name "road_1(24)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation -74 0.02 -52
+  name "road_1(10)"
+  width 15
+  length 40
+}
+StraightRoadSegment {
+  translation -74 0.02 -116
+  name "road_1(15)"
+  width 15
+  length 40
+}
+Pedestrian {
+  translation 16.59 1.78 83.81
+  name "pedestrian(1)"
+}
+ScooterSimple {
+  translation 14.13 0.91 78.77
+  rotation 0 1 0 -1.5707953071795862
+  name "vehicle(5)"
+}
+StraightRoadSegment {
+  translation -74 0.02 12
+  name "road_1(7)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation 104 0.02 12
+  name "road_1(4)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation 178 0.02 12
+  name "road_1(22)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation -12 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(2)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation 166 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(20)"
+  width 15
+  length 500
+}
+StraightRoadSegment {
+  translation -12 0.02 -64
+  rotation 0 1 0 -1.5708
+  name "road_1(9)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation 166 0.02 -64
+  rotation 0 1 0 -1.5708
+  name "road_1(19)"
+  width 15
+  length 500
+}
+StraightRoadSegment {
+  translation -12 0.02 -128
+  rotation 0 1 0 -1.5708
+  name "road_1(17)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation 166 0.02 -128
+  rotation 0 1 0 -1.5708
+  name "road_1(18)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation -12 0.02 104
+  rotation 0 1 0 -1.5708
+  name "road_1(6)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation 166 0.02 104
+  rotation 0 1 0 -1.5708
+  name "road_1(21)"
+  width 15
+  length 50
+}
+StraightRoadSegment {
+  translation 92 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation 92 0.02 -64
+  rotation 0 1 0 -1.5708
+  name "road_1(11)"
+  width 15
+  length 80
+}
+StraightRoadSegment {
+  translation 92 0.02 -128
+  rotation 0 1 0 -1.5708
+  name "road_1(16)"
+  width 15
+  length 80
+}
+FireHydrant {
+  translation 8.09 0 8.48
+}
+StraightRoadSegment {
+  translation 92 0.02 104
+  rotation 0 1 0 -1.5708
+  name "road_1(5)"
+  width 15
+  length 80
+}
+RoadIntersection {
+  translation 0 0.02 -128
+  rotation 0 1 0 -0.785
+  name "road intersection(10)"
+  roadsWidth 15
+}
+TrashBin {
+  translation -8.88 0 20.18
+}
+RoadIntersection {
+  translation -74 0.02 -128
+  rotation 0 1 0 -0.785
+  name "road intersection(11)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 0 0.02 104
+  rotation 0 1 0 -0.785
+  name "road intersection(3)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation -74 0.02 104
+  rotation 0 1 0 -0.785
+  name "road intersection(5)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 178 0.02 0
+  rotation 0 1 0 -0.785
+  name "road intersection(13)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 178 0.02 -64
+  rotation 0 1 0 -0.785
+  name "road intersection(14)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 104 0.02 -128
+  rotation 0 1 0 -0.785
+  name "road intersection(9)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 178 0.02 -128
+  rotation 0 1 0 -0.785
+  name "road intersection(15)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 104 0.02 104
+  rotation 0 1 0 -0.785
+  name "road intersection(2)"
+  roadsWidth 15
+}
+RoadIntersection {
+  translation 178 0.02 104
+  rotation 0 1 0 -0.785
+  name "road intersection(12)"
+  roadsWidth 15
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 160.981 0.35 -66.26
+  rotation 0 1 0 -1.5735553071795865
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 15.0 True 3.5 1 False False"
+  sensorsSlotRear [
+    Camera {
+      translation 0 0.33 -0.06999997151831415
+      rotation 0 -1 0 3.14159291251421
+      name "camera_rear"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotTop [
+    Camera {
+      translation -0.0028734179266617643 -0.7600000000000002 -2.524383533372951
+      rotation 0 -1 0 6.279999999999946
+      name "camera_front"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+  sensorsSlotLeft [
+    Camera {
+      translation 0.4200009999998888 0.44999999999999996 0.8399997787533655
+      rotation 0.1298763235260767 -0.9865092399698802 -0.09965771440986874 4.437492242934935
+      name "camera_left"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotRight [
+    Camera {
+      translation -0.0733463362487372 -0.18519690390088187 0.506621667819262
+      rotation -0.07405695697679596 -0.9826458413392312 -0.17006680340987065 1.656122940718285
+      name "camera_right"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
+}

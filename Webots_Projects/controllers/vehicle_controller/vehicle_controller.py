@@ -38,52 +38,165 @@ import pickle
 import random
 # import dill
 
-class NetworkLight(nn.Module):
+# class NetworkLight(nn.Module):
+#     def __init__(self):
+#         super(NetworkLight, self).__init__()
+#         self.conv_layers = nn.Sequential(
+#             nn.Conv2d(3, 24, 5, stride=2),
+#             nn.ELU(),
+#             nn.Conv2d(24, 48, 5, stride=2),
+#             nn.MaxPool2d(4, stride=4),
+#             nn.Dropout(p=0.3)
+#         )
+#         self.linear_layers1 = nn.Sequential(
+#             nn.Linear(in_features=48*18*36, out_features=90),
+#             nn.ELU(),
+#             nn.Dropout(p=0.3),
+#             nn.Linear(in_features=90, out_features=10),
+#             nn.Dropout(p=0.3)
+#         )
+#         self.final_layer = nn.Linear(in_features=13, out_features=1)
+        
 
+#     def forward(self, inp, direction):
+#         inp = inp.view(inp.size(0), 3, 310, 600)
+
+#         output = self.conv_layers(inp)
+#         output = output.view(output.size(0), -1)
+#         # print(output.size(1))
+#         output = self.linear_layers1(output)
+
+#         direction = direction.view(direction.size(0),-1)
+#         output = torch.cat((output,direction),dim = 1)
+#         output = self.final_layer(output)
+
+#         return output
+
+test = True
+
+class CONV_LSTM(nn.Module):
     def __init__(self):
-        super(NetworkLight, self).__init__()
-        self.conv_layers = nn.Sequential(
-            nn.Conv2d(3, 24, 5, stride=2),
+        super(CONV_LSTM, self).__init__()
+        final_concat_size = 0
+        self.split_gpus = False
+        
+        in_chan_1 = 3
+        out_chan_1 = 12
+        out_chan_2 = 24
+        kernel_size = 5
+        stride_len = 2
+        
+        # CNN_output_size = 2688
+        CNN_output_size = 2352
+        
+        self.conv_layers1 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
             nn.ELU(),
-            nn.Conv2d(24, 48, 5, stride=2),
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
             nn.MaxPool2d(4, stride=4),
             nn.Dropout(p=0.3)
         )
-        self.linear_layers = nn.Sequential(
-            nn.Linear(in_features=3459, out_features=90),
+
+        self.conv_layers3 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
             nn.ELU(),
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features=90, out_features=10),
-            nn.Dropout(p=0.3),
-            nn.Linear(in_features=10, out_features=1)
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.3)
+        )
+
+        self.conv_layers4 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
+            nn.ELU(),
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.3)
         )
         
+        # Fully Connected Layers
+        # self.dir_fc = nn.Sequential(
+        #                 nn.Linear(1, 4),
+        #                 nn.ReLU())
+        # final_concat_size += 4
 
-    def forward(self, input1, input2, input3, direction):
-        input1 = input1.view(input1.size(0), 3, 60, 150)
-        input2 = input2.view(input2.size(0), 3, 60, 150)
-        input3 = input3.view(input3.size(0), 3, 60, 150)
+        self.front_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 512),
+                          nn.ReLU(),
+                          nn.Linear(512, 32),
+                          nn.ReLU())
+        final_concat_size += 32
 
-        output1 = self.conv_layers(input1)
-        output2 = self.conv_layers(input2)
-        output3 = self.conv_layers(input3)
+        self.left_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 256),
+                          nn.ReLU(),
+                          nn.Linear(256, 16),
+                          nn.ReLU())
+        final_concat_size += 16
+
+        self.right_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 256),
+                          nn.ReLU(),
+                          nn.Linear(256, 16),
+                          nn.ReLU())
+        final_concat_size += 16
+
+        # Angle Regressor
+        self.control_angle = nn.Sequential(
+            nn.Linear(final_concat_size+1, 8),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(8, 1)
+        )
         
-        output1 = output1.view(output1.size(0), -1)
-        output2 = output2.view(output2.size(0), -1)
-        output3 = output3.view(output3.size(0), -1)
+            
+    def forward(self, data):
+        module_outputs = []
+
+        # x = data['direction']
+        # x = x.view(x.size(0), -1)
+        # x = self.dir_fc(x)
+        # x = x.to(device)
+        # module_outputs.append(x)
+
+        v =  data['cameraFront']
+        x = self.conv_layers1(v)
+        x = x.view(x.size(0), -1)
+        x = self.front_fc(x)
+        module_outputs.append(x)
+
+        v = data['cameraLeft']
+        x = self.conv_layers3(v)
+        x = x.view(x.size(0), -1)
+        x = self.left_fc(x)
+        module_outputs.append(x)
+
+        v = data['cameraRight']
+        x = self.conv_layers4(v)
+        x = x.view(x.size(0), -1)
+        x = self.right_fc(x)
+        module_outputs.append(x)
+
+        # x = torch.FloatTensor([1.0])
+        # x = x.view(x.size(0), -1)
+        # x = x.to(device)
+        # x = torch.ones(2,1)
+        # print(x.size())
+
+        temp_dim = config['data_loader']['train']['batch_size']
+
+        if test:
+            temp_dim = 1
+
+        module_outputs.append(torch.ones(temp_dim, 1).to(device))
+
+        # print(module_outputs[0].shape)
+        x_cat = torch.cat(module_outputs, dim=-1)
+
+        # Feed concatenated outputs into the 
+        # regession networks.
+        prediction = {'canSteering': torch.squeeze(self.control_angle(x_cat))}
+        return prediction
         
-        direction = direction.view(direction.size(0),-1)
-
-        output = torch.cat((output1,output2),dim = 1)
-        output = torch.cat((output,output3),dim = 1)
-        output = torch.cat((output,direction),dim = 1)
-
-        # print(output.size(1))
-
-        output = self.linear_layers(output)
-
-        return output
-
 # ---------------------------------------------
 print("Vehicle controller will load.")
 

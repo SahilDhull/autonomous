@@ -1,35 +1,217 @@
 #VRML_SIM R2019b utf8
 WorldInfo {
-}
-Viewpoint {
-  orientation -0.008699852301286297 0.9400557753162335 0.3409097415219029 3.0936223139858616
-  position -0.6393882932909926 1.2016902724841914 -1.4915990285536338
-}
-Background {
-  skyColor [
-    1 1 1
-    0 0 0
-    0 0 0
+  info [
+    "Empty world."
+  ]
+  title "Empty World"
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
   ]
 }
+DEF VIEWPOINT Viewpoint {
+  orientation -0.4418668372948114 0.7842869326746258 0.43548559716126944 1.7972686767339292
+  position 241.18392433864693 203.24677843008092 -0.3347776007206966
+  near 1
+  followSmoothness 0
+  lensFlare LensFlare {
+  }
+}
+Robot {
+  children [
+    Receiver {
+      channel 2
+    }
+    Emitter {
+    }
+  ]
+  controller "simulation_controller"
+  controllerArgs "10021"
+  supervisor TRUE
+}
+TexturedBackground {
+  texture "noon_cloudy_mountains"
+}
+TexturedBackgroundLight {
+}
+Road {
+}
 DirectionalLight {
-  direction -0.33 -1 -0.5
+  direction -0.5 -0.9 -0.5
+  intensity 0.6
 }
-CircleArena {
+DEF GROUND Solid {
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+        texture ImageTexture {
+          url [
+            "C:/Program Files/Webots/projects/vehicles/worlds/textures/ground_grass.jpg"
+          ]
+        }
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 2000 2000
+      }
+    }
+  ]
+  boundingObject USE GROUND_PLANE
+  locked TRUE
 }
-E-puck {
-  hidden position_0_0 2577.664503251321
-  hidden position_0_1 2746.359447980287
-  hidden linearVelocity_0 -0.020377642060832157 -4.1590859029724905e-07 0.05621669726922971
-  hidden angularVelocity_0 -0.030054002188408764 0.1133039880936498 -0.010895661753788673
-  hidden translation_1 -0.025999999999999992 0.02 0
-  hidden rotation_1 -1 0 0 1.5585273076906379
-  hidden linearVelocity_1 -0.019320344213322353 -2.4943077981565874e-07 0.05330118528187701
-  hidden angularVelocity_1 2.652454501895841 0.11491901279604151 0.9613341485845074
-  hidden translation_2 0.026 0.02 0
-  hidden rotation_2 1 0 0 5.675716564372018
-  hidden linearVelocity_2 -0.02132568728428325 6.783594545166262e-08 0.05882946096898186
-  hidden angularVelocity_2 2.954549572315713 0.11514124279717229 1.0709929729687013
-  translation -0.9117082381340831 -6.42317540567143e-05 -0.21450162636681505
-  rotation 6.431173254367162e-05 0.9999997776319584 -0.0006637770971335343 2.7963595085093838
+SimpleTwoFloorsHouse {
+  translation 75.84 0 -15.99
+  rotation 0 1 0 1.5708
+}
+ResidentialBuildingWithRoundFront {
+  translation 109.83 0 20.21
+}
+MotelReception {
+  translation 107.92 0 -12.21
+}
+MotelReception {
+  translation 63.69 0 10.25
+  name "motel reception(1)"
+}
+LargeResidentialTower {
+  translation 84.78 0 13.85
+}
+LargeResidentialTower {
+  translation 136.79 0 -13.43
+  name "residential tower(1)"
+}
+Windmill {
+  translation 120.39 0 -7.99
+}
+FastFoodRestaurant {
+  translation 93.95 0 -12.42
+  rotation 0 1 0 -1.5707953071795862
+}
+ComposedHouse {
+  translation 133.15 0 13.06
+}
+Church {
+  translation 155 0 -13.18
+  rotation 0 1 0 3.14159
+}
+BungalowStyleHouse {
+  translation 153.88 0 16.1
+  rotation 0 1 0 1.5708
+}
+StraightRoadSegment {
+  translation 200 0.02 0
+  rotation 0 1 0 -1.5708
+  name "road_1(1)"
+  width 10.5
+  length 500
+}
+DEF DVHC_1 TeslaModel3 {
+  translation 154.458 0.35 -1.99657
+  rotation 0 -1 0 1.57356
+  color 1 0 0
+  name "DVHC_1"
+  controller "vehicle_controller"
+  controllerArgs "automated_driving_with_fusion2 TeslaModel3 15.0 True 3.5 1 False False"
+  sensorsSlotRear [
+    Camera {
+      translation 0 0.33 -0.06999997151831415
+      rotation 0 -1 0 3.14159291251421
+      name "camera_rear"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotTop [
+    Camera {
+      translation -0.0028734179266617643 -0.7600000000000002 -2.524383533372951
+      rotation 0 -1 0 6.279999999999946
+      name "camera_front"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotCenter [
+    Receiver {
+    }
+    Compass {
+    }
+    GPS {
+    }
+  ]
+  sensorsSlotLeft [
+    Camera {
+      translation 0.4200009999998888 0.44999999999999996 0.8399997787533655
+      rotation 0.1298763235260767 -0.9865092399698802 -0.09965771440986874 4.437492242934935
+      name "camera_left"
+      fieldOfView 1
+      width 240
+      height 135
+    }
+  ]
+  sensorsSlotRight [
+    Camera {
+      translation -0.0733463362487372 -0.18519690390088187 0.506621667819262
+      rotation -0.07405695697679596 -0.9826458413392312 -0.17006680340987065 1.656122940718285
+      name "camera_right"
+      fieldOfView 2
+      width 240
+      height 135
+    }
+  ]
 }
