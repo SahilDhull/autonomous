@@ -26,6 +26,8 @@ Webots_Projects/controllers/vehicle_controller - used while running the car (nee
 
 Webots_Projects/worlds - contains scenarios to generate dataset, and test the models
 
+PROTO file - $INST_DIR/projects/vehicles/protos/tesla
+
 
 # ignore
 

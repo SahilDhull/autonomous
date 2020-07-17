@@ -1,5 +1,7 @@
 # To run this file, rename it to automated_driving_with_fusion2.py
 
+
+
 """Defines SimpleSensorFusionControl class
 ----------------------------------------------------------------------------------------------------------
 This file is part of Sim-ATAV project and licensed under MIT license.
@@ -8,9 +10,6 @@ For questions please contact:
 C. Erkan Tuncali (etuncali [at] asu.edu)
 ----------------------------------------------------------------------------------------------------------
 """
-# 10 same direction, 8 other direction -> in right turn
-# 14 same direction, 11 other direction -> in left turn
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
 import math
@@ -52,37 +51,259 @@ import random
 import pandas as pd
 import json
 from PIL import Image
-import os
 
 # import dill
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+file_path = '../../../'
+image_path = file_path + 'images/'
+pkl_file = file_path + 'control_throttle.pkl'
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
+config = json.load(open('../../../config.json'))
+test = True
+
+
+def generate_input(index, config, direction):
+    inputs = {}
+    labels = {}
+    phase = 'test'
+    # sequence_length = 2
+    # history_frequency = 4
+    # end = index - sequence_length
+    # skip = int(-1 * history_frequency)
+    
+    # rows = []
+    # for i in range(index,end,skip):
+    #     rows.append(i)
+
+
+    front_transforms = {
+                'test': transforms.Compose([
+                    transforms.Resize((240, 135)),
+                    transforms.ToTensor()
+                    # ,
+                    # transforms.Normalize(mean=config['image']['norm']['mean'],
+                    #                      std=config['image']['norm']['std'])
+                ])}
+    sides_transforms = {
+        'test': transforms.Compose([
+            transforms.Resize((240, 135)),
+            transforms.ToTensor()
+            # ,
+            # transforms.Normalize(mean=config['image']['norm']['mean'],
+            #                      std=config['image']['norm']['std'])
+        ])}
+    
+    imageFront_transform = front_transforms[phase]
+    imageSides_transform = sides_transforms[phase]
+
+    data_dir = '../../../Conv_LSTM/test'
+    x = 'cameraFront'
+    inputs[x] =  imageFront_transform(Image.open(data_dir + '/front/' + str(index) + '.jpg')).unsqueeze(0)
+
+    x = 'cameraRight'
+    inputs[x] =  imageFront_transform(Image.open(data_dir + '/right/' + str(index) + '.jpg')).unsqueeze(0)
+    
+    x = 'cameraLeft'
+    inputs[x] =  imageFront_transform(Image.open(data_dir + '/left/' + str(index) + '.jpg')).unsqueeze(0)
+
+    inputs['cameraRear'] = imageFront_transform(Image.open(data_dir + '/rear/' + str(index) + '.jpg')).unsqueeze(0)
+
+    x = 'direction'
+    # rows = {}
+    # rows['direction'] = 0
+    # row = pd.DataFrame(rows)
+    # inputs['direction'] = (rows['direction'].iloc[0])
+    inputs['direction'] = torch.tensor([direction])
+    return inputs
+
+def toDevice(datas, device):
+    imgs, vel, one_hot = datas
+    return imgs.float().to(device), vel.float().to(device), one_hot.float().to(device)
+
+def testing(model, test_generator):
+    model.eval()
+    with torch.set_grad_enabled(False):
+        outputs = model(test_generator)
+    return outputs
+
+class CONV_LSTM(nn.Module):
+    def __init__(self):
+        super(CONV_LSTM, self).__init__()
+        final_concat_size = 0
+        self.split_gpus = False
+        
+        in_chan_1 = 3
+        out_chan_1 = 12
+        out_chan_2 = 24
+        kernel_size = 5
+        stride_len = 2
+        
+        # CNN_output_size = 2688
+        CNN_output_size = 2352
+        
+        self.conv_layers1 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
+            nn.ELU(),
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.3)
+        )
+
+        self.conv_layers3 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
+            nn.ELU(),
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.3)
+        )
+
+        self.conv_layers4 = nn.Sequential(
+            nn.Conv2d(in_chan_1, out_chan_1, kernel_size, stride = stride_len),
+            nn.ELU(),
+            nn.Conv2d(out_chan_1, out_chan_2, kernel_size, stride = stride_len),
+            nn.MaxPool2d(4, stride=4),
+            nn.Dropout(p=0.3)
+        )
+        
+        # Fully Connected Layers
+        # self.dir_fc = nn.Sequential(
+        #                 nn.Linear(1, 4),
+        #                 nn.ReLU())
+        # final_concat_size += 4
+
+        self.front_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 512),
+                          nn.ReLU(),
+                          nn.Linear(512, 32),
+                          nn.ReLU())
+        final_concat_size += 32
+
+        self.left_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 256),
+                          nn.ReLU(),
+                          nn.Linear(256, 16),
+                          nn.ReLU())
+        final_concat_size += 16
+
+        self.right_fc = nn.Sequential(
+                          nn.Linear(CNN_output_size, 256),
+                          nn.ReLU(),
+                          nn.Linear(256, 16),
+                          nn.ReLU())
+        final_concat_size += 16
+
+        # Angle Regressor
+        self.control_angle = nn.Sequential(
+            nn.Linear(final_concat_size+1, 8),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(8, 1)
+        )
+        
+            
+    def forward(self, data):
+        module_outputs = []
+
+        # x = data['direction']
+        # x = x.view(x.size(0), -1)
+        # x = self.dir_fc(x)
+        # x = x.to(device)
+        # module_outputs.append(x)
+
+        v =  data['cameraFront']
+        x = self.conv_layers1(v)
+        x = x.view(x.size(0), -1)
+        x = self.front_fc(x)
+        module_outputs.append(x)
+
+        v = data['cameraLeft']
+        x = self.conv_layers3(v)
+        x = x.view(x.size(0), -1)
+        x = self.left_fc(x)
+        module_outputs.append(x)
+
+        v = data['cameraRight']
+        x = self.conv_layers4(v)
+        x = x.view(x.size(0), -1)
+        x = self.right_fc(x)
+        module_outputs.append(x)
+
+        # x = torch.FloatTensor([1.0])
+        # x = x.view(x.size(0), -1)
+        # x = x.to(device)
+        # x = torch.ones(2,1)
+        # print(x.size())
+
+        temp_dim = config['data_loader']['train']['batch_size']
+
+        if test:
+            temp_dim = 1
+
+        module_outputs.append(torch.ones(temp_dim, 1).to(device))
+
+        # print(module_outputs[0].shape)
+        x_cat = torch.cat(module_outputs, dim=-1)
+
+        # Feed concatenated outputs into the 
+        # regession networks.
+        prediction = {'canSteering': torch.squeeze(self.control_angle(x_cat))}
+        return prediction
+model_val = 1
+gpu_avail = True
+
+############ Model 1 ###############
+
+if model_val == 1:
+    eval_model = CONV_LSTM()
+    if gpu_avail:
+        eval_state = torch.load('../../../Conv_LSTM/models/'+config['model']['category']+'/'+config['model']['type']+'/epoch'+str(config['model']['test_epoch'])+'.h5')
+    else:
+        eval_state = torch.load('../../../Conv_LSTM/epoch20.h5', map_location = 'cpu')
+    eval_model.load_state_dict(eval_state['state_dict'])
+    eval_model.eval()
+    eval_model = eval_model.to(device)
+
+
+############ Model 2 ###############
+
+elif model_val == 2:
+    left_model = NetworkLight()
+    left_state = torch.load(file_path + 'models/left_model2.h5')
+    left_model = left_state['model']
+    left_model.float().to(device)
+    left_model.eval()
+
+    # right_model = NetworkLight()
+    # right_state = torch.load(file_path + 'models/right_model2.h5')
+    # right_model = right_state['model']
+    # right_model.float().to(device)
+    # right_model.eval()
+
+    st_model = NetworkLight()
+    st_state = torch.load(file_path + 'models/st_model2.h5')
+    st_model = st_state['model']
+    st_model.float().to(device)
+    st_model.eval()
+
 
 # Our global variables
+target_throttle = [0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 0.8, 0.85, 0.9, 0.95, 1.0, 1.0, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1, 0.15, 0.3, 0.55, 0.65, 0.75, 0.85, 0.75, 0.8, 0.85, 0.9, 0.95, 1.0, 0.65, 0.65, 0.7, 0.7, 0.7, 0.75, 0.6, 0.6, 0.6, 0.35, 0.35, -0.3, -0.3, -0.3, -0.4, -0.4, -0.4, -0.2, -0.2, -0.2, -0.2, -0.2, -0.2, -0.1, 0.05, 0.05, 0.05, 0.05, 0.05, -0.1]
 
+target_t = [1.58, 2.23, 2.73, 3.15, 3.52, 3.86, 4.17, 4.47, 4.75, 5.02, 5.28, 5.53, 5.77, 6.01, 6.24, 6.47, 6.7, 6.92, 7.14, 7.36, 7.58, 7.8, 8.02, 8.26, 8.51, 8.78, 9.07, 9.39, 9.74, 10.14, 10.58, 11.08, 11.68, 12.39, 13.14, 13.89, 14.64, 15.39, 16.14, 16.89, 17.68, 18.47, 19.15, 19.7, 20.15, 20.54, 20.89, 21.21, 21.51, 21.8, 22.08, 22.34, 22.59, 22.84, 23.08, 23.32, 23.55, 23.78, 24.01, 24.23, 24.45, 24.67, 24.89, 25.11, 25.33, 25.57, 25.82, 26.09, 26.38, 26.7, 27.05, 27.42, 27.83, 28.29, 28.82, 29.47, 30.26, 31.11, 31.96, 32.81, 33.66, 34.51, 35.43]
+
+exp_out = [[]]
+
+time_index = 0
 img_cnt = 0
-folder_cnt = 5
-flag = 0
-
-# save = False
-save = True
-
-file_path = '../../../Conv_LSTM/test/'
-# config = json.load(open(file_path + 'config.json'))
-# folder_name = 'correction/'
-folder_name = 'straight/'
-pkl_file = file_path + 'control_throttle/'+folder_name+'control_throttle_'+str(folder_cnt) + '.pkl'
 data_dict = {}
-inf = 1e9
-try:
-    os.mkdir(file_path + "front/"+ folder_name + str(folder_cnt))
-    os.mkdir(file_path + "left/"+ folder_name + str(folder_cnt))
-    os.mkdir(file_path + "right/"+ folder_name + str(folder_cnt))
-    os.mkdir(file_path + "rear/"+ folder_name + str(folder_cnt))
-except:
-    inf2 = 1e9
-        
+str_angle = 0.0
 
+inf = 1e9
+
+def convert_to_CUDA(x):
+    for k, v in x.items():
+        x[k] = v.to(device)
 
 def debug_print(print_str):
     if DEBUG_MODE:
@@ -327,34 +548,36 @@ class PathAndSpeedFollower(BaseCarController):
 
                 if cur_time_ms%100==0:
                     global img_cnt
-                    # global flag
-                    # print(control_steering)
-                    # if(control_steering > 1e-4):
-                    #     flag = 1
-                    # if(flag and control_steering<= 1e-4):
-                    img_name = str(img_cnt) + ".png"
-                    if save:
-                        self.camera_front.saveImage(file_path+"front/"+folder_name+str(folder_cnt)+"/"+img_name,1)
-                        self.camera_rear.saveImage(file_path+"rear/"+folder_name+str(folder_cnt)+"/"+img_name,1)
-                        self.camera_left.saveImage(file_path+"left/"+folder_name+str(folder_cnt)+"/"+img_name,1)
-                        self.camera_right.saveImage(file_path+"right/"+folder_name+str(folder_cnt)+"/"+img_name,1)
+                    img_name = str(img_cnt) + ".jpg"
+                    self.camera_front.saveImage("../../../Conv_LSTM/test/front/"+img_name,1)
+                    self.camera_rear.saveImage("../../../Conv_LSTM/test/rear/"+img_name,1)
+                    self.camera_left.saveImage("../../../Conv_LSTM/test/left/"+img_name,1)
+                    self.camera_right.saveImage("../../../Conv_LSTM/test/right/"+img_name,1)
                     img_cnt = img_cnt + 1
-                    direction = 0.0
-                    
-                    if cur_position[1]<=10:
-                        direction = 1.0
-                    data_dict[img_cnt-1] = [cur_speed_ms,control_steering, cur_position, cur_yaw_angle, direction]
-                        
 
-                if cur_time_ms<10:
+                if cur_time_ms<3010:
                     x = 0.0
                     self.set_target_speed_and_angle(speed= controller_commons.speed_ms_to_kmh(x) ,angle=control_steering)
                 else:
-                    x = 2.0
-                    self.set_target_speed_and_angle(speed = controller_commons.speed_ms_to_kmh(x), angle = control_steering)
-                # self.set_target_speed_and_angle(speed=controller_commons.speed_ms_to_kmh(3.0),
-                #                                 angle=control_steering)
-                
+                    x = 3.0
+                    direction = 1.0
+                    # if cur_position[0]<=320.0 and cur_position[1]<=15:
+                    #     direction = -1
+
+                    data = generate_input(img_cnt-1,config, direction)
+                    convert_to_CUDA(data)
+                    Result = testing(eval_model, data)
+                    speed = x
+                    steering = float(Result['canSteering'])
+                    # steering = ((config['target']['std']['canSteering']*steering)+config['target']['mean']['canSteering'])
+                    # speed = ((config['target']['std']['canSpeed']*speed)+config['target']['mean']['canSpeed'])
+                    
+                    print("speed = "+ str(speed) + " steering = " + str(steering) + " cur_speed = " + str(cur_speed_ms))
+                    # control_throttle = self.longitudinal_controller.compute(speed
+                    #                                                     - cur_speed_ms)
+                    # self.set_throttle_and_steering_angle(control_throttle, steering)
+            
+                    self.set_target_speed_and_angle(speed = controller_commons.speed_ms_to_kmh(x), angle = steering)
                 if cur_time_ms%500==0:
                     print("Time: "+str(cur_time_ms)+" Agent vehicle speed: "+str(cur_speed_ms) + " pos: "+str(cur_position))
             
@@ -454,28 +677,7 @@ class PathAndSpeedFollower(BaseCarController):
 
             compute_and_apply_control()
 
-        out_file = pkl_file
-
-        if save:
-            try:
-                prevdict = pickle.load(open(out_file, "rb"))
-            except (OSError, IOError) as e:
-                prevdict = {}
-                pickle.dump(prevdict, open(out_file, "wb"))
-
-            # with open(out_file, 'rb') as handle:
-            #     prevdict = pickle.load(handle)
-            
-            # print(prevdict)
-            prevdict.update(data_dict)
-
-            # print(prevdict)
-            # with open(out_file, 'wb') as handle:
-            #     pickle.dump(data_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
-
-            with open(out_file, 'wb') as handle:
-                pickle.dump(prevdict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        # out_file = "../../../control_throttle.pkl"
         
         # with open(out_file, 'rb') as handle:
         #     prevdict = pickle.load(handle)
@@ -485,7 +687,7 @@ class PathAndSpeedFollower(BaseCarController):
 
         # # print(prevdict)
         # with open(out_file, 'wb') as handle:
-        #     pickle.dump(data_dict, handle)
+        #     pickle.dump(prevdict, handle)
 
         # Clean up
         del self.classifier
